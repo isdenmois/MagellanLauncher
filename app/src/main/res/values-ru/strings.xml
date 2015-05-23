@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Magellan Launcher</string>
+    <string name="app_not_started">Не могу запустить приложение</string>
+    <string name="now_reading">Сейчас читаю:</string>
+    <string name="history">История</string>
+    <string name="update_screen">Обновить экран</string>
+    <string name="lastsbooks">Последние загруженные книги:</string>
+    <string name="next">Далее</string>
+    <string name="prev">Назад</string>
+    <string name="progress">Прогресс:</string>
+    <string name="spent">Затрачено:</string>
+    <string name="date">Дата:</string>
+    <string name="action_settings">Системные настройки</string>
+    <string name="path_to_library">Путь к библиотеке</string>
+    <string name="action_preferences">Параметры</string>
+    <string name="path_not_exist">Путь к библиотеке не существует</string>
+</resources>

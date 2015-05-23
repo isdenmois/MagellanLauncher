@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:background="@drawable/preview_bg"
+    android:onClick="onClick"
+    android:longClickable="false"
+    android:id="@+id/nowRead"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/imgBook"
+            android:layout_margin="10dp"
+            android:background="@drawable/preview_bg"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/book_img" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:id="@+id/pbProgress"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:indeterminate="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/twProgress"
+            android:layout_gravity="center_horizontal"
+            android:text="(1/10)"
+            android:textColor="@color/normal_text"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/now_reading"
+            android:id="@+id/txtNow"
+            android:autoText="false"
+            android:textColor="@color/normal_text"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="@dimen/tsize"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAuthor"
+            android:textColor="@color/normal_text"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/tsize"
+            android:text="Author"
+            android:lines="1"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:ellipsize="end" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTitle"
+            android:textColor="@color/normal_text"
+            android:paddingLeft="10dp"
+            android:password="false"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/tsize"
+            android:textStyle="bold"
+            android:text="Title"
+            android:layout_gravity="center_horizontal"
+            android:ellipsize="end" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/twReadTime"
+            android:textSize="@dimen/textsize"
+            android:text="1ч 38м/6ч 10м"
+            android:textColor="@color/normal_text"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</LinearLayout>

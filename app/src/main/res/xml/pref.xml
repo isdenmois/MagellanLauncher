@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="library_path"
+        android:summary="Укажите полный путь"
+        android:title="@string/path_to_library"></EditTextPreference>
+</PreferenceScreen>

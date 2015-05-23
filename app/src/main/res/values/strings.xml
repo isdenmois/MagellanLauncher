@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Magellan Launcher</string>
+    <string name="now_reading">Now reading:</string>
+    <string name="history">History</string>
+    <string name="app_not_started">Can\'t start application</string>
+    <string name="update_screen">Update screeb</string>
+    <string name="lastsbooks">Last downloaded books:</string>
+    <string name="action_settings">Settings</string>
+    <string name="next">next</string>
+    <string name="prev">prev</string>
+    <string name="progress">Progress:</string>
+    <string name="spent">Spent:</string>
+    <string name="date">Date:</string>
+    <string name="path_to_library">Path to library</string>
+    <string name="action_preferences">Preferences</string>
+    <string name="path_not_exist">Path not exist!</string>
+
+</resources>

@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.isden.magellanlauncher.History"
+    android:orientation="vertical"
+    android:background="@color/normal_bg"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prev"
+            android:id="@+id/prev_button"
+            android:drawableLeft="@drawable/ci_arrowup"
+            android:layout_weight="1"
+            android:background="@drawable/main_button"
+            android:textColor="@color/normal_text"
+            android:onClick="onClick"
+            android:padding="20dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:id="@+id/next_button"
+            android:drawableLeft="@drawable/ci_arrowdown"
+            android:layout_weight="1"
+            android:textColor="@color/normal_text"
+            android:background="@drawable/main_button"
+            android:onClick="onClick"
+            android:padding="20dp" />
+    </LinearLayout>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/paged_grid"
+        android:headerDividersEnabled="false" />
+
+</LinearLayout>
