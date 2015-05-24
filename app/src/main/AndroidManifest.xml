@@ -22,6 +22,9 @@
         <activity
             android:name=".Preferences"
             android:label="@string/action_preferences"></activity>
+        <activity
+            android:name=".IconEditActivity"
+            android:label="@string/action_preferences"></activity>
     </application>
 
 </manifest>

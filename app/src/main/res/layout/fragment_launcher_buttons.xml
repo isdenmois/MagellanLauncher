@@ -4,8 +4,8 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/linearLayout"
-    android:longClickable="false">
+    android:id="@+id/launcher_buttons_layout"
+    android:longClickable="true">
 
     <ImageView
         style="@style/icons_"
@@ -19,7 +19,8 @@
         android:layout_margin="5dp"
         android:onClick="onClick"
         android:src="@drawable/sync"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:tag="0" />
 
     <ImageView
         style="@style/icons_"
@@ -31,7 +32,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/preview_bg"
         android:onClick="onClick"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:tag="1" />
 
     <ImageView
         style="@style/icons_"
@@ -43,7 +45,8 @@
         android:layout_margin="5dp"
         android:onClick="onClick"
         android:src="@drawable/applications"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:tag="2" />
 
     <ImageView
         style="@style/icons_"
@@ -55,7 +58,8 @@
         android:background="@drawable/preview_bg"
         android:src="@drawable/library"
         android:onClick="onClick"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:tag="3" />
 
     <ImageView
         style="@style/icons_"
@@ -67,6 +71,7 @@
         android:background="@drawable/preview_bg"
         android:onClick="onClick"
         android:layout_margin="5dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:tag="4" />
 
 </LinearLayout>
