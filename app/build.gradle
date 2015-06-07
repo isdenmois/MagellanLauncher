@@ -1,25 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 10
+    compileSdkVersion 8
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "isden.mois.magellanlauncher"
-        minSdkVersion 10
-        targetSdkVersion 10
-        versionCode 1
-        versionName "1.0"
+        applicationId 'isden.mois.magellanlauncher'
+        minSdkVersion 8
+        versionCode 7
+        versionName '0.7.1'
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def apkName = 'magellan-launcher-v' + android.defaultConfig.versionName + '.apk'
+                    output.outputFile = new File(output.outputFile.parent, apkName)
+                }
+            }
         }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:support-v4:22.2.0'
 }

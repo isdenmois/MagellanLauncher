@@ -16,12 +16,21 @@ public class Onyx {
     public static List<Metadata> getRecentReading(Context ctx, int limit) {
         List<Metadata> result = new LinkedList<Metadata>();
 
+        // Cause ContentProvider is Facade it impossible use JOIN's
         Cursor c = ctx.getContentResolver().query(
                 Uri.parse(CONTENT_URI + "library_metadata"),
+                new String[]{
+                    "MD5",
+                    "Authors",
+                    "Title",
+                    "Name",
+                    "NativeAbsolutePath",
+                    "Progress",
+                    "MAX(LastAccess) AS LastAccess"
+                },
+                "Title IS NOT NULL) GROUP BY (MD5",
                 null,
-                null,
-                null,
-                "LastAccess DESC " + (limit < 0 ? "" : "LIMIT " + limit)
+                "LastAccess DESC " + (limit <= 0 ? "" : "LIMIT " + limit)
         );
 
         if (c != null) {
@@ -30,7 +39,7 @@ public class Onyx {
                     String md5 = c.getString(c.getColumnIndex("MD5"));
                     Cursor hc = ctx.getContentResolver().query(
                             Uri.parse(CONTENT_URI + "library_history"),
-                            new String[]{"EndTime", "StartTime"},
+                            new String[]{"SUM(EndTime - StartTime) AS Time"},
                             "MD5 = ? AND (EndTime - StartTime) > 20000",
                             new String[]{md5},
                             null
@@ -43,8 +52,16 @@ public class Onyx {
                             null
                     );
                     result.add(createMetadata(c, hc, tc));
+
+                    if (hc != null) {
+                        hc.close();
+                    }
+                    if (tc != null) {
+                        tc.close();
+                    }
                 } while (c.moveToNext());
             }
+            c.close();
         }
 
         return result;
@@ -68,14 +85,7 @@ public class Onyx {
             metadata.thumbnail = tc.getString(tc.getColumnIndex("_data"));
         }
         if (hc != null && hc.moveToFirst()) {
-            long time = 0;
-            long endTime = 0;
-            do {
-                endTime = hc.getLong(hc.getColumnIndex("EndTime"));
-                time += endTime - hc.getLong(hc.getColumnIndex("StartTime"));
-            } while (hc.moveToNext());
-            metadata.totalTime = time;
-//            metadata.lastAccess = endTime;
+            metadata.totalTime = hc.getLong(hc.getColumnIndex("Time"));
         }
 
         metadata.lastAccess = c.getLong(c.getColumnIndex("LastAccess"));
@@ -91,5 +101,24 @@ public class Onyx {
             }
         }
         return null;
+    }
+
+    public static String getTotalTime(Context ctx) {
+        Cursor c = ctx.getContentResolver().query(
+                Uri.parse(CONTENT_URI + "library_history"),
+                new String[]{"SUM(EndTime - StartTime) AS Time"},
+                "(EndTime - StartTime) > 20000",
+                null,
+                null
+        );
+
+        if (c != null) {
+            if(c.moveToFirst()) {
+                long totalTime = c.getLong(0);
+                return IsdenTools.prettyTime(totalTime);
+            }
+            c.close();
+        }
+        return "0";
     }
 }

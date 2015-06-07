@@ -2,8 +2,11 @@ package isden.mois.magellanlauncher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class History extends Activity implements View.OnClickListener {
+public class HistoryActivity extends Activity implements View.OnClickListener {
 
     public static final String TAG = "HistoryActivity";
     private GridView gridView;
@@ -30,6 +33,10 @@ public class History extends Activity implements View.OnClickListener {
         gridView = (GridView) findViewById(R.id.paged_grid);
         HistoryAdapter adapter = new HistoryAdapter(this);
         gridView.setAdapter(adapter);
+
+        Resources res = getResources();
+        String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(this));
+        setTitle(text);
     }
 
     @Override
@@ -63,10 +70,15 @@ class HistoryAdapter extends BaseAdapter {
 
     public HistoryAdapter(Context c) {
         super();
-        List<Metadata> d = Onyx.getRecentReading(c, 40);
+        this.ctx = c;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+        String limitStr = prefs.getString("history_limit", "0");
+        int limit = Integer.parseInt(limitStr);
+
+        List<Metadata> d = Onyx.getRecentReading(c, limit);
         data = new Metadata[d.size()];
         data = d.toArray(data);
-        this.ctx = c;
     }
 
     @Override

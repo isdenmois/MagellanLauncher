@@ -1,7 +1,12 @@
 package isden.mois.magellanlauncher;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -16,7 +21,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class Main extends FragmentActivity implements View.OnClickListener, View.OnLongClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener, View.OnLongClickListener {
 
     public static final String TAG = "main";
 
@@ -46,8 +51,44 @@ public class Main extends FragmentActivity implements View.OnClickListener, View
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
                 break;
             case R.id.main_preferences:
-                startActivity(new Intent(this, Preferences.class));
+                startActivity(new Intent(this, PreferencesActivity.class));
                 break;
+            case R.id.main_about:
+                StringBuilder message = new StringBuilder();
+                Resources res = getResources();
+                String versionName;
+                try {
+                    PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    versionName = packageInfo.versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    versionName = "";
+                }
+
+                message.append("Magellan Launcher");
+                message.append('\n');
+
+                message.append(res.getString(R.string.version));
+                message.append(": ");
+                message.append(versionName);
+                message.append('\n');
+
+                message.append("2015 ");
+                message.append('\u00A9');
+                message.append(" Denis Moiseev ");
+                message.append("<isdenmois@gmail.com>");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.about)
+                        .setMessage(message)
+                        .setCancelable(false)
+                        .setNegativeButton("ОК",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
         }
 
         return true;
@@ -84,7 +125,7 @@ public class Main extends FragmentActivity implements View.OnClickListener, View
                 }
                 break;
             case R.id.launcher_history:
-                intent = new Intent(this, History.class);
+                intent = new Intent(this, HistoryActivity.class);
                 startActivity(intent);
                 break;
 

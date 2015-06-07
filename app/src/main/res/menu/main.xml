@@ -7,4 +7,7 @@
     <item
         android:title="@string/action_preferences"
         android:id="@+id/main_preferences" />
+    <item
+        android:title="@string/about"
+        android:id="@+id/main_about" />
 </menu>
