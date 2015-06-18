@@ -1,77 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/launcher_buttons_layout"
-    android:longClickable="true">
-
-    <ImageView
-        style="@style/icons_"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgSync"
-        android:layout_weight="1"
-        android:baselineAlignBottom="false"
-        android:adjustViewBounds="false"
-        android:background="@drawable/preview_bg"
-        android:layout_margin="5dp"
-        android:onClick="onClick"
-        android:src="@drawable/sync"
-        android:scaleType="centerCrop"
-        android:tag="0" />
-
-    <ImageView
-        style="@style/icons_"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgFM"
-        android:layout_weight="1"
-        android:src="@drawable/folder"
-        android:layout_margin="5dp"
-        android:background="@drawable/preview_bg"
-        android:onClick="onClick"
-        android:scaleType="centerCrop"
-        android:tag="1" />
-
-    <ImageView
-        style="@style/icons_"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgApp"
-        android:layout_weight="1"
-        android:background="@drawable/preview_bg"
-        android:layout_margin="5dp"
-        android:onClick="onClick"
-        android:src="@drawable/applications"
-        android:scaleType="centerCrop"
-        android:tag="2" />
-
-    <ImageView
-        style="@style/icons_"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgLib"
-        android:layout_weight="1"
-        android:layout_margin="5dp"
-        android:background="@drawable/preview_bg"
-        android:src="@drawable/library"
-        android:onClick="onClick"
-        android:scaleType="centerCrop"
-        android:tag="3" />
-
-    <ImageView
-        style="@style/icons_"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/launcher_history"
-        android:layout_weight="1"
-        android:src="@drawable/history"
-        android:background="@drawable/preview_bg"
-        android:onClick="onClick"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop"
-        android:tag="4" />
-
+<LinearLayout android:orientation="horizontal" android:id="@+id/launcher_buttons_layout" android:longClickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@+id/imgSync" android:tag="0" android:background="@drawable/preview_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/sync" android:scaleType="centerCrop" android:adjustViewBounds="false" android:baselineAlignBottom="false" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
+    <ImageView android:id="@+id/imgFM" android:tag="1" android:background="@drawable/preview_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/folder" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
+    <ImageView android:id="@+id/imgApp" android:tag="2" android:background="@drawable/preview_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/applications" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
+    <ImageView android:id="@+id/imgLib" android:tag="3" android:background="@drawable/preview_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/library" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
+    <ImageView android:id="@+id/launcher_history" android:tag="4" android:background="@drawable/preview_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/history" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
 </LinearLayout>

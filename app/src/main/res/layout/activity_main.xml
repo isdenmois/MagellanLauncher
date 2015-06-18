@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#000000">
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="isden.mois.magellanlauncher.fragments.CurrentBook"
-        android:id="@+id/current_book"
-        android:layout_gravity="center_horizontal|top"
-        tools:layout="@layout/fragment_current_book" />
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:name="isden.mois.magellanlauncher.fragments.LastDownloaded"
-        android:id="@+id/last_downloaded"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_last_downloaded"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp" />
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:name="isden.mois.magellanlauncher.fragments.LaunchButtons"
-        android:id="@+id/launcher_buttons"
-        tools:layout="@layout/fragment_launcher_buttons" />
+<LinearLayout android:orientation="vertical" android:background="#ff000000" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <fragment android:name="isden.mois.magellanlauncher.fragments.CurrentBook" android:layout_gravity="center|top" android:id="@+id/current_book" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <fragment android:name="isden.mois.magellanlauncher.fragments.LastDownloaded" android:layout_gravity="center_horizontal" android:id="@+id/last_downloaded" android:layout_width="fill_parent" android:layout_height="200.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="5.0dip" />
+    <fragment android:name="isden.mois.magellanlauncher.fragments.LaunchButtons" android:id="@+id/launcher_buttons" android:layout_width="fill_parent" android:layout_height="120.0dip" />
 </LinearLayout>

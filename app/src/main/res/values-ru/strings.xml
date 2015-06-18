@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="about">О приложении</string>
+    <string name="action_preferences">Параметры</string>
+    <string name="action_settings">Системные настройки</string>
     <string name="app_name">Magellan Launcher</string>
     <string name="app_not_started">Не могу запустить приложение</string>
-    <string name="now_reading">Сейчас читаю:</string>
+    <string name="date">Дата:</string>
     <string name="history">История</string>
-    <string name="update_screen">Обновить экран</string>
+    <string name="history_format">История (%1$s)</string>
+    <string name="history_limit">Ограничить размер истории</string>
     <string name="lastsbooks">Последние загруженные книги:</string>
     <string name="next">Далее</string>
+    <string name="now_reading">Сейчас читаю:</string>
+    <string name="path_not_exist">Путь к библиотеке не существует</string>
+    <string name="path_to_library">Путь к библиотеке</string>
+    <string name="path_to_library_summary">Укажите полный путь</string>
     <string name="prev">Назад</string>
     <string name="progress">Прогресс:</string>
     <string name="spent">Затрачено:</string>
-    <string name="date">Дата:</string>
-    <string name="action_settings">Системные настройки</string>
-    <string name="path_to_library">Путь к библиотеке</string>
-    <string name="action_preferences">Параметры</string>
-    <string name="path_not_exist">Путь к библиотеке не существует</string>
+    <string name="update_screen">Обновить экран</string>
+    <string name="version">Версия</string>
 </resources>

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:title="@string/action_settings"
-        android:id="@+id/main_settings" />
-    <item
-        android:title="@string/action_preferences"
-        android:id="@+id/main_preferences" />
-    <item
-        android:title="@string/about"
-        android:id="@+id/main_about" />
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/main_settings" android:title="@string/action_settings" />
+    <item android:id="@+id/main_preferences" android:title="@string/action_preferences" />
+    <item android:id="@+id/main_about" android:title="@string/about" />
 </menu>
