@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:background="@color/normal_bg">
+
+    <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp" android:background="@drawable/ramka">
+        <TextView
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:text="@string/applications"
+                android:id="@+id/lib_path" android:layout_alignParentLeft="true" android:layout_marginLeft="0dp"
+                android:layout_alignParentTop="true" android:layout_marginTop="0dp" android:ellipsize="end"
+                android:textSize="24dp" android:background="@color/normal_bg" android:textColor="@color/normal_text"
+                android:layout_marginBottom="1dip"/>
+        <RadioGroup
+                android:layout_width="150dp"
+                android:layout_height="fill_parent" android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" android:orientation="horizontal" android:visibility="invisible">
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbGrid" android:checked="true"/>
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbList" android:checked="false"/>
+        </RadioGroup>
+    </RelativeLayout>
+    <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/app_grid" android:numColumns="4"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lib_prev" android:src="@drawable/prev" android:layout_weight="1"
+                android:background="@color/normal_bg"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lib_progress"
+                android:textSize="24dp"
+                android:text="[1/1]"
+                android:background="@color/normal_bg"
+                android:textColor="@color/normal_text"
+                android:gravity="center_vertical|center_horizontal" android:layout_weight="1"/>
+        <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lib_next" android:src="@drawable/next" android:layout_weight="1"
+                android:background="@color/normal_bg"/>
+    </LinearLayout>
+</LinearLayout>
