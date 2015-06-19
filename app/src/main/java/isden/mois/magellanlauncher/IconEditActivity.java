@@ -14,6 +14,8 @@ import android.preference.PreferenceScreen;
 import java.util.List;
 import java.util.ListIterator;
 
+import static isden.mois.magellanlauncher.IsdenTools.createAppList;
+
 public class IconEditActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +33,15 @@ public class IconEditActivity extends PreferenceActivity {
         list.setTitle("Приложение");
         list.setSummary("Выберите приложение для запуска");
 
-        PackageManager pm = getPackageManager();
-        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
-        ListIterator<ApplicationInfo> app_it = apps.listIterator();
+        List<Application> apps = createAppList(this);
+        ListIterator<Application> app_it = apps.listIterator();
 
         CharSequence[] entries = new CharSequence[apps.size()];
         CharSequence[] entries_values = new CharSequence[apps.size()];
 
         for (int i = 0; app_it.hasNext(); i++) {
-            ApplicationInfo app = app_it.next();
-            entries[i] = pm.getApplicationLabel(app);
+            Application app = app_it.next();
+            entries[i] = app.name;
             entries_values[i] = app.packageName;
         }
 
