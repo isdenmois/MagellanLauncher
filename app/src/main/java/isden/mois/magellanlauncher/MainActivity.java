@@ -113,7 +113,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.imgFM:
             case R.id.imgLib:
-            case R.id.imgApp:
             case R.id.imgSync:
                 try {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -126,6 +125,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.launcher_history:
                 intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.imgApp:
+                intent = new Intent(this, ApplicationsActivity.class);
                 startActivity(intent);
                 break;
 

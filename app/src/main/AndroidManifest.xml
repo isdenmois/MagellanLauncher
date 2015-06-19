@@ -15,14 +15,22 @@
         </activity>
         <activity
             android:name=".HistoryActivity"
-            android:label="@string/history" />
+            android:label="@string/history"
+        />
         <activity
             android:name=".PreferencesActivity"
-            android:label="@string/action_preferences" />
+            android:label="@string/action_preferences"
+        />
         <activity
             android:name=".IconEditActivity"
             android:label="@string/action_preferences"
-            android:theme="@style/ReaderTheme" />
+            android:theme="@style/ReaderTheme"
+        />
+        <activity
+            android:name=".ApplicationsActivity"
+            android:label="@string/applications"
+        />
+
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@
     <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="40dp" android:background="@drawable/ramka">
+            android:layout_height="40dp" android:background="@drawable/ramka" android:visibility="gone">
         <TextView
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
@@ -31,32 +31,23 @@
                     android:id="@+id/rbList" android:checked="false"/>
         </RadioGroup>
     </RelativeLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+        <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/app_prev" android:src="@drawable/ci_arrowup" android:layout_weight="1"
+                android:background="@color/normal_bg"/>
+        <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/app_next" android:src="@drawable/ci_arrowdown" android:layout_weight="1"
+                android:background="@color/normal_bg"/>
+    </LinearLayout>
     <GridView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/app_grid" android:numColumns="4"/>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lib_prev" android:src="@drawable/prev" android:layout_weight="1"
-                android:background="@color/normal_bg"/>
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lib_progress"
-                android:textSize="24dp"
-                android:text="[1/1]"
-                android:background="@color/normal_bg"
-                android:textColor="@color/normal_text"
-                android:gravity="center_vertical|center_horizontal" android:layout_weight="1"/>
-        <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lib_next" android:src="@drawable/next" android:layout_weight="1"
-                android:background="@color/normal_bg"/>
-    </LinearLayout>
 </LinearLayout>
