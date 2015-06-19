@@ -1,15 +1,13 @@
 apply plugin: 'com.android.application'
+apply from: 'auto-version.gradle'
 
 android {
     compileSdkVersion 8
     buildToolsVersion "22.0.1"
 
-    defaultConfig {
-        applicationId 'isden.mois.magellanlauncher'
-        minSdkVersion 8
-        versionCode 7
-        versionName '0.7.1'
-    }
+    defaultConfig.minSdkVersion 8
+    defaultConfig.applicationId 'isden.mois.magellanlauncher'
+
     buildTypes {
         release {
             minifyEnabled true
@@ -21,6 +19,9 @@ android {
                 }
             }
         }
+        debug {
+            versionNameSuffix "-SNAPSHOT"
+        }
     }
 }
 
@@ -28,3 +29,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.2.0'
 }
+
+println "config code: ${calculateVersionCode()}, name: ${calculateVersionName()}"
