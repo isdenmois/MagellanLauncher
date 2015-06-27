@@ -1,5 +1,7 @@
 package isden.mois.magellanlauncher;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -10,6 +12,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.widget.ExpandableListView;
+import isden.mois.magellanlauncher.adapters.DialogActionAdapter;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -26,7 +30,6 @@ public class IconEditActivity extends PreferenceActivity {
         final PreferenceScreen rootScreen = getPreferenceManager().createPreferenceScreen(this);
         // говорим Activity, что rootScreen - корневой
         setPreferenceScreen(rootScreen);
-
 
         ListPreference list = new ListPreference(this);
         list.setKey("button_" + tag + "_app");
@@ -49,6 +52,33 @@ public class IconEditActivity extends PreferenceActivity {
         list.setEntryValues(entries_values);
 
         rootScreen.addPreference(list);
+
+        final Preference action = new Preference(this);
+        action.setKey("button_" + tag + "_app");
+        action.setTitle("Действие");
+        action.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(IconEditActivity.this);
+                builder.setTitle("Choose action");
+
+                ExpandableListView myList = new ExpandableListView(IconEditActivity.this);
+                DialogActionAdapter myAdapter = new DialogActionAdapter(IconEditActivity.this);
+                myList.setAdapter(myAdapter);
+
+                builder.setView(myList);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            }
+        });
+        rootScreen.addPreference(action);
 
 
         CheckBoxPreference chb = new CheckBoxPreference(this);

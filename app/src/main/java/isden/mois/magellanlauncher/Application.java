@@ -5,9 +5,26 @@ package isden.mois.magellanlauncher;
  */
 
 
-class Application {
-    String name;
-    String packageName;
+public class Application {
+    public boolean inner;
+    public String name;
+    public String packageName;
+    public Class activity;
+
+    public Application() {
+    }
+
+    public Application(String packageName, String name) {
+        inner = false;
+        this.name = name;
+        this.packageName = packageName;
+    }
+
+    public Application(Class activity, String name) {
+        this.inner = true;
+        this.activity = activity;
+        this.name = name;
+    }
 }
 
 class AppComparator implements java.util.Comparator<Application> {
