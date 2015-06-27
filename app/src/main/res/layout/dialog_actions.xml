@@ -23,6 +23,6 @@
         <ExpandableListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/action_list"/>
+                android:id="@+id/action_list" android:choiceMode="singleChoice"/>
     </RadioGroup>
 </LinearLayout>

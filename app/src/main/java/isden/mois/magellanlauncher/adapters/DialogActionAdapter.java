@@ -1,38 +1,43 @@
 package isden.mois.magellanlauncher.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static isden.mois.magellanlauncher.IsdenTools.createAppList;
 
-import android.widget.RadioButton;
-import android.widget.TextView;
-import isden.mois.magellanlauncher.Application;
-import isden.mois.magellanlauncher.HistoryActivity;
-import isden.mois.magellanlauncher.PreferencesActivity;
-import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.*;
 
 /**
  * Created by isdenmois on 27.06.2015.
  */
-public class DialogActionAdapter extends BaseExpandableListAdapter {
-    Context c;
+public class DialogActionAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
+    LayoutInflater inflater;
 
     List<Application> activities;
     List<Application> apps;
+    RadioButton checkedRB;
+    String checkedPkg;
 
-    public DialogActionAdapter(Context c) {
-        this.c = c;
+    public DialogActionAdapter(Context c, String key) {
+        inflater = LayoutInflater.from(c);
+
         apps = createAppList(c);
+
         activities = new ArrayList<Application>();
         activities.add(new Application(PreferencesActivity.class, "Настройки"));
         activities.add(new Application(HistoryActivity.class, "История"));
+        activities.add(new Application(ApplicationsActivity.class, "Приложения"));
+
+        checkedPkg = key;
     }
 
     @Override
@@ -97,7 +102,6 @@ public class DialogActionAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
         if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(c);
             view = inflater.inflate(R.layout.item_group, null);
         }
 
@@ -115,22 +119,32 @@ public class DialogActionAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
         if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(c);
             view = inflater.inflate(R.layout.item_radio, null);
         }
 
         RadioButton r = (RadioButton) view.findViewById(R.id.rb);
-        Application app;
-        boolean checked = false;
-        if (i < 0) {
-            app = apps.get(i1);
+        List<Application> pkgList;
+        if (i <= 0) {
+            pkgList = activities;
         }
         else {
-            app = activities.get(i1);
+            pkgList = apps;
         }
-        if (app != null) {
+
+        if (pkgList.size() > i1 && r != null) {
+            Application app = pkgList.get(i1);
             r.setText(app.name);
+            r.setTag(app.packageName);
+            r.setOnClickListener(this);
+
+            if (checkedPkg != null && app.packageName != null && checkedPkg.equals(app.packageName)) {
+                r.setChecked(true);
+            }
+            else {
+                r.setChecked(false);
+            }
         }
+        view.setOnClickListener(this);
 
         return view;
     }
@@ -139,5 +153,36 @@ public class DialogActionAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
+
+    private void changeRB(RadioButton newRB) {
+        if (checkedRB != null) {
+            checkedRB.setChecked(false);
+        }
+        if (newRB != null) {
+            newRB.setChecked(true);
+            checkedPkg = (String) newRB.getTag();
+        }
+        else {
+            checkedPkg = "";
+        }
+
+        checkedRB = newRB;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rb:
+                changeRB((RadioButton) view);
+                break;
+            default:
+                changeRB((RadioButton) view.findViewById(R.id.rb));
+        }
+    }
+
+    public String getChecked() {
+        return checkedPkg;
+    }
+
 }
 

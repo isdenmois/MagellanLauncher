@@ -114,18 +114,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.imgFM:
             case R.id.imgLib:
             case R.id.imgSync:
+            case R.id.launcher_history:
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                String tag = (String) v.getTag();
+                String app_name = prefs.getString("button_" + tag + "_app", "");
+
                 try {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                    String tag = (String) v.getTag();
-                    String app_name = prefs.getString("button_" + tag + "_app", "");
-                    startActivity(getPackageManager().getLaunchIntentForPackage(app_name));
+                    Class action = Class.forName(app_name);
+                    intent = new Intent(this, action);
+                } catch (ClassNotFoundException e) {
+                    intent = getPackageManager().getLaunchIntentForPackage(app_name);
+                }
+
+                try {
+                    startActivity(intent);
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.app_not_started, Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.launcher_history:
-                intent = new Intent(this, HistoryActivity.class);
-                startActivity(intent);
                 break;
             case R.id.imgApp:
                 intent = new Intent(this, ApplicationsActivity.class);

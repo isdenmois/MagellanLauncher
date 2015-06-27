@@ -16,5 +16,6 @@
             android:text="Настройки"
             android:drawableRight="@android:drawable/btn_radio"
             android:button="@null"
-            android:textColor="@color/normal_text"/>
+            android:textColor="@color/normal_text"
+    />
 </LinearLayout>
