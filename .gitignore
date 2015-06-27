@@ -1,10 +1,10 @@
+/.idea
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
 gradle
 MagellanLauncher.ipr
 MagellanLauncher.iws
+*.iml
