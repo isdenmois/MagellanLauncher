@@ -1,28 +1,26 @@
 package isden.mois.magellanlauncher;
 
+import java.io.Serializable;
+
 /**
  * Created by isden on 20.06.15.
  */
 
 
-public class Application {
-    public boolean inner;
+public class Application implements Serializable {
     public String name;
     public String packageName;
-    public Class activity;
 
     public Application() {
     }
 
     public Application(String packageName, String name) {
-        inner = false;
         this.name = name;
         this.packageName = packageName;
     }
 
     public Application(Class activity, String name) {
-        this.inner = true;
-        this.activity = activity;
+        this.packageName = activity.getName();
         this.name = name;
     }
 }
