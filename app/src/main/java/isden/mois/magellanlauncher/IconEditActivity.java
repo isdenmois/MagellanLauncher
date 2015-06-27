@@ -64,54 +64,5 @@ public class IconEditActivity extends PreferenceActivity {
             }
         });
         rootScreen.addPreference(icon);
-
-
-//        CheckBoxPreference chb = new CheckBoxPreference(this);
-//        chb.setKey("button_" + tag + "_external_icon");
-//        chb.setTitle("Использовать внешние иконки");
-//
-//        rootScreen.addPreference(chb);
-//
-//        final EditTextPreference libpath = new EditTextPreference(this);
-//        libpath.setKey("external_icons_path");
-//        libpath.setTitle("Путь к иконкам");
-//        libpath.setEnabled(chb.isChecked());
-//        libpath.setDefaultValue("/mnt/storage/.icons");
-//
-//        rootScreen.addPreference(libpath);
-//
-//        final Preference icon = new Preference(this);
-//        icon.setTitle("Иконка");
-//        if (chb.isChecked()) {
-//            icon.setKey("button_" + tag + "external");
-//        } else {
-//            icon.setKey("button_" + tag + "internal");
-//        }
-//
-//        rootScreen.addPreference(icon);
-//
-//
-//        icon.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//
-//                return true;
-//            }
-//        });
-//
-//        chb.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object o) {
-//                libpath.setEnabled((Boolean) o);
-//
-//                if ((Boolean) o) {
-//                    icon.setKey("button_" + tag + "external");
-//                } else {
-//                    icon.setKey("button_" + tag + "internal");
-//                }
-//                return true;
-//            }
-//        });
-
     }
 }
