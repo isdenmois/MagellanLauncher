@@ -1,19 +1,18 @@
 package isden.mois.magellanlauncher;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
+import android.preference.*;
 import android.widget.ExpandableListView;
 import isden.mois.magellanlauncher.adapters.DialogActionAdapter;
+import isden.mois.magellanlauncher.dialogs.ActionDialog;
+import isden.mois.magellanlauncher.dialogs.IDialog;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -21,9 +20,13 @@ import java.util.ListIterator;
 import static isden.mois.magellanlauncher.IsdenTools.createAppList;
 
 public class IconEditActivity extends PreferenceActivity {
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         Intent intent = getIntent();
         final String tag = intent.getStringExtra("tag");
         // создаем экран
@@ -31,49 +34,15 @@ public class IconEditActivity extends PreferenceActivity {
         // говорим Activity, что rootScreen - корневой
         setPreferenceScreen(rootScreen);
 
-        ListPreference list = new ListPreference(this);
-        list.setKey("button_" + tag + "_app");
-        list.setTitle("Приложение");
-        list.setSummary("Выберите приложение для запуска");
-
-        List<Application> apps = createAppList(this);
-        ListIterator<Application> app_it = apps.listIterator();
-
-        CharSequence[] entries = new CharSequence[apps.size()];
-        CharSequence[] entries_values = new CharSequence[apps.size()];
-
-        for (int i = 0; app_it.hasNext(); i++) {
-            Application app = app_it.next();
-            entries[i] = app.name;
-            entries_values[i] = app.packageName;
-        }
-
-        list.setEntries(entries);
-        list.setEntryValues(entries_values);
-
-        rootScreen.addPreference(list);
-
         final Preference action = new Preference(this);
         action.setKey("button_" + tag + "_app");
         action.setTitle("Действие");
+        action.setSummary("Выберите действие для запуска");
         action.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(IconEditActivity.this);
-                builder.setTitle("Choose action");
-
-                ExpandableListView myList = new ExpandableListView(IconEditActivity.this);
-                DialogActionAdapter myAdapter = new DialogActionAdapter(IconEditActivity.this);
-                myList.setAdapter(myAdapter);
-
-                builder.setView(myList);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
+                IDialog builder = new ActionDialog(IconEditActivity.this, action.getKey());
+                Dialog dialog = builder.getDialog();
                 dialog.show();
                 return true;
             }
