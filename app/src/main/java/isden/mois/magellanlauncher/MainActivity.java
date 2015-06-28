@@ -1,6 +1,7 @@
 package isden.mois.magellanlauncher;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,16 +13,14 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import isden.mois.magellanlauncher.dialogs.ActionDialog;
+import isden.mois.magellanlauncher.dialogs.IDialog;
+import isden.mois.magellanlauncher.dialogs.IconDialog;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, View.OnLongClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public static final String TAG = "main";
 
@@ -33,7 +32,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         LinearLayout l = (LinearLayout) findViewById(R.id.launcher_buttons_layout);
         for (int i = 0; i < l.getChildCount(); i++) {
-            l.getChildAt(i).setOnLongClickListener(this);
+            registerForContextMenu(l.getChildAt(i));
         }
     }
 
@@ -42,6 +41,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(v.getId(), R.string.icon_action, 0, R.string.icon_action);
+        menu.add(v.getId(), R.string.icon_icon, 0, R.string.icon_icon);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        View view = findViewById(item.getGroupId());
+        String tag = (String) view.getTag();
+        String key;
+        IDialog builder;
+        switch (item.getItemId()) {
+            case R.string.icon_action:
+                key = "button_" + tag + "_app";
+                builder = new ActionDialog(this, key);
+                break;
+            case R.string.icon_icon:
+                key = "button_" + tag + "_icon";
+                builder = new IconDialog(this, key);
+                break;
+            default:
+                return false;
+        }
+
+        Dialog dialog = builder.getDialog();
+        dialog.show();
+
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -140,15 +171,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             default:
                 Log.i(TAG, "Click by " + v.toString());
         }
-    }
-
-
-    @Override
-    public boolean onLongClick(View v) {
-        Intent settings = new Intent(this, IconEditActivity.class);
-        settings.putExtra("tag", (String) v.getTag());
-        startActivity(settings);
-        return true;
     }
 }
 
