@@ -22,11 +22,6 @@
             android:label="@string/action_preferences"
         />
         <activity
-            android:name=".IconEditActivity"
-            android:label="@string/action_preferences"
-            android:theme="@style/ReaderTheme"
-        />
-        <activity
             android:name=".ApplicationsActivity"
             android:label="@string/applications"
         />
