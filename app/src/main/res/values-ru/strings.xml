@@ -21,4 +21,6 @@
     <string name="update_screen">Обновить экран</string>
     <string name="version">Версия</string>
     <string name="applications">Приложения</string>
+    <string name="icon_action">Действие</string>
+    <string name="icon_icon">Изображение</string>
 </resources>
