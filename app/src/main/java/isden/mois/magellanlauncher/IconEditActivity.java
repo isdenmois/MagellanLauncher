@@ -57,7 +57,7 @@ public class IconEditActivity extends PreferenceActivity {
         icon.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                IDialog builder = new IconDialog(IconEditActivity.this, action.getKey());
+                IDialog builder = new IconDialog(IconEditActivity.this, icon.getKey());
                 Dialog dialog = builder.getDialog();
                 dialog.show();
                 return true;
