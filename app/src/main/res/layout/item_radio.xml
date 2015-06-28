@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="50dp" style="@style/ReaderTheme" android:paddingTop="4dp"
-              android:paddingBottom="4dp">
+              android:layout_height="wrap_content"
+              style="@style/ReaderTheme"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+>
 
     <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/radio_iw"
+            android:src="@drawable/settings"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+    />
+    <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/iw" android:src="@drawable/settings"/>
+            android:layout_height="wrap_content"
+            android:text="Настройки"
+            android:id="@+id/radio_title"
+            style="@style/ReaderTheme"
+            android:textSize="@dimen/textsize"
+            android:layout_centerInParent="true"
+    />
     <RadioButton
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rb"
-            android:text="Настройки"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_rb"
             android:drawableRight="@android:drawable/btn_radio"
             android:button="@null"
             android:textColor="@color/normal_text"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentRight="true"
     />
-</LinearLayout>
+</RelativeLayout>

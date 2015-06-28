@@ -39,6 +39,14 @@ public class ActionDialog implements IDialog, View.OnClickListener {
         String value = prefs.getString(key, null);
         adapter = new DialogActionAdapter(c, value);
         expandableListView.setAdapter(adapter);
+        expandableListView.expandGroup(0);
+        expandableListView.expandGroup(1);
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                return true;
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
         builder.setTitle("Choose action");

@@ -2,13 +2,17 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent" style="@style/ReaderTheme">
+              android:layout_height="match_parent"
+              style="@style/ReaderTheme"
+>
     <TextView
             android:id="@+id/textGroup"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
+            android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
             android:textColor="@color/normal_text"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textSize="@dimen/textsize"
+            style="@style/ReaderTheme"
+    />
 </LinearLayout>
