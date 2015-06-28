@@ -16,7 +16,7 @@ import isden.mois.magellanlauncher.*;
 /**
  * Created by isdenmois on 27.06.2015.
  */
-public class DialogActionAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
+public class DialogActionAdapter extends BaseExpandableListAdapter {
     LayoutInflater inflater;
 
     List<Application> activities;
@@ -132,9 +132,10 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
             TextView textView = (TextView) view.findViewById(R.id.radio_title);
             Application app = pkgList.get(i1);
             textView.setText(app.name);
-            r.setTag(app.packageName);
-            r.setOnClickListener(this);
+            view.setTag(app.packageName);
 
+            r.setFocusable(false);
+            r.setClickable(false);
             if (checkedPkg != null && app.packageName != null && checkedPkg.equals(app.packageName)) {
                 r.setChecked(true);
             }
@@ -142,7 +143,7 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
                 r.setChecked(false);
             }
         }
-        view.setOnClickListener(this);
+        view.setClickable(false);
 
         return view;
     }
@@ -151,37 +152,5 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
-
-    private void changeRB(RadioButton newRB) {
-        if (checkedRB != null) {
-            checkedRB.setChecked(false);
-            checkedRB.invalidate();
-        }
-        if (newRB != null) {
-            newRB.setChecked(true);
-            checkedPkg = (String) newRB.getTag();
-        }
-        else {
-            checkedPkg = "";
-        }
-
-        checkedRB = newRB;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.radio_rb:
-                changeRB((RadioButton) view);
-                break;
-            default:
-                changeRB((RadioButton) view.findViewById(R.id.radio_rb));
-        }
-    }
-
-    public String getChecked() {
-        return checkedPkg;
-    }
-
 }
 

@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import isden.mois.magellanlauncher.R;
 import isden.mois.magellanlauncher.adapters.DialogActionAdapter;
@@ -15,12 +17,12 @@ import isden.mois.magellanlauncher.adapters.DialogActionAdapter;
 /**
  * Created by isden on 27.06.15.
  */
-public class ActionDialog implements IDialog, View.OnClickListener {
+public class ActionDialog implements IDialog, View.OnClickListener, ExpandableListView.OnChildClickListener {
     Context c;
     String key;
-    DialogActionAdapter adapter;
     SharedPreferences prefs;
     ExpandableListView expandableListView;
+    Dialog dialog;
 
     public ActionDialog(Context c, String key) {
         this.c = c;
@@ -37,8 +39,7 @@ public class ActionDialog implements IDialog, View.OnClickListener {
 
         expandableListView = (ExpandableListView) layout.findViewById(R.id.action_list);
         String value = prefs.getString(key, null);
-        adapter = new DialogActionAdapter(c, value);
-        expandableListView.setAdapter(adapter);
+        expandableListView.setAdapter(new DialogActionAdapter(c, value));
         expandableListView.expandGroup(0);
         expandableListView.expandGroup(1);
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -47,6 +48,7 @@ public class ActionDialog implements IDialog, View.OnClickListener {
                 return true;
             }
         });
+        expandableListView.setOnChildClickListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
         builder.setTitle("Choose action");
@@ -58,40 +60,48 @@ public class ActionDialog implements IDialog, View.OnClickListener {
                 dialogInterface.cancel();
             }
         });
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                SharedPreferences.Editor e = prefs.edit();
-                String checked = adapter.getChecked();
-                e.putString(key, checked);
-                e.commit();
-
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
+        dialog = builder.create();
+        return dialog;
     }
 
     @Override
     public void onClick(View view) {
-        if (expandableListView == null) {
-            return;
-        }
+        switch (view.getId()) {
+            case R.id.action_down:
+            case R.id.action_up:
+                if (expandableListView == null) {
+                    return;
+                }
 
-        int target;
-        int first = expandableListView.getFirstVisiblePosition();
-        int last = expandableListView.getLastVisiblePosition();
-        if (view.getId() == R.id.action_up) {
-            target = first - (last - first);
-            if (target < 0) {
-                target = 0;
-            }
-        }
-        else {
-            target = last;
-        }
+                int target;
+                int first = expandableListView.getFirstVisiblePosition();
+                int last = expandableListView.getLastVisiblePosition();
+                if (view.getId() == R.id.action_up) {
+                    target = first - (last - first);
+                    if (target < 0) {
+                        target = 0;
+                    }
+                } else {
+                    target = last;
+                }
 
-        expandableListView.setSelection(target);
-        expandableListView.invalidate();
+                expandableListView.setSelection(target);
+                expandableListView.invalidate();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+        if (view != null) {
+            String checked = (String) view.getTag();
+            SharedPreferences.Editor e = prefs.edit();
+            e.putString(key, checked);
+            e.commit();
+
+            dialog.dismiss();
+            return true;
+        }
+        return false;
     }
 }
