@@ -1,5 +1,6 @@
 package isden.mois.magellanlauncher.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
@@ -38,7 +40,11 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         R.drawable.history,
         R.drawable.library,
         R.drawable.settings,
-        R.drawable.sync
+        R.drawable.sync,
+        R.drawable.folder,
+        R.drawable.book_img,
+        R.drawable.book_down,
+        R.drawable.ic_launcher
     };
     GridView gw;
     String key;
@@ -119,6 +125,17 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         SharedPreferences.Editor e = prefs.edit();
         e.putString(key, (String) view.getTag());
         e.commit();
+
+        try {
+            Activity main = (Activity) c;
+            View v = main.findViewById(R.id.launcher_buttons);
+            if (v != null) {
+                v.invalidate();
+            }
+        }
+        catch (ClassCastException ex) {
+            ex.printStackTrace();
+        }
 
         dialog.dismiss();
     }
