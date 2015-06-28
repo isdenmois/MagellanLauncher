@@ -1,13 +1,28 @@
 package isden.mois.magellanlauncher;
 
+import java.io.Serializable;
+
 /**
  * Created by isden on 20.06.15.
  */
 
 
-class Application {
-    String name;
-    String packageName;
+public class Application implements Serializable {
+    public String name;
+    public String packageName;
+
+    public Application() {
+    }
+
+    public Application(String packageName, String name) {
+        this.name = name;
+        this.packageName = packageName;
+    }
+
+    public Application(Class activity, String name) {
+        this.packageName = activity.getName();
+        this.name = name;
+    }
 }
 
 class AppComparator implements java.util.Comparator<Application> {
