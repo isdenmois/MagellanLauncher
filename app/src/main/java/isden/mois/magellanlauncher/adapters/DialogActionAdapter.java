@@ -1,9 +1,6 @@
 package isden.mois.magellanlauncher.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +119,7 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
             view = inflater.inflate(R.layout.item_radio, null);
         }
 
-        RadioButton r = (RadioButton) view.findViewById(R.id.rb);
+        RadioButton r = (RadioButton) view.findViewById(R.id.radio_rb);
         List<Application> pkgList;
         if (i <= 0) {
             pkgList = activities;
@@ -132,8 +129,9 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
         }
 
         if (pkgList.size() > i1 && r != null) {
+            TextView textView = (TextView) view.findViewById(R.id.radio_title);
             Application app = pkgList.get(i1);
-            r.setText(app.name);
+            textView.setText(app.name);
             r.setTag(app.packageName);
             r.setOnClickListener(this);
 
@@ -157,6 +155,7 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
     private void changeRB(RadioButton newRB) {
         if (checkedRB != null) {
             checkedRB.setChecked(false);
+            checkedRB.invalidate();
         }
         if (newRB != null) {
             newRB.setChecked(true);
@@ -172,11 +171,11 @@ public class DialogActionAdapter extends BaseExpandableListAdapter implements Vi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rb:
+            case R.id.radio_rb:
                 changeRB((RadioButton) view);
                 break;
             default:
-                changeRB((RadioButton) view.findViewById(R.id.rb));
+                changeRB((RadioButton) view.findViewById(R.id.radio_rb));
         }
     }
 
