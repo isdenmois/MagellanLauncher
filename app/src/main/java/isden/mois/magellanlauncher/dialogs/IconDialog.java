@@ -36,17 +36,7 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
     Context c;
 
     List<IIcon> icons;
-    int[] iconArray = new int[]{
-        R.drawable.applications,
-        R.drawable.history,
-        R.drawable.library,
-        R.drawable.settings,
-        R.drawable.sync,
-        R.drawable.folder,
-        R.drawable.book_img,
-        R.drawable.book_down,
-        R.drawable.ic_launcher
-    };
+
     GridView gw;
     String key;
     Dialog dialog;
@@ -58,8 +48,8 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(c);
 
         icons = new ArrayList<IIcon>();
-        for (int icon : iconArray) {
-            icons.add(new BuiltInIcon(icon));
+        for (int i = 0; i < MainActivity.builtInImages.length(); i++) {
+            icons.add(new BuiltInIcon(i));
         }
 
         String filename = prefs.getString("icons_path", null);
@@ -67,8 +57,10 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
             File icon_dir = new File(filename);
             if (icon_dir.exists() && icon_dir.isDirectory()) {
                 File[] files = icon_dir.listFiles(new ImageFilter());
-                for (File file : files) {
-                    icons.add(new ExternalIcon(file));
+                if (files != null && files.length > 0) {
+                    for (File file : files) {
+                        icons.add(new ExternalIcon(file));
+                    }
                 }
             }
         }
@@ -85,7 +77,7 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         gw.setAdapter(new DialogIconAdapter(inflater, icons));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setTitle("Choose the icon");
+        builder.setTitle("Выберите иконку");
 
         builder.setView(layout);
         builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -107,7 +99,7 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         int target;
         int first = gw.getFirstVisiblePosition();
         int last = gw.getLastVisiblePosition();
-        if (view.getId() == R.id.action_up) {
+        if (view.getId() == R.id.icons_up) {
             target = first - (last - first);
             if (target < 0) {
                 target = 0;
