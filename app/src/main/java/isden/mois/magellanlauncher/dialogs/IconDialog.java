@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
+import isden.mois.magellanlauncher.MainActivity;
 import isden.mois.magellanlauncher.R;
 import isden.mois.magellanlauncher.adapters.DialogActionAdapter;
 import isden.mois.magellanlauncher.adapters.DialogIconAdapter;
@@ -127,11 +128,8 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         e.commit();
 
         try {
-            Activity main = (Activity) c;
-            View v = main.findViewById(R.id.launcher_buttons);
-            if (v != null) {
-                v.invalidate();
-            }
+            MainActivity main = (MainActivity)c;
+            main.reCreate();
         }
         catch (ClassCastException ex) {
             ex.printStackTrace();
