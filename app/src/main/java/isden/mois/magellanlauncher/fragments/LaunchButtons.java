@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.holders.BuiltInIcon;
+import isden.mois.magellanlauncher.holders.ExternalIcon;
+import isden.mois.magellanlauncher.holders.IIcon;
 
 /**
  * Created by ray on 03.08.2014.
@@ -50,22 +53,25 @@ public class LaunchButtons extends Fragment {
         final String key = "button_" + tag + "_icon";
 
         String img_coded = prefs.getString(key, null);
+        if (img_coded == null) {
+            return;
+        }
         int result;
+        IIcon icon;
         try {
             result = Integer.parseInt(img_coded);
         }
         catch (NumberFormatException e) {
             result = 0;
         }
-        if (result > 0) {
-            iw.setImageResource(result);
+        if (result >= 0) {
+            icon = new BuiltInIcon(result);
         }
         else {
-            Bitmap bitmap = BitmapFactory.decodeFile(img_coded);
-            if (bitmap != null) {
-                iw.setImageBitmap(bitmap);
-            }
+            icon = new ExternalIcon(img_coded);
         }
+
+        icon.setIcon(iw);
     }
 
 }

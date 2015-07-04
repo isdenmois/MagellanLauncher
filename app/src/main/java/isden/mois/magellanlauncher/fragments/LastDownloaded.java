@@ -68,58 +68,60 @@ public class LastDownloaded extends Fragment implements View.OnClickListener {
         File searchPath = new File(sp.getString("library_path", "/sdcard"));
         if (searchPath.exists()) {
             File[] files = searchPath.listFiles();
-            Arrays.sort(files, new Comparator<File>() {
-                @Override
-                public int compare(File f1, File f2) {
-                    return -Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
-                }
-            });
-            int count = 0;
-            String[] types = new String[]{"fb2", "epub"};
-            for (int i = 0; i < files.length && count < 5; i++) {
-                File item = files[i];
-                boolean isBook = false;
-                String fileName = item.getName().toLowerCase();
-                for (String type : types) {
-                    if (fileName.endsWith(type)) {
-                        isBook = true;
-                        break;
+            if (files != null && files.length > 0) {
+                Arrays.sort(files, new Comparator<File>() {
+                    @Override
+                    public int compare(File f1, File f2) {
+                        return -Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
                     }
-                }
-                if (!isBook) {
-                    continue;
-                } else {
-                    count++;
-                }
-                Parser parser = new InstantParser();
-                EBook eBook = parser.parse(item.getPath(), true);
+                });
 
-                View v = getActivity().getLayoutInflater().inflate(R.layout.item_book, null);
-                holder = new ViewHolder();
-                holder.tv = (TextView) v.findViewById(R.id.book_name);
-                holder.iv = (ImageView) v.findViewById(R.id.book_image);
-
-                if (eBook == null) {
-                    holder.tv.setText(fileName);
-                    holder.iv.setImageResource(R.drawable.book_down);
-                } else {
-                    holder.tv.setText(eBook.title);
-                    if (eBook.cover != null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(eBook.cover, 0, eBook.cover.length);
-                        if (bmp != null) {
-                            holder.iv.setImageBitmap(bmp);
+                int count = 0;
+                String[] types = new String[]{"fb2", "epub"};
+                for (int i = 0; i < files.length && count < 5; i++) {
+                    File item = files[i];
+                    boolean isBook = false;
+                    String fileName = item.getName().toLowerCase();
+                    for (String type : types) {
+                        if (fileName.endsWith(type)) {
+                            isBook = true;
+                            break;
                         }
-                    } else {
-                        holder.iv.setImageResource(R.drawable.book_down);
                     }
-                }
-                v.setTag(item.getPath());
-                v.setOnClickListener(this);
-                layout.addView(v);
-            }
-        } else {
-            Toast.makeText(getActivity(), R.string.path_not_exist, Toast.LENGTH_SHORT).show();
-        }
+                    if (!isBook) {
+                        continue;
+                    } else {
+                        count++;
+                    }
+                    Parser parser = new InstantParser();
+                    EBook eBook = parser.parse(item.getPath(), true);
 
+                    View v = getActivity().getLayoutInflater().inflate(R.layout.item_book, null);
+                    holder = new ViewHolder();
+                    holder.tv = (TextView) v.findViewById(R.id.book_name);
+                    holder.iv = (ImageView) v.findViewById(R.id.book_image);
+
+                    if (eBook == null) {
+                        holder.tv.setText(fileName);
+                        holder.iv.setImageResource(R.drawable.book_down);
+                    } else {
+                        holder.tv.setText(eBook.title);
+                        if (eBook.cover != null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(eBook.cover, 0, eBook.cover.length);
+                            if (bmp != null) {
+                                holder.iv.setImageBitmap(bmp);
+                            }
+                        } else {
+                            holder.iv.setImageResource(R.drawable.book_down);
+                        }
+                    }
+                    v.setTag(item.getPath());
+                    v.setOnClickListener(this);
+                    layout.addView(v);
+                }
+                return;
+            }
+        }
+        Toast.makeText(getActivity(), R.string.path_not_exist, Toast.LENGTH_SHORT).show();
     }
 }

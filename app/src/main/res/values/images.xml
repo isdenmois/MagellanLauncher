@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="images_list">
+        <item>@drawable/applications</item>
+        <item>@drawable/book_down</item>
+        <item>@drawable/book_img</item>
+        <item>@drawable/folder</item>
+        <item>@drawable/history</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/library</item>
+        <item>@drawable/sync</item>
+        <item>@drawable/settings</item>
+    </array>
+</resources>

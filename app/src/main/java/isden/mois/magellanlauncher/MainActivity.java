@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -24,11 +25,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     public static final String TAG = "main";
 
+    public static TypedArray builtInImages;
+
+    Intent startIntent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startIntent = getIntent();
         this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Убираем заголовок
         setContentView(R.layout.activity_main);
+
+        Resources r = getResources();
+        builtInImages = r.obtainTypedArray(R.array.images_list);
 
         LinearLayout l = (LinearLayout) findViewById(R.id.launcher_buttons_layout);
         for (int i = 0; i < l.getChildCount(); i++) {
@@ -171,6 +180,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             default:
                 Log.i(TAG, "Click by " + v.toString());
         }
+    }
+
+    public void reCreate() {
+        finish();
+        startActivity(startIntent);
     }
 }
 

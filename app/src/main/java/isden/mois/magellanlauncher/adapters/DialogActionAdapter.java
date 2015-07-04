@@ -1,6 +1,8 @@
 package isden.mois.magellanlauncher.adapters;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +25,11 @@ public class DialogActionAdapter extends BaseExpandableListAdapter {
     List<Application> apps;
     RadioButton checkedRB;
     String checkedPkg;
+    PackageManager pm;
 
     public DialogActionAdapter(Context c, String key) {
         inflater = LayoutInflater.from(c);
+        pm = c.getPackageManager();
 
         apps = createAppList(c);
 
@@ -141,6 +145,26 @@ public class DialogActionAdapter extends BaseExpandableListAdapter {
             }
             else {
                 r.setChecked(false);
+            }
+            ImageView iw = (ImageView) view.findViewById(R.id.radio_iw);
+            if (!app.packageName.startsWith("isden")) {
+                try {
+                    Drawable icon = pm.getApplicationIcon(app.packageName);
+                    if (icon != null && iw != null) {
+                        iw.setImageDrawable(icon);
+                    }
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    if (iw != null) {
+                        iw.setImageResource(R.drawable.settings);
+                    }
+                }
+            }
+            else {
+                if (iw != null) {
+                    iw.setImageResource(R.drawable.settings);
+                }
             }
         }
         view.setClickable(false);
