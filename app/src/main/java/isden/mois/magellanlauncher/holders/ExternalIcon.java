@@ -11,7 +11,7 @@ import java.io.File;
  * Created by isden on 28.06.15.
  */
 public class ExternalIcon implements IIcon {
-    File image;
+    private File image;
 
     public ExternalIcon(File file) {
         image = file;
@@ -24,7 +24,7 @@ public class ExternalIcon implements IIcon {
     @Override
     public void setIcon(ImageView iw) {
         if (iw != null) {
-            if (image.exists()) {
+            if (image != null && image.exists()) {
                 Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
                 if (bitmap == null) {
                     iw.setImageResource(R.drawable.book_img);

@@ -51,7 +51,7 @@ public class ActionDialog implements IDialog, View.OnClickListener, ExpandableLi
         expandableListView.setOnChildClickListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setTitle("Choose action");
+        builder.setTitle("Выберите действие");
 
         builder.setView(layout);
         builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

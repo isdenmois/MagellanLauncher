@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import isden.mois.magellanlauncher.holders.ExternalIcon;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -29,7 +30,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grid);
+        setContentView(R.layout.activity_history);
         gridView = (GridView) findViewById(R.id.paged_grid);
         HistoryAdapter adapter = new HistoryAdapter(this);
         gridView.setAdapter(adapter);
@@ -74,7 +75,13 @@ class HistoryAdapter extends BaseAdapter {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         String limitStr = prefs.getString("history_limit", "0");
-        int limit = Integer.parseInt(limitStr);
+        int limit = 0;
+        try {
+            limit = Integer.parseInt(limitStr);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         List<Metadata> d = Onyx.getRecentReading(c, limit);
         data = new Metadata[d.size()];
