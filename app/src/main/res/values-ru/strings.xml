@@ -23,4 +23,12 @@
     <string name="applications">Приложения</string>
     <string name="icon_action">Действие</string>
     <string name="icon_icon">Изображение</string>
+    <string name="clean_dirty_history">Удалить мусор из истории</string>
+    <string name="clean_dirty_history_success">Мусор успешно удален</string>
+    <string name="author">Автор:</string>
+    <string name="end_date">Дата конца:</string>
+    <string name="start_date">Дата начала:</string>
+    <string name="time">Время:</string>
+    <string name="title">Название:</string>
+    <string name="history_clean_limit">Лимит для очистки истории, мс</string>
 </resources>

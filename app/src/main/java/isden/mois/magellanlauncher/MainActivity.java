@@ -40,8 +40,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         builtInImages = r.obtainTypedArray(R.array.images_list);
 
         LinearLayout l = (LinearLayout) findViewById(R.id.launcher_buttons_layout);
-        for (int i = 0; i < l.getChildCount(); i++) {
-            registerForContextMenu(l.getChildAt(i));
+        if (l != null) {
+            for (int i = 0; i < l.getChildCount(); i++) {
+                registerForContextMenu(l.getChildAt(i));
+            }
         }
     }
 

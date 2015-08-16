@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.webkit.MimeTypeMap;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class IsdenTools {
     public static String get_mime_by_filename(String filename) {
@@ -81,5 +79,17 @@ public class IsdenTools {
         Collections.sort(packages, new AppComparator());
 
         return packages;
+    }
+
+    public static String formatDate(long ms) {
+        Calendar c = new GregorianCalendar();
+        c.setTimeInMillis(ms);
+
+        return String.format(
+            "%02d/%02d/%d",
+            c.get(Calendar.DAY_OF_MONTH),
+            c.get(Calendar.MONTH) + 1,
+            c.get(Calendar.YEAR)
+        );
     }
 }

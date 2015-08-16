@@ -25,6 +25,9 @@
             android:name=".ApplicationsActivity"
             android:label="@string/applications"
         />
+        <activity
+            android:name=".HistoryDetailsActivity"
+        />
 
     </application>
 

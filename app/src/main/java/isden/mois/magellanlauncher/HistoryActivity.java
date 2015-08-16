@@ -2,27 +2,24 @@ package isden.mois.magellanlauncher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import isden.mois.magellanlauncher.holders.ExternalIcon;
+import android.view.*;
+import android.widget.*;
+import isden.mois.magellanlauncher.adapters.HistoryAdapter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class HistoryActivity extends Activity implements View.OnClickListener {
+public class HistoryActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String TAG = "HistoryActivity";
     private GridView gridView;
@@ -30,14 +27,9 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        gridView = (GridView) findViewById(R.id.paged_grid);
-        HistoryAdapter adapter = new HistoryAdapter(this);
-        gridView.setAdapter(adapter);
 
-        Resources res = getResources();
-        String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(this));
-        setTitle(text);
+        HistoryLoadTask task = new HistoryLoadTask();
+        task.execute();
     }
 
     @Override
@@ -62,113 +54,82 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
             gridView.invalidate();
         }
     }
-}
 
-class HistoryAdapter extends BaseAdapter {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.history, menu);
+        return true;
+    }
 
-    private Metadata[] data;
-    private Context ctx;
-
-    public HistoryAdapter(Context c) {
-        super();
-        this.ctx = c;
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-        String limitStr = prefs.getString("history_limit", "0");
-        int limit = 0;
-        try {
-            limit = Integer.parseInt(limitStr);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clean_dirty_history:
+                Onyx.cleanDirtyHistory(this);
+                Toast.makeText(this, R.string.clean_dirty_history_success, Toast.LENGTH_LONG).show();
+            break;
         }
 
-        List<Metadata> d = Onyx.getRecentReading(c, limit);
-        data = new Metadata[d.size()];
-        data = d.toArray(data);
+        return true;
     }
 
     @Override
-    public int getCount() {
-        return data.length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return data[position];
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    static class ViewHolder {
-        TextView title;
-        TextView progress;
-        TextView spent;
-        TextView date;
-        ImageView image;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        try {
-            ViewHolder holder;
-            View v = convertView;
-            LayoutInflater inflater = LayoutInflater.from(ctx);
-            if (v == null) {
-                v = inflater.inflate(R.layout.item_history, null);
-                if (v == null) {
-                    return null;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        View v;
+        switch (keyCode) {
+            case 92:
+                v = findViewById(R.id.prev_button);
+                if (v != null) {
+                    onClick(v);
                 }
-                holder = new ViewHolder();
-                holder.date = (TextView) v.findViewById(R.id.history_date);
-                holder.image = (ImageView) v.findViewById(R.id.history_image);
-                holder.title = (TextView) v.findViewById(R.id.history_title);
-                holder.progress = (TextView) v.findViewById(R.id.history_progress);
-                holder.spent = (TextView) v.findViewById(R.id.history_spent);
+                break;
+            case 93:
+                v = findViewById(R.id.next_button);
+                if (v != null) {
+                    onClick(v);
+                }
+                break;
+            default:
+                return super.onKeyDown(keyCode,event);
+        }
+        return false;
+    }
 
-                v.setTag(holder);
-            }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Metadata item = (Metadata) adapterView.getItemAtPosition(i);
+        Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+        intent.putExtra("metadata", item);
+        this.startActivity(intent);
+    }
 
-            holder = (ViewHolder) v.getTag();
-            Metadata metadata = data[position];
+    class HistoryLoadTask extends AsyncTask<Void, Void, Void> {
+        HistoryAdapter adapter;
 
-            Bitmap bmp = Onyx.getThumbnail(metadata);
-            if (bmp != null) {
-                holder.image.setImageBitmap(bmp);
-            }
+        protected void onPreExecute() {
+            setContentView(R.layout.view_pb);
+        }
 
-            if (metadata.title != null && !metadata.title.equals("")) {
-                holder.title.setText(metadata.author + " -- " + metadata.title);
-            } else {
-                holder.title.setText(metadata.getName());
-            }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            adapter = new HistoryAdapter(HistoryActivity.this);
 
-
-            holder.progress.setText(metadata.getProgress());
-            holder.spent.setText(metadata.getSpentTime());
-
-            if (metadata.lastAccess > 0) {
-                Calendar c = new GregorianCalendar();
-                c.setTimeInMillis(metadata.lastAccess);
-
-                String time = String.format(
-                        "%d/%d/%d",
-                        c.get(Calendar.DAY_OF_MONTH),
-                        c.get(Calendar.MONTH) + 1,
-                        c.get(Calendar.YEAR)
-                );
-                holder.date.setText(time);
-            } else {
-                holder.date.setText("N/A");
-            }
-
-            return v;
-        } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            setContentView(R.layout.activity_history);
+            gridView = (GridView) findViewById(R.id.paged_grid);
+            gridView.setAdapter(adapter);
+            gridView.setOnItemClickListener(HistoryActivity.this);
+
+            Resources res = getResources();
+            String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(HistoryActivity.this));
+            setTitle(text);
+        }
     }
 }
+
+
