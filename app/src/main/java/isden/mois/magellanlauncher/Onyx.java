@@ -105,11 +105,11 @@ public class Onyx {
 
     public static String getTotalTime(Context ctx) {
         Cursor c = ctx.getContentResolver().query(
-                Uri.parse(CONTENT_URI + "library_history"),
-                new String[]{"SUM(EndTime - StartTime) AS Time"},
-                "(EndTime - StartTime) > 20000",
-                null,
-                null
+            Uri.parse(CONTENT_URI + "library_history"),
+            new String[]{"SUM(EndTime - StartTime) AS Time"},
+            "(EndTime - StartTime) > 20000",
+            null,
+            null
         );
 
         if (c != null) {
@@ -120,5 +120,13 @@ public class Onyx {
             c.close();
         }
         return "0";
+    }
+
+    public static void cleanDirtyHistory(Context ctx) {
+        ctx.getContentResolver().delete(
+            Uri.parse(CONTENT_URI + "library_history"),
+            "(EndTime - StartTime) < 20000",
+            null
+        );
     }
 }

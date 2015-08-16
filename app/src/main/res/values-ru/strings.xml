@@ -23,4 +23,5 @@
     <string name="applications">Приложения</string>
     <string name="icon_action">Действие</string>
     <string name="icon_icon">Изображение</string>
+    <string name="clean_dirty_history">Удалить мусор из истории</string>
 </resources>
