@@ -1,32 +1,36 @@
 package isden.mois.magellanlauncher;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
+import isden.mois.magellanlauncher.holders.HistoryDetail;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Onyx {
     private static final String CONTENT_URI = "content://com.onyx.android.sdk.OnyxCmsProvider/";
 
     public static List<Metadata> getRecentReading(Context ctx, int limit) {
         List<Metadata> result = new LinkedList<Metadata>();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String history_clean_limit = prefs.getString("history_clean_limit", "20000");
 
         // Cause ContentProvider is Facade it impossible use JOIN's
         Cursor c = ctx.getContentResolver().query(
                 Uri.parse(CONTENT_URI + "library_metadata"),
                 new String[]{
-                    "MD5",
-                    "Authors",
-                    "Title",
-                    "Name",
-                    "NativeAbsolutePath",
-                    "Progress",
-                    "MAX(LastAccess) AS LastAccess"
+                        "MD5",
+                        "Authors",
+                        "Title",
+                        "Name",
+                        "NativeAbsolutePath",
+                        "Progress",
+                        "MAX(LastAccess) AS LastAccess"
                 },
                 "Title IS NOT NULL) GROUP BY (MD5",
                 null,
@@ -40,7 +44,7 @@ public class Onyx {
                     Cursor hc = ctx.getContentResolver().query(
                             Uri.parse(CONTENT_URI + "library_history"),
                             new String[]{"SUM(EndTime - StartTime) AS Time"},
-                            "MD5 = ? AND (EndTime - StartTime) > 20000",
+                            "MD5 = ? AND (EndTime - StartTime) > " + history_clean_limit,
                             new String[]{md5},
                             null
                     );
@@ -104,12 +108,15 @@ public class Onyx {
     }
 
     public static String getTotalTime(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String limit = prefs.getString("history_clean_limit", "20000");
+
         Cursor c = ctx.getContentResolver().query(
-            Uri.parse(CONTENT_URI + "library_history"),
-            new String[]{"SUM(EndTime - StartTime) AS Time"},
-            "(EndTime - StartTime) > 20000",
-            null,
-            null
+                Uri.parse(CONTENT_URI + "library_history"),
+                new String[]{"SUM(EndTime - StartTime) AS Time"},
+                "(EndTime - StartTime) > " + limit,
+                null,
+                null
         );
 
         if (c != null) {
@@ -123,10 +130,85 @@ public class Onyx {
     }
 
     public static void cleanDirtyHistory(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String limit = prefs.getString("history_clean_limit", "20000");
+
         ctx.getContentResolver().delete(
             Uri.parse(CONTENT_URI + "library_history"),
-            "(EndTime - StartTime) < 20000",
+            "(EndTime - StartTime) < " + limit,
             null
         );
+    }
+
+    public static long getFirstTime(Context ctx, Metadata data) {
+        if (data.md5 == null) {
+            return 0;
+        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String limit = prefs.getString("history_clean_limit", "20000");
+
+        Cursor c = ctx.getContentResolver().query(
+            Uri.parse(CONTENT_URI + "library_history"),
+            new String[]{"StartTime"},
+            "MD5 = ? AND (EndTime - StartTime) > " + limit,
+            new String[]{data.md5},
+            null
+        );
+
+        long time = 0;
+
+        if (c != null) {
+            if (c.moveToFirst()) {
+                time = c.getLong(c.getColumnIndex("StartTime"));
+            }
+            c.close();
+        }
+
+        return time;
+    }
+
+    public static HistoryDetail[] getDetailedHistory(Context ctx, Metadata data) {
+        if (data.md5 == null) {
+            return new HistoryDetail[0];
+        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String limit = prefs.getString("history_clean_limit", "20000");
+
+        Cursor c = ctx.getContentResolver().query(
+                Uri.parse(CONTENT_URI + "library_history"),
+                new String[]{"StartTime", "(EndTime - StartTime) AS Time"},
+                "MD5 = ? AND (EndTime - StartTime) > " + limit,
+                new String[]{data.md5},
+                null
+        );
+
+        HistoryDetail[] historyDetails =  new HistoryDetail[0];
+
+        if (c != null) {
+            if (c.moveToFirst()) {
+                Hashtable<String, HistoryDetail> dates = new Hashtable<String, HistoryDetail>();
+
+                do {
+                    long startTime = c.getLong(c.getColumnIndex("StartTime"));
+                    long readTime = c.getLong(c.getColumnIndex("Time"));
+                    String date = IsdenTools.formatDate(startTime);
+                    if (dates.containsKey(date)) {
+                        HistoryDetail detail = dates.get(date);
+                        detail.spent += readTime;
+                    }
+                    else {
+                        HistoryDetail detail = new HistoryDetail(date, readTime);
+                        dates.put(date, detail);
+                    }
+                } while (c.moveToNext());
+                Collection<HistoryDetail> details = dates.values();
+                dates = null;
+
+                historyDetails = details.toArray(new HistoryDetail[details.size()]);
+            }
+            c.close();
+        }
+
+        return historyDetails;
     }
 }
