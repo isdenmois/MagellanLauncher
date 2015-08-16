@@ -24,4 +24,11 @@
     <string name="icon_action">Action</string>
     <string name="icon_icon">Icon</string>
     <string name="clean_dirty_history">Clean dirty history</string>
+    <string name="clean_dirty_history_success">Success clean dirty history</string>
+    <string name="author">Author:</string>
+    <string name="end_date">End date:</string>
+    <string name="start_date">Start date:</string>
+    <string name="time">Time:</string>
+    <string name="title">Title:</string>
+    <string name="history_clean_limit">History clean limit, ms</string>
 </resources>
