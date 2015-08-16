@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import isden.mois.magellanlauncher.holders.ExternalIcon;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -26,16 +26,9 @@ public class HistoryActivity extends Activity implements View.OnClickListener, A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
 
-        gridView = (GridView) findViewById(R.id.paged_grid);
-        HistoryAdapter adapter = new HistoryAdapter(this);
-        gridView.setAdapter(adapter);
-        gridView.setOnItemClickListener(this);
-
-        Resources res = getResources();
-        String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(this));
-        setTitle(text);
+        HistoryLoadTask task = new HistoryLoadTask();
+        task.execute();
     }
 
     @Override
@@ -86,11 +79,15 @@ public class HistoryActivity extends Activity implements View.OnClickListener, A
         switch (keyCode) {
             case 92:
                 v = findViewById(R.id.prev_button);
-                onClick(v);
+                if (v != null) {
+                    onClick(v);
+                }
                 break;
             case 93:
                 v = findViewById(R.id.next_button);
-                onClick(v);
+                if (v != null) {
+                    onClick(v);
+                }
                 break;
             default:
                 return super.onKeyDown(keyCode,event);
@@ -104,6 +101,33 @@ public class HistoryActivity extends Activity implements View.OnClickListener, A
         Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
         intent.putExtra("metadata", item);
         this.startActivity(intent);
+    }
+
+    class HistoryLoadTask extends AsyncTask<Void, Void, Void> {
+        HistoryAdapter adapter;
+
+        protected void onPreExecute() {
+            setContentView(R.layout.view_pb);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            adapter = new HistoryAdapter(HistoryActivity.this);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            setContentView(R.layout.activity_history);
+            gridView = (GridView) findViewById(R.id.paged_grid);
+            gridView.setAdapter(adapter);
+            gridView.setOnItemClickListener(HistoryActivity.this);
+
+            Resources res = getResources();
+            String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(HistoryActivity.this));
+            setTitle(text);
+        }
     }
 }
 
@@ -215,3 +239,5 @@ class HistoryAdapter extends BaseAdapter {
         }
     }
 }
+
+
