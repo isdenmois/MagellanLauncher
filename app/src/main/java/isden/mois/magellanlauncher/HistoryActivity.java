@@ -76,6 +76,25 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
 
         return true;
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        View v;
+        switch (keyCode) {
+            case 92:
+                v = findViewById(R.id.prev_button);
+                onClick(v);
+                break;
+            case 93:
+                v = findViewById(R.id.next_button);
+                onClick(v);
+                break;
+            default:
+                return super.onKeyDown(keyCode,event);
+        }
+        return false;
+    }
 }
 
 class HistoryAdapter extends BaseAdapter {
