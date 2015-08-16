@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import isden.mois.magellanlauncher.holders.ExternalIcon;
 
 import java.util.Calendar;
@@ -73,6 +70,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.clean_dirty_history:
                 Onyx.cleanDirtyHistory(this);
+                Toast.makeText(this, R.string.clean_dirty_history_success, Toast.LENGTH_LONG).show();
             break;
         }
 

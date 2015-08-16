@@ -24,4 +24,5 @@
     <string name="icon_action">Action</string>
     <string name="icon_icon">Icon</string>
     <string name="clean_dirty_history">Clean dirty history</string>
+    <string name="clean_dirty_history_success">Success clean dirty history</string>
 </resources>

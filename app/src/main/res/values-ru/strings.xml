@@ -24,4 +24,5 @@
     <string name="icon_action">Действие</string>
     <string name="icon_icon">Изображение</string>
     <string name="clean_dirty_history">Удалить мусор из истории</string>
+    <string name="clean_dirty_history_success">Мусор успешно удален</string>
 </resources>
