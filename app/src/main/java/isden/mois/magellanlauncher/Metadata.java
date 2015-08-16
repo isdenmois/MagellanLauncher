@@ -1,9 +1,11 @@
 package isden.mois.magellanlauncher;
 
+import java.io.Serializable;
+
 /**
  * Created by isden on 10.01.15.
  */
-public class Metadata {
+public class Metadata implements Serializable {
     public String md5;
     public String thumbnail;
     public String author;

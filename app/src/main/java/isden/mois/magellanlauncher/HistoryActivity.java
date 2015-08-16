@@ -2,6 +2,7 @@ package isden.mois.magellanlauncher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,7 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class HistoryActivity extends Activity implements View.OnClickListener {
+public class HistoryActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String TAG = "HistoryActivity";
     private GridView gridView;
@@ -26,9 +27,11 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
         gridView = (GridView) findViewById(R.id.paged_grid);
         HistoryAdapter adapter = new HistoryAdapter(this);
         gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(this);
 
         Resources res = getResources();
         String text = String.format(res.getString(R.string.history_format), Onyx.getTotalTime(this));
@@ -77,7 +80,6 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
         return true;
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         View v;
@@ -94,6 +96,14 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
                 return super.onKeyDown(keyCode,event);
         }
         return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Metadata item = (Metadata) adapterView.getItemAtPosition(i);
+        Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+        intent.putExtra("metadata", item);
+        this.startActivity(intent);
     }
 }
 
