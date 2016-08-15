@@ -26,23 +26,20 @@ public class LaunchButtons extends Fragment {
     SharedPreferences prefs;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.launcher_buttons_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        View view = inflater.inflate(R.layout.fragment_launcher_buttons, container, false);
+        LinearLayout l = (LinearLayout) view.findViewById(R.id.launcher_buttons_layout);
         if (l != null) {
             for (int i = 0; i < l.getChildCount(); i++) {
                 ImageView iw = (ImageView) l.getChildAt(i);
                 setImage(iw);
+                getActivity().registerForContextMenu(l.getChildAt(i));
             }
             l.invalidate();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        return inflater.inflate(R.layout.fragment_launcher_buttons, container, false);
+        return view;
     }
 
     private void setImage(ImageView iw) {

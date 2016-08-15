@@ -32,19 +32,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startIntent = getIntent();
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Убираем заголовок
-        setContentView(R.layout.activity_main);
-
         Resources r = getResources();
         builtInImages = r.obtainTypedArray(R.array.images_list);
 
-        LinearLayout l = (LinearLayout) findViewById(R.id.launcher_buttons_layout);
-        if (l != null) {
-            for (int i = 0; i < l.getChildCount(); i++) {
-                registerForContextMenu(l.getChildAt(i));
-            }
-        }
+        startIntent = getIntent();
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Убираем заголовок
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -114,7 +107,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 message.append(versionName);
                 message.append('\n');
 
-                message.append("2015 ");
+                message.append("2016 ");
                 message.append('\u00A9');
                 message.append(" Denis Moiseev ");
                 message.append("<isdenmois@gmail.com>");
