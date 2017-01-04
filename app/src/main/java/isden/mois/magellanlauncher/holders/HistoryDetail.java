@@ -8,6 +8,7 @@ import isden.mois.magellanlauncher.IsdenTools;
 public class HistoryDetail {
     public String date;
     public long spent;
+    public double speed;
 
     public HistoryDetail(String date, long spent) {
         this.date = date;

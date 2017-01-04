@@ -20,6 +20,7 @@ import android.widget.Toast;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
+import isden.mois.magellanlauncher.holders.BookTime;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 

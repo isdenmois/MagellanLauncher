@@ -19,11 +19,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 import ebook.EBook;
 import ebook.parser.InstantParser;
 import ebook.parser.Parser;
 import isden.mois.magellanlauncher.IsdenTools;
+import isden.mois.magellanlauncher.Metadata;
+import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
 
 /**
@@ -64,64 +67,29 @@ public class LastDownloaded extends Fragment implements View.OnClickListener {
         layout.removeAllViewsInLayout();
         ViewHolder holder;
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        File searchPath = new File(sp.getString("library_path", "/sdcard"));
-        if (searchPath.exists()) {
-            File[] files = searchPath.listFiles();
-            if (files != null && files.length > 0) {
-                Arrays.sort(files, new Comparator<File>() {
-                    @Override
-                    public int compare(File f1, File f2) {
-                        return -Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
-                    }
-                });
+        List<Metadata> metadataList = Onyx.getLastDownloaded(this.getActivity(), 5);
 
-                int count = 0;
-                String[] types = new String[]{"fb2", "epub"};
-                for (int i = 0; i < files.length && count < 5; i++) {
-                    File item = files[i];
-                    boolean isBook = false;
-                    String fileName = item.getName().toLowerCase();
-                    for (String type : types) {
-                        if (fileName.endsWith(type)) {
-                            isBook = true;
-                            break;
-                        }
-                    }
-                    if (!isBook) {
-                        continue;
-                    } else {
-                        count++;
-                    }
-                    Parser parser = new InstantParser();
-                    EBook eBook = parser.parse(item.getPath(), true);
+        for (Metadata metadata : metadataList) {
+            View v = getActivity().getLayoutInflater().inflate(R.layout.item_book, null);
+            holder = new ViewHolder();
+            holder.tv = (TextView) v.findViewById(R.id.book_name);
+            holder.iv = (ImageView) v.findViewById(R.id.book_image);
 
-                    View v = getActivity().getLayoutInflater().inflate(R.layout.item_book, null);
-                    holder = new ViewHolder();
-                    holder.tv = (TextView) v.findViewById(R.id.book_name);
-                    holder.iv = (ImageView) v.findViewById(R.id.book_image);
+            holder.tv.setText(metadata.title);
 
-                    if (eBook == null) {
-                        holder.tv.setText(fileName);
-                        holder.iv.setImageResource(R.drawable.book_down);
-                    } else {
-                        holder.tv.setText(eBook.title);
-                        if (eBook.cover != null) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(eBook.cover, 0, eBook.cover.length);
-                            if (bmp != null) {
-                                holder.iv.setImageBitmap(bmp);
-                            }
-                        } else {
-                            holder.iv.setImageResource(R.drawable.book_down);
-                        }
-                    }
-                    v.setTag(item.getPath());
-                    v.setOnClickListener(this);
-                    layout.addView(v);
-                }
-                return;
+            Bitmap thumbnail = metadata.getThumbnail();
+            if (thumbnail != null) {
+                holder.iv.setImageBitmap(thumbnail);
             }
+            else {
+                holder.iv.setImageResource(R.drawable.book_down);
+            }
+
+            v.setTag(metadata.filePath);
+            v.setOnClickListener(this);
+            layout.addView(v);
         }
+
         Toast.makeText(getActivity(), R.string.path_not_exist, Toast.LENGTH_SHORT).show();
     }
 }

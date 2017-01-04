@@ -44,39 +44,43 @@ public class CurrentBook extends Fragment {
         return v;
     }
 
-
+    /**
+     * Set current book data.
+     */
     private void setLastReading() {
-        List<Metadata> lst = Onyx.getRecentReading(getActivity(), 1);
-
-        if (lst.size() != 0) {
-            Metadata metadata = lst.get(0);
-            TextView twTitle = (TextView) getActivity().findViewById(R.id.txtTitle);
-            TextView twAuthor = (TextView) getActivity().findViewById(R.id.txtAuthor);
-
-            if (metadata.getTitle() != null) {
-                twTitle.setText(metadata.getTitle());
-                twAuthor.setText(metadata.getAuthor().toString());
-            } else {
-                twTitle.setText(metadata.getName());
-                twAuthor.setHeight(0);
-            }
-
-            ImageView imgBook = (ImageView) getActivity().findViewById(R.id.imgBook);
-            Bitmap image = Onyx.getThumbnail(metadata);
-            if (image == null)
-                imgBook.setImageResource(R.drawable.book_img);
-            else
-                imgBook.setImageBitmap(image);
-
-            ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.pbProgress);
-            progressBar.setProgress((int) Math.round(metadata.getPercent()));
-
-            TextView progressText = (TextView) getActivity().findViewById(R.id.twProgress);
-            progressText.setText(metadata.getProgress());
-
-            TextView TimeReadText = (TextView) getActivity().findViewById(R.id.twReadTime);
-            TimeReadText.setText(metadata.getSpentTime() + " / " + metadata.getTotalTime());
+        Metadata metadata = Onyx.getCurrentBook(getActivity());
+        if (metadata == null) {
+            return;
         }
+
+        TextView twTitle = (TextView) getActivity().findViewById(R.id.txtTitle);
+        TextView twAuthor = (TextView) getActivity().findViewById(R.id.txtAuthor);
+
+        if (metadata.getTitle() != null) {
+            twTitle.setText(metadata.getTitle());
+            twAuthor.setText(metadata.getAuthor());
+        } else {
+            twTitle.setText(metadata.getName());
+            twAuthor.setHeight(0);
+        }
+
+        ImageView imgBook = (ImageView) getActivity().findViewById(R.id.imgBook);
+        Bitmap image = metadata.getThumbnail();
+        if (image == null) {
+            imgBook.setImageResource(R.drawable.book_img);
+        }
+        else {
+            imgBook.setImageBitmap(image);
+        }
+
+        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.pbProgress);
+        progressBar.setProgress((int) Math.round(metadata.getPercent()));
+
+        TextView progressText = (TextView) getActivity().findViewById(R.id.twProgress);
+        progressText.setText(metadata.getProgress());
+
+        TextView TimeReadText = (TextView) getActivity().findViewById(R.id.twReadTime);
+        TimeReadText.setText(metadata.formatTimeProgress());
     }
 
     @Override

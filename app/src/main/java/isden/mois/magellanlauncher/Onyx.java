@@ -7,6 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import isden.mois.magellanlauncher.holders.BookTime;
 import isden.mois.magellanlauncher.holders.HistoryDetail;
 
 import java.io.File;
@@ -14,6 +17,125 @@ import java.util.*;
 
 public class Onyx {
     private static final String CONTENT_URI = "content://com.onyx.android.sdk.OnyxCmsProvider/";
+
+    public static Metadata getCurrentBook(Context ctx) {
+        Metadata metadata = null;
+        Cursor c = ctx.getContentResolver().query(
+                Uri.parse(CONTENT_URI + "current_book"),
+                null,
+                null,
+                null,
+                null
+        );
+
+        if (c != null) {
+            if (c.moveToFirst()) {
+                metadata = new Metadata();
+                metadata.md5 = c.getString(c.getColumnIndex("MD5"));
+                metadata.title = c.getString(c.getColumnIndex("Title"));
+                metadata.author = c.getString(c.getColumnIndex("Authors"));
+                metadata.thumbnail = c.getString(c.getColumnIndex("Thumbnail"));
+                metadata.filePath = c.getString(c.getColumnIndex("Location"));
+
+                String progress = c.getString(c.getColumnIndex("Progress"));
+                if (progress != null && progress.contains("/")) {
+                    String[] progressData = progress.split("/");
+                    metadata.progress = Integer.parseInt(progressData[0]);
+                    metadata.size = Integer.parseInt(progressData[1]);
+                }
+            }
+            c.close();
+        }
+
+        if (metadata != null) {
+            metadata.time = getBookDetails(ctx, metadata.md5);
+        }
+
+        return metadata;
+    }
+
+    public static BookTime getBookDetails (Context ctx, String MD5) {
+        ArrayList<int[]> speeds = new ArrayList<>();
+        int lastProgress = 0;
+        BookTime bookTime = new BookTime();
+        bookTime.totalTime = 0;
+        bookTime.currentTime = 0;
+        String[] progressData = null;
+
+        Cursor c = getHistoryCursor(ctx, MD5);
+        if (c != null) {
+            try {
+                while (c.moveToNext()) {
+                    long time = c.getLong(c.getColumnIndex("Time"));
+                    String progress = c.getString(c.getColumnIndex("Progress"));
+                    if (progress.contains("/")) {
+                        progressData = progress.split("/");
+                        int currentProgress = Integer.parseInt(progressData[0]);
+
+                        // Если начал читать заново.
+                        if (currentProgress < lastProgress) {
+                            int totalProgress = Integer.parseInt(progressData[1]);
+                            int currentPercent = 100 * currentProgress / totalProgress;
+                            int previousPercent = 100 * lastProgress / totalProgress;
+                            int diffPercent = previousPercent - currentPercent;
+
+                            if (currentPercent < 20 && diffPercent > 20) {
+                                bookTime.currentTime = 0;
+                                speeds = new ArrayList<>();
+                                lastProgress = 0;
+                            }
+                        }
+
+                        bookTime.totalTime += time;
+                        bookTime.currentTime += time;
+                        int speed;
+
+                        if (currentProgress != lastProgress) {
+                            speed = (int) (time / (currentProgress - lastProgress));
+                        }
+                        else {
+                            speed = 0;
+                        }
+
+                        // Если были пропущены главы.
+                        if (currentProgress > lastProgress && speed > 24000 && speed < 100000) {
+                            speeds.add(new int[]{ speed,  currentProgress - lastProgress});
+                        }
+
+                        lastProgress = currentProgress;
+                    }
+                }
+            }
+            finally {
+                c.close();
+            }
+        }
+
+        long bookWeight = 0;
+        double bookPages = 0;
+        for (int[] speedTime : speeds) {
+            bookWeight += (long) speedTime[0] * speedTime[1];
+            bookPages += speedTime[1];
+        }
+
+        // Для новых книг добавляем среднее значение.
+        if (progressData != null) {
+            int totalProgress = Integer.parseInt(progressData[1]);
+            if (lastProgress * 100 / totalProgress < 20) {
+                int additionalPageCount = totalProgress / 15;
+                bookPages += additionalPageCount;
+                bookWeight += additionalPageCount * 40000;
+            }
+        }
+
+        bookTime.speed = bookWeight / bookPages;
+
+        if (bookTime.speed < 24000) {
+            bookTime.speed = 35000;
+        }
+
+        return bookTime;
+    }
 
     public static List<Metadata> getRecentReading(Context ctx, int limit) {
         List<Metadata> result = new LinkedList<Metadata>();
@@ -83,13 +205,6 @@ public class Onyx {
         if (progress.length == 2) {
             metadata.progress = Integer.parseInt(progress[0]);
             metadata.size = Integer.parseInt(progress[1]);
-        }
-
-        if (tc != null && tc.moveToFirst()) {
-            metadata.thumbnail = tc.getString(tc.getColumnIndex("_data"));
-        }
-        if (hc != null && hc.moveToFirst()) {
-            metadata.totalTime = hc.getLong(hc.getColumnIndex("Time"));
         }
 
         metadata.lastAccess = c.getLong(c.getColumnIndex("LastAccess"));
@@ -167,23 +282,58 @@ public class Onyx {
         return time;
     }
 
-    public static HistoryDetail[] getDetailedHistory(Context ctx, Metadata data) {
-        if (data.md5 == null) {
-            return new HistoryDetail[0];
+    public static List<Metadata> getLastDownloaded(Context ctx, int limit) {
+        Cursor c = ctx.getContentResolver().query(
+                Uri.parse(CONTENT_URI + "last_downloaded"),
+                null,
+                null,
+                null,
+                String.valueOf(limit)
+        );
+
+        List<Metadata> metadataList = new ArrayList<>();
+
+        if (c != null) {
+            try {
+                while (c.moveToNext()) {
+                    Metadata metadata = new Metadata();
+                    metadata.author = c.getString(c.getColumnIndex("Authors"));
+                    metadata.title = c.getString(c.getColumnIndex("Title"));
+                    metadata.filePath = c.getString(c.getColumnIndex("Location"));
+                    metadata.thumbnail = c.getString(c.getColumnIndex("Thumbnail"));
+
+                    metadataList.add(metadata);
+                }
+            }
+            finally {
+                c.close();
+            }
         }
+
+        return metadataList;
+    }
+
+    public static Cursor getHistoryCursor(Context ctx, String MD5) {
+        if (MD5 == null) {
+            return  null;
+        }
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String limit = prefs.getString("history_clean_limit", "20000");
 
-        Cursor c = ctx.getContentResolver().query(
+        return ctx.getContentResolver().query(
                 Uri.parse(CONTENT_URI + "library_history"),
-                new String[]{"StartTime", "(EndTime - StartTime) AS Time"},
-                "MD5 = ? AND (EndTime - StartTime) > " + limit,
-                new String[]{data.md5},
-                null
+                new String[]{"StartTime", "(EndTime - StartTime) AS Time", "Progress"},
+                "Progress <> \"5/5\" AND MD5 = ? AND (EndTime - StartTime) > " + limit,
+                new String[]{MD5},
+                "StartTime"
         );
+    }
 
+    public static HistoryDetail[] getDetailedHistory(Context ctx, Metadata data) {
         HistoryDetail[] historyDetails =  new HistoryDetail[0];
 
+        Cursor c = getHistoryCursor(ctx, data.md5);
         if (c != null) {
             if (c.moveToFirst()) {
                 Hashtable<String, HistoryDetail> dates = new Hashtable<String, HistoryDetail>();
