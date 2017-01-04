@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 apply from: 'auto-version.gradle'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
-    defaultConfig.minSdkVersion 8
+    defaultConfig.minSdkVersion 9
     defaultConfig.applicationId 'isden.mois.magellanlauncher'
 
     buildTypes {
@@ -29,7 +29,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support:support-v4:25.+'
 }
 
 println "config code: ${calculateVersionCode()}, name: ${calculateVersionName()}"
