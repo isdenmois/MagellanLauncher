@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference android:title="@string/path_to_library" android:key="library_path" android:summary="@string/path_to_library_summary" android:defaultValue="/mnt/sdcard" />
+    <EditTextPreference android:title="@string/path_to_library" android:key="library_path" android:summary="@string/path_to_library_summary" android:defaultValue="/flash/Books" />
   <EditTextPreference android:title="Путь к иконкам" android:key="icons_path" android:summary="Укажите путь к иконкам" android:defaultValue="/mnt/sdcard/.icons" />
   <EditTextPreference android:title="@string/history_limit" android:key="history_limit" android:inputType="number" />
   <EditTextPreference android:title="@string/history_clean_limit" android:key="history_clean_limit" android:inputType="number" />
