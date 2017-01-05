@@ -2,13 +2,23 @@
 <resources>
     <array name="images_list">
         <item>@drawable/applications</item>
+        <item>@drawable/applications1</item>
+        <item>@drawable/applications2</item>
+        <item>@drawable/blur</item>
         <item>@drawable/book_down</item>
         <item>@drawable/book_img</item>
+        <item>@drawable/book_open</item>
+        <item>@drawable/file_import</item>
+        <item>@drawable/file_outline</item>
         <item>@drawable/folder</item>
         <item>@drawable/history</item>
         <item>@drawable/ic_launcher</item>
         <item>@drawable/library</item>
         <item>@drawable/sync</item>
+        <item>@drawable/react</item>
         <item>@drawable/settings</item>
+        <item>@drawable/qrcode_scan</item>
+        <item>@drawable/windows</item>
+        <item>@drawable/wifi</item>
     </array>
 </resources>
