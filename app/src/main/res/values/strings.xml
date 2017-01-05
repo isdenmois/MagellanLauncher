@@ -31,4 +31,5 @@
     <string name="time">Time:</string>
     <string name="title">Title:</string>
     <string name="history_clean_limit">History clean limit, ms</string>
+    <string name="httpd">Book manager</string>
 </resources>
