@@ -13,6 +13,10 @@ import fi.iki.elonen.NanoHTTPD.Response.Status;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 import isden.mois.magellanlauncher.httpd.HTTPD;
 import isden.mois.magellanlauncher.httpd.queries.SQLGet;
+import isden.mois.magellanlauncher.httpd.queries.SQLQuery;
+import isden.mois.magellanlauncher.httpd.queries.SQLUpdate;
+
+import static isden.mois.magellanlauncher.httpd.HTTPD.serveSQL;
 
 public class SQLHandler extends RouterNanoHTTPD.DefaultHandler {
     @Override
@@ -31,6 +35,22 @@ public class SQLHandler extends RouterNanoHTTPD.DefaultHandler {
     }
 
     public Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        return HTTPD.serveSQL(new SQLGet(session.getParameters()), uriResource);
+        return serveSQL(new SQLGet(session.getParameters()), uriResource);
+    }
+
+    public Response other(String method, RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
+        if (method.equals("PATCH")) {
+            SQLQuery query = null;
+
+            try {
+                query = new SQLUpdate(urlParams.get("table"), HTTPD.parseJSONParams(session));
+            } catch (Exception e) {
+                return HTTPD.badRequest(e.getMessage());
+            }
+
+            return serveSQL(query, uriResource);
+        }
+
+        return super.other(method, uriResource, urlParams, session);
     }
 }

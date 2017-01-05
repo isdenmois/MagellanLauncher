@@ -14,6 +14,6 @@ public class Constants {
     /**
      * HTTPD shared constants.
      */
-    public final static String HTTPD_STATIC_DIRECTORY = "httpd";
     public final static String JSON = "application/json";
+    public final static String SUCCESS_MESSAGE = "{message: \"OK\"}";
 }
