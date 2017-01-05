@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import isden.mois.magellanlauncher.activities.HTTPDActivity;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
@@ -108,7 +110,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 message.append(versionName);
                 message.append('\n');
 
-                message.append("2016 ");
+                message.append("2017 ");
                 message.append('\u00A9');
                 message.append(" Denis Moiseev ");
                 message.append("<isdenmois@gmail.com>");
@@ -149,7 +151,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.imgFM:
             case R.id.imgLib:
-            case R.id.imgSync:
             case R.id.launcher_history:
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 String tag = (String) v.getTag();
@@ -170,6 +171,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.imgApp:
                 intent = new Intent(this, ApplicationsActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.imgSync:
+                intent = new Intent(this, HTTPDActivity.class);
                 startActivity(intent);
                 break;
 

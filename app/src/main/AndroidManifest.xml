@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="isden.mois.magellanlauncher">
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
+        android:theme="@style/Theme.AppCompat.Light"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+    >
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
@@ -35,6 +39,11 @@
             android:name=".HistoryDetailsActivity"
         />
 
+        <activity
+            android:name=".activities.HTTPDActivity"
+            android:label="@string/httpd"
+        />
+
         <provider
             android:name=".providers.BooksProvider"
             android:authorities="com.onyx.android.sdk.OnyxCmsProvider"
@@ -45,7 +54,6 @@
             android:authorities="com.onyx.android.sdk.OnyxSysProvider"
             android:exported="true"
         />
-
     </application>
 
 </manifest>

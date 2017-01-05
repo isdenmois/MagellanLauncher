@@ -8,8 +8,9 @@ ext {
         def version = readVersion()
         def major = version['major'] as int // 0..∞
         def minor = version['minor'] as int // 0..99
-        def build = version['build'] as int // 0..999
-        return (major * 100 + minor) * 1000 + build
+        def build = version['build'] as String // 0..999
+        def buildNumber = build.isInteger() ? build.toInteger() : 0
+        return (major * 100 + minor) * 1000 + buildNumber
     }
 }
 
@@ -31,50 +32,9 @@ Properties readVersion() {
     return version
 }
 
-void incrementVersionNumber() {
-    def version = readVersion()
-
-    // careful with the types, culprits: "9"++ = ":", "9" + 1 = "91"
-    def build = version['build'] as int
-    build++
-    version['build'] = build.toString()
-
-    def stream = new FileOutputStream(versionFile)
-    try {
-        version.store(stream, null)
-    } finally {
-        stream.close()
-    }
-}
-
-task incrementVersion {
-    description "Increments build counter in ${versionFile}"
-    doFirst {
-        incrementVersionNumber()
-    }
-}
-
 if (plugins.hasPlugin('android') || plugins.hasPlugin('android-library')) {
     android {
         defaultConfig.versionName = calculateVersionName()
         defaultConfig.versionCode = calculateVersionCode()
-
-        afterEvaluate {
-            def autoIncrementVariant = { variant ->
-                if (variant.buildType.name == buildTypes.release.name) { // don't increment on debug builds
-                    variant.preBuild.dependsOn incrementVersion
-                    incrementVersion.doLast {
-                        variant.mergedFlavor.versionName = calculateVersionName()
-                        variant.mergedFlavor.versionCode = calculateVersionCode()
-                    }
-                }
-            }
-            if (plugins.hasPlugin('android')) {
-                applicationVariants.all { variant -> autoIncrementVariant(variant) }
-            }
-            if (plugins.hasPlugin('android-library')) {
-                libraryVariants.all { variant -> autoIncrementVariant(variant) }
-            }
-        }
     }
 }

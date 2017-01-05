@@ -31,4 +31,5 @@
     <string name="time">Время:</string>
     <string name="title">Название:</string>
     <string name="history_clean_limit">Лимит для очистки истории, мс</string>
+    <string name="httpd">Менеджер книг</string>
 </resources>
