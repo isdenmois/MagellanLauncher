@@ -2,9 +2,15 @@ package isden.mois.magellanlauncher.httpd;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 import fi.iki.elonen.router.RouterNanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
@@ -19,6 +25,8 @@ import isden.mois.magellanlauncher.httpd.queries.SQLQuery;
 
 public class HTTPD extends RouterNanoHTTPD {
     private final static int PORT = 8080;
+    private static final int REQUEST_BUFFER_LEN = 512;
+
     private File root;
     private Context ctx;
 
@@ -36,8 +44,15 @@ public class HTTPD extends RouterNanoHTTPD {
 
         addRoute("/", StaticHandler.class, this.root);
         addRoute("/api/sql", SQLHandler.class, this.ctx);
+        addRoute("/api/sql/:table", SQLHandler.class, this.ctx);
         addRoute("/public/(.)+", StaticHandler.class, this.root);
         addRoute("/(.)+", StaticHandler.class, this.root);
+    }
+
+    public static Response badRequest(String error) {
+        JSONObject obj = new JSONObject();
+        obj.put("error", error);
+        return newFixedLengthResponse(Status.BAD_REQUEST, Constants.JSON, obj.toString());
     }
 
     public static Response serveSQL(SQLQuery query, RouterNanoHTTPD.UriResource uriResource) {
@@ -47,9 +62,32 @@ public class HTTPD extends RouterNanoHTTPD {
             String result = query.execute(ctx);
             return newFixedLengthResponse(Status.OK, Constants.JSON, result);
         } catch (Exception e) {
-            JSONObject obj = new JSONObject();
-            obj.put("error", e.getMessage());
-            return newFixedLengthResponse(Status.BAD_REQUEST, Constants.JSON, obj.toString());
+            return badRequest(e.getMessage());
         }
+    }
+
+    public static JSONObject parseJSONParams(IHTTPSession session) throws IOException, ResponseException {
+        Map<String, String> headers = session.getHeaders();
+
+        long size = Long.parseLong(headers.get("content-length"));
+        ByteArrayOutputStream baos = null;
+        DataOutput requestDataOutput = null;
+
+        // Store the request in memory.
+        baos = new ByteArrayOutputStream();
+        requestDataOutput = new DataOutputStream(baos);
+
+        // Read all the body.
+        byte[] buf = new byte[REQUEST_BUFFER_LEN];
+        int rlen = 0;
+        while (size > 0) {
+            rlen = session.getInputStream().read(buf, 0, (int) Math.min(size, REQUEST_BUFFER_LEN));
+            size -= rlen;
+            if (rlen > 0) {
+                requestDataOutput.write(buf, 0, rlen);
+            }
+        }
+
+        return JSON.parseObject(baos.toString());
     }
 }
