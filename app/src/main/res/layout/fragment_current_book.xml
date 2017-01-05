@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:id="@+id/nowRead" android:background="@drawable/preview_bg" android:longClickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:baselineAligned="false" android:onClick="onClick"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout android:orientation="horizontal" android:id="@+id/nowRead" android:background="@drawable/shadow_2px_black" android:longClickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:baselineAligned="false" android:onClick="onClick"
+              xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
@@ -10,7 +10,7 @@
         <ImageView
                 android:layout_gravity="center"
                 android:id="@+id/imgBook"
-                android:background="@drawable/preview_bg"
+                android:background="@drawable/shadow_button"
                 android:padding="10.0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical" android:id="@+id/book_layout" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_horizontal" android:id="@+id/book_image" android:background="@drawable/preview_bg" android:padding="5.0dip" android:layout_width="100.0dip" android:layout_height="100.0dip" android:adjustViewBounds="false" />
+    <ImageView android:layout_gravity="center_horizontal" android:id="@+id/book_image" android:background="@drawable/shadow_button"
+               android:layout_width="100.0dip" android:layout_height="100.0dip" android:adjustViewBounds="false"
+               android:paddingBottom="10dp"
+               android:paddingTop="5dp"/>
     <TextView android:textSize="@dimen/hsize" android:textColor="@color/normal_text" android:ellipsize="middle" android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@+id/book_name" android:layout_width="100.0dip" android:layout_height="40.0dip" android:layout_margin="5.0dip" android:text="fray" android:lines="3" />
 </LinearLayout>

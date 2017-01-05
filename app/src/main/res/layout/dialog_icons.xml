@@ -9,13 +9,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageButton
-                android:id="@+id/icons_up" android:src="@drawable/ci_arrowup"
-                style="@style/ButtonStyle"/>
+            android:id="@+id/icons_up" android:src="@drawable/ci_arrowup"
+            style="@style/ButtonStyle"
+            android:background="@drawable/small_shadow"/>
         <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:id="@+id/icons_down" android:layout_weight="1" android:src="@drawable/ci_arrowdown"
-                style="@style/ButtonStyle"/>
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/icons_down" android:layout_weight="1" android:src="@drawable/ci_arrowdown"
+            style="@style/ButtonStyle"
+            android:background="@drawable/small_shadow"/>
     </LinearLayout>
     <GridView
             android:layout_width="wrap_content"
