@@ -7,7 +7,7 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:background="@drawable/preview_bg">
+            android:layout_height="wrap_content" android:background="@drawable/shadow_2px_black">
         <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" style="@style/ReaderTheme"
@@ -120,14 +120,14 @@
                 android:layout_height="match_parent" android:layout_weight="3"
                 android:paddingLeft="10dp" android:paddingRight="10dp">
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/iw_icon" android:layout_weight="1" android:src="@drawable/book_img"
-                    android:background="@drawable/preview_bg" android:layout_centerInParent="true"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iw_icon" android:layout_weight="1" android:src="@drawable/book_img"
+                android:background="@drawable/shadow_button" android:layout_centerInParent="true"/>
         </RelativeLayout>
     </LinearLayout>
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_details" style="@style/ReaderTheme" android:background="@drawable/preview_bg"/>
+            android:id="@+id/list_details" style="@style/ReaderTheme" android:background="@drawable/shadow_2px_black"/>
 </LinearLayout>

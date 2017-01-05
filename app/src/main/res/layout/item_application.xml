@@ -10,7 +10,6 @@
             android:layout_height="100dp"
             android:id="@+id/lib_fimage"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/preview_bg"
             android:adjustViewBounds="false"
             android:padding="5dp"/>
     <TextView
