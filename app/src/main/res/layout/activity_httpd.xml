@@ -9,16 +9,39 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="isden.mois.magellanlauncher.activities.HTTPDActivity">
+    tools:context="isden.mois.magellanlauncher.activities.HTTPDActivity"
+>
+
+    <Button
+        android:text="Проверить обновления"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkForUpdates"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClick"
+        android:background="@drawable/shadow_button"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/httpdInfo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/checkForUpdates">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_height="37dp"
+                app:srcCompat="@drawable/wifi"
+                android:id="@+id/imageView2"
+                android:layout_width="36dp"
+                android:layout_marginRight="30dp"/>
 
             <TextView
                 android:text="Устройство не подкючено к точке доступа!"
@@ -27,33 +50,36 @@
                 android:id="@+id/textSSID"
                 android:textAlignment="center"
                 android:textColor="@color/normal_text"
-                android:layout_alignParentTop="true"/>
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_height="37dp"
+                app:srcCompat="@drawable/react"
+                android:id="@+id/imageView3"
+                android:layout_width="34dp"
+                android:layout_marginRight="30dp"/>
 
             <TextView
                 android:text="http://10.0.0.235:8080"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textIP"
-                android:textAlignment="center"
+                android:textAlignment="inherit"
                 android:textColor="@color/normal_text"
-                android:layout_below="@+id/textSSID"/>
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@color/normal_transparent"
-                android:id="@+id/imageView"
-                android:layout_below="@+id/textIP"
-                android:layout_marginTop="20dp"/>
-
-            <Button
-                android:text="Проверить обновления"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkForUpdates"
-                android:layout_alignParentBottom="true"
-                android:onClick="onClick"/>
-        </RelativeLayout>
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@color/normal_transparent"
+            android:id="@+id/imageView"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </RelativeLayout>

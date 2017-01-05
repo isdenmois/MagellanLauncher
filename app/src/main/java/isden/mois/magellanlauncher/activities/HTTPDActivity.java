@@ -29,13 +29,14 @@ import isden.mois.magellanlauncher.tasks.CheckForUpdates;
 public class HTTPDActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
+    private static final String emptyText = "Адрес будет доступен при подключении к сети";
 
     private HTTPD server;
     private TextView textIP;
     private TextView textSSID;
     private WifiManager wifiManager;
     private ImageView imageView;
-    private String url = "";
+    private String url = emptyText;
     private Bitmap QR;
     private boolean isEmulator = false;
 
@@ -51,7 +52,7 @@ public class HTTPDActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_httpd);
 
-        isEmulator = Build.PRODUCT.startsWith("sdk_google");
+        isEmulator = Build.PRODUCT.startsWith("sdk_");
 
         textIP = (TextView) findViewById(R.id.textIP);
         textSSID = (TextView) findViewById(R.id.textSSID);
@@ -152,12 +153,12 @@ public class HTTPDActivity extends AppCompatActivity implements View.OnClickList
     private void showIP () {
         if (!this.isWifiEnabled()) {
             textSSID.setText("WIFI выключен!");
-            textIP.setText("");
+            textIP.setText(emptyText);
             imageView.setImageResource(0);
         }
         else if (!this.isWifiConnected()) {
             textSSID.setText("Устройство не подкючено к точке доступа!");
-            textIP.setText("");
+            textIP.setText(emptyText);
             imageView.setImageResource(0);
         }
         else {
