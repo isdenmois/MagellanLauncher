@@ -27,7 +27,7 @@ import isden.mois.magellanlauncher.httpd.queries.SQLQuery;
  */
 
 public class HTTPD extends RouterNanoHTTPD {
-    private final static int PORT = 8080;
+    public final static int PORT = 8080;
     private static final int REQUEST_BUFFER_LEN = 512;
 
     private File root;
