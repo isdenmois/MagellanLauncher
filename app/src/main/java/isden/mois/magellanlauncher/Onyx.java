@@ -201,7 +201,16 @@ public class Onyx {
         metadata.author = c.getString(c.getColumnIndex("Authors"));
         metadata.filePath = c.getString(c.getColumnIndex("NativeAbsolutePath"));
 
-        String[] progress = c.getString(c.getColumnIndex("Progress")).split("/");
+        String progressString = c.getString(c.getColumnIndex("Progress"));
+
+        String[] progress;
+        if (progressString != null) {
+            progress = progressString.split("/");
+        }
+        else {
+            progress = new String[0];
+        }
+
         if (progress.length == 2) {
             metadata.progress = Integer.parseInt(progress[0]);
             metadata.size = Integer.parseInt(progress[1]);
