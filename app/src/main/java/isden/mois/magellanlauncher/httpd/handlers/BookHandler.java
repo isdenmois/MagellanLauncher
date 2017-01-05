@@ -52,6 +52,12 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
         Context context = uriResource.initParameter(Context.class);
         String uploadDir = uriResource.initParameter(1, String.class);
 
+        // Update charset.
+        Map<String, String> headers = session.getHeaders();
+        String contentType = headers.get("content-type");
+        contentType = contentType.replaceFirst("form-data;", "form-data; charset=utf-8;");
+        headers.put("content-type", contentType);
+
         Map<String, String> files = new HashMap<>();
         try {
             session.parseBody(files);
@@ -98,14 +104,12 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
             metadata = OnyxMetadata.createFromFile(to);
             metadata.setTitle(title);
             metadata.setAuthors(authors);
-            metadata.updateLastAccess();
 
             OnyxCmsCenter.insertMetadata(ctx, metadata);
         }
         else {
             metadata.setTitle(title);
             metadata.setAuthors(authors);
-            metadata.updateLastAccess();
 
             OnyxCmsCenter.updateMetadata(ctx, metadata);
         }
