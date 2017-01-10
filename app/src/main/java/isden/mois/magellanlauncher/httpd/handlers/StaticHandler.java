@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -60,7 +59,9 @@ public class StaticHandler extends DefaultHandler {
             return new RouterNanoHTTPD.Error404UriHandler().get(uriResource, urlParams, session);
         } else {
             try {
-                return newChunkedResponse(getStatus(), getMimeTypeForFile(uri), fileToInputStream(fileOrdirectory));
+                Response response = newChunkedResponse(getStatus(), getMimeTypeForFile(uri), fileToInputStream(fileOrdirectory));
+                response.addHeader("Content-Encoding",  "gzip");
+                return response;
             } catch (IOException ioe) {
                 return newFixedLengthResponse(Status.REQUEST_TIMEOUT, "text/plain", (String) null);
             }
