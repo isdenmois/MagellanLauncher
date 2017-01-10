@@ -61,6 +61,7 @@ public class StaticHandler extends DefaultHandler {
             try {
                 Response response = newChunkedResponse(getStatus(), getMimeTypeForFile(uri), fileToInputStream(fileOrdirectory));
                 response.addHeader("Content-Encoding",  "gzip");
+                response.addHeader("Content-Length", "" + fileOrdirectory.length());
                 return response;
             } catch (IOException ioe) {
                 return newFixedLengthResponse(Status.REQUEST_TIMEOUT, "text/plain", (String) null);
