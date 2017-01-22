@@ -1,12 +1,9 @@
 package isden.mois.magellanlauncher.fragments;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
-import ebook.EBook;
-import ebook.parser.InstantParser;
-import ebook.parser.Parser;
 import isden.mois.magellanlauncher.IsdenTools;
 import isden.mois.magellanlauncher.Metadata;
 import isden.mois.magellanlauncher.Onyx;
@@ -89,7 +81,5 @@ public class LastDownloaded extends Fragment implements View.OnClickListener {
             v.setOnClickListener(this);
             layout.addView(v);
         }
-
-        Toast.makeText(getActivity(), R.string.path_not_exist, Toast.LENGTH_SHORT).show();
     }
 }

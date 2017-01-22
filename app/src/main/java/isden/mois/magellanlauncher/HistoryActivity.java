@@ -1,22 +1,14 @@
 package isden.mois.magellanlauncher;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import isden.mois.magellanlauncher.adapters.HistoryAdapter;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 
 public class HistoryActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {

@@ -10,7 +10,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
                 if (variant.buildType.name == buildTypes.release.name) {
@@ -21,6 +21,10 @@ android {
                     }
                 }
             }
+        }
+        debug {
+            minifyEnabled false
+            debuggable false
         }
     }
 }

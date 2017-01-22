@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import isden.mois.magellanlauncher.holders.BookTime;
 import isden.mois.magellanlauncher.holders.HistoryDetail;

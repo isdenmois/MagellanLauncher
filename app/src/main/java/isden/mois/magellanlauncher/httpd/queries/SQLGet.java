@@ -1,7 +1,6 @@
 package isden.mois.magellanlauncher.httpd.queries;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import com.onyx.android.sdk.utils.StringUtils;
 
@@ -31,7 +30,6 @@ public class SQLGet extends SQLQuery {
         appendLimit(builder);
 
         String result = builder.toString();
-        Log.d(TAG, result);
         return result;
     }
 

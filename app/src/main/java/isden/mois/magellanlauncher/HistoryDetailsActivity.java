@@ -8,9 +8,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import isden.mois.magellanlauncher.adapters.HistoryDetailsAdapter;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 /**
  * Created by isden on 16.08.15.
  */

@@ -50,7 +50,6 @@ abstract public class SQLQuery {
         JSONArray result = new JSONArray();
         String[] columns = c.getColumnNames();
         int columnCount = columns.length;
-        c.moveToFirst();
 
         while (c.moveToNext()) {
             JSONObject row = new JSONObject();
