@@ -1,9 +1,6 @@
 package isden.mois.magellanlauncher;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static isden.mois.magellanlauncher.IsdenTools.createAppList;

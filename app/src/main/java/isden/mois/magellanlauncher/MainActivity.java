@@ -15,14 +15,12 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import isden.mois.magellanlauncher.activities.HTTPDActivity;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
-import isden.mois.magellanlauncher.holders.BookTime;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 

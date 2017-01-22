@@ -7,6 +7,7 @@ package isden.mois.magellanlauncher.httpd.handlers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.onyx.android.sdk.data.cms.OnyxCmsCenter;
 import com.onyx.android.sdk.data.cms.OnyxMetadata;
@@ -18,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,6 @@ import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.NanoHTTPD.Response.IStatus;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 import fi.iki.elonen.router.RouterNanoHTTPD;
-import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.httpd.HTTPD;
 import isden.mois.magellanlauncher.httpd.queries.SetBookStatus;
 
@@ -75,7 +74,11 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
         OnyxMetadata metadata = OnyxCmsCenter.getMetadataByMD5(context, MD5);
 
         if (metadata != null) {
+            File book = new File(metadata.getLocation());
             OnyxCmsCenter.deleteBook(context, metadata);
+            if (book.exists()) {
+                book.delete();
+            }
         }
         else {
             return HTTPD.badRequest("Book is not found");
@@ -96,7 +99,6 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
 
         File to = new File(uploadDir, fileName);
         copy(file, to);
-        file.delete();
 
         OnyxMetadata metadata = OnyxCmsCenter.getMetadata(ctx, to);
 
@@ -123,7 +125,6 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
 
         if (image != null) {
             setThumbnail(metadata, image, ctx);
-            new File(image).delete();
         }
 
         new SetBookStatus(0, metadata.getMD5()).execute(ctx);

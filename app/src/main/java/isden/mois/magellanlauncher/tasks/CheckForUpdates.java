@@ -68,6 +68,11 @@ public class CheckForUpdates extends AsyncTask<Void, Void, String> implements Pa
     protected void onPostExecute(String strJson) {
         super.onPostExecute(strJson);
 
+        if (strJson == null || strJson.length() == 0) {
+            Toast.makeText(context, "Не удалось получить информацию об версии", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         try {
             JSONObject dataJsonObj = JSON.parseObject(strJson);
             String tag = dataJsonObj.getString("tag_name");
