@@ -58,7 +58,7 @@ public class HTTPDActivity extends AppCompatActivity implements View.OnClickList
         textSSID = (TextView) findViewById(R.id.textSSID);
         imageView = (ImageView) findViewById(R.id.imageView);
 
-        wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         try {
             this.server = new HTTPD(this);
