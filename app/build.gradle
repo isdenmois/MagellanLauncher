@@ -31,11 +31,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.zxing:core:3.3.0'
     compile 'org.nanohttpd:nanohttpd-project:2.3.1'
     compile 'org.nanohttpd:nanohttpd-nanolets:2.3.1'
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 }
 
 println "config code: ${calculateVersionCode()}, name: ${calculateVersionName()}"
