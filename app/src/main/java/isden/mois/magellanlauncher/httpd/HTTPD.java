@@ -55,6 +55,7 @@ public class HTTPD extends RouterNanoHTTPD {
         addRoute("/api/book/:MD5", BookHandler.class, this.ctx, destination);
 
         addRoute("/public/(.)+", StaticHandler.class, this.root);
+        addRoute("/(.)+", StaticHandler.class, this.root);
     }
 
     public static Response badRequest(String error) {
