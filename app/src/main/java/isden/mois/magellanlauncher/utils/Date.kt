@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by isden on 16.06.17.
  */
-val c = SimpleDateFormat("MM.dd.yyyy")
+val c = SimpleDateFormat("dd.MM.yyyy")
 
 /**
  * Format time in next format: 8ч 45м
