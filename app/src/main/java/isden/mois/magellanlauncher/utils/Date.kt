@@ -7,8 +7,11 @@ import java.text.SimpleDateFormat;
  */
 val c = SimpleDateFormat("MM.dd.yyyy")
 
-fun formatHumanTime(timestamp: Long): String {
-    var time = timestamp / 1000
+/**
+ * Format time in next format: 8ч 45м
+ */
+fun formatHumanTime(ms: Long): String {
+    var time = ms / 1000
     var result = ""
 
     // Секунды
@@ -31,6 +34,9 @@ fun formatHumanTime(timestamp: Long): String {
     return result
 }
 
+/**
+ * Format timestamp in next format: 16.09.2017
+ */
 fun formatDate(timestamp: Long): String {
     return c.format(timestamp)
 }
