@@ -11,19 +11,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import isden.mois.magellanlauncher.IsdenTools;
-import isden.mois.magellanlauncher.Metadata;
-import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.models.BookMetadata;
 import isden.mois.magellanlauncher.utils.DateKt;
+import isden.mois.magellanlauncher.utils.OnyxKt;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    private Metadata[] data;
+    private BookMetadata[] data;
     private Context ctx;
 
     public HistoryAdapter(Context c) {
@@ -40,8 +37,8 @@ public class HistoryAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
-        List<Metadata> d = Onyx.getRecentReading(c, limit);
-        data = new Metadata[d.size()];
+        List<BookMetadata> d = OnyxKt.getRecentReading(c, limit);
+        data = new BookMetadata[d.size()];
         data = d.toArray(data);
     }
 
@@ -90,25 +87,25 @@ public class HistoryAdapter extends BaseAdapter {
             }
 
             holder = (ViewHolder) v.getTag();
-            Metadata metadata = data[position];
+            BookMetadata metadata = data[position];
 
-            Bitmap bmp = Onyx.getThumbnail(metadata);
+            Bitmap bmp = metadata.getThumbnail();
             if (bmp != null) {
                 holder.image.setImageBitmap(bmp);
             }
 
-            if (metadata.title != null && !metadata.title.equals("")) {
-                holder.title.setText(metadata.author + " -- " + metadata.title);
+            if (!metadata.getTitle().equals("")) {
+                holder.title.setText(metadata.getAuthor() + " -- " + metadata.getTitle());
             } else {
-                holder.title.setText(metadata.getName());
+                holder.title.setText(metadata.getFilename());
             }
 
 
             holder.progress.setText(metadata.getProgress());
-            holder.spent.setText(metadata.getSpentTime());
+            holder.spent.setText(metadata.currentSpentTime());
 
-            if (metadata.lastAccess > 0) {
-                String time = DateKt.formatDate(metadata.lastAccess);
+            if (metadata.getLastAccess() > 0) {
+                String time = DateKt.formatDate(metadata.getLastAccess());
                 holder.date.setText(time);
             } else {
                 holder.date.setText("N/A");

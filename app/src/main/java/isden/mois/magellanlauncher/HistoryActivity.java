@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import isden.mois.magellanlauncher.adapters.HistoryAdapter;
+import isden.mois.magellanlauncher.models.BookMetadata;
 
 
 public class HistoryActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -90,7 +91,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener, A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Metadata item = (Metadata) adapterView.getItemAtPosition(i);
+        BookMetadata item = (BookMetadata) adapterView.getItemAtPosition(i);
         Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
         intent.putExtra("metadata", item);
         this.startActivity(intent);
