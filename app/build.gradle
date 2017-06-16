@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply from: 'auto-version.gradle'
 
 android {
@@ -36,6 +37,10 @@ dependencies {
     compile 'org.nanohttpd:nanohttpd-project:2.3.1'
     compile 'org.nanohttpd:nanohttpd-nanolets:2.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 println "config code: ${calculateVersionCode()}, name: ${calculateVersionName()}"
+repositories {
+    mavenCentral()
+}

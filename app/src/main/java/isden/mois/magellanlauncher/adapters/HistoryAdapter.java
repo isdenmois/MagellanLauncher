@@ -15,6 +15,7 @@ import isden.mois.magellanlauncher.IsdenTools;
 import isden.mois.magellanlauncher.Metadata;
 import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.utils.DateKt;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -107,7 +108,7 @@ public class HistoryAdapter extends BaseAdapter {
             holder.spent.setText(metadata.getSpentTime());
 
             if (metadata.lastAccess > 0) {
-                String time = IsdenTools.formatDate(metadata.lastAccess);
+                String time = DateKt.formatDate(metadata.lastAccess);
                 holder.date.setText(time);
             } else {
                 holder.date.setText("N/A");
@@ -120,4 +121,3 @@ public class HistoryAdapter extends BaseAdapter {
         }
     }
 }
-

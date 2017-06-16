@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import isden.mois.magellanlauncher.helpers.DBBooks;
 import isden.mois.magellanlauncher.holders.BookTime;
 import isden.mois.magellanlauncher.holders.HistoryDetail;
+import isden.mois.magellanlauncher.utils.DateKt;
 
 import java.io.File;
 import java.util.*;
@@ -231,7 +232,7 @@ public class Onyx {
         if (c != null) {
             if(c.moveToFirst()) {
                 long totalTime = c.getLong(0);
-                return IsdenTools.prettyTime(totalTime);
+                return DateKt.formatHumanTime(totalTime);
             }
             c.close();
         }
@@ -335,7 +336,8 @@ public class Onyx {
                 do {
                     long startTime = c.getLong(c.getColumnIndex("StartTime"));
                     long readTime = c.getLong(c.getColumnIndex("Time"));
-                    String date = IsdenTools.formatDate(startTime);
+                    String date = DateKt.formatDate(startTime);
+
                     if (dates.containsKey(date)) {
                         HistoryDetail detail = dates.get(date);
                         detail.spent += readTime;
