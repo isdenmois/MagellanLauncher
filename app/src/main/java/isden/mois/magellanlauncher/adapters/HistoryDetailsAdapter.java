@@ -1,21 +1,18 @@
 package isden.mois.magellanlauncher.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import isden.mois.magellanlauncher.Metadata;
-import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
-import isden.mois.magellanlauncher.holders.HistoryDetail;
+import isden.mois.magellanlauncher.models.BookMetadata;
+import isden.mois.magellanlauncher.models.HistoryDetail;
+import isden.mois.magellanlauncher.utils.OnyxKt;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 
 /**
  * Created by isden on 16.08.15.
@@ -29,8 +26,8 @@ public class HistoryDetailsAdapter extends BaseAdapter {
         TextView spent;
     }
 
-    public HistoryDetailsAdapter(Context ctx, Metadata data) {
-        details = Onyx.getDetailedHistory(ctx, data);
+    public HistoryDetailsAdapter(Context ctx, BookMetadata data) {
+        details = OnyxKt.getDetailedHistory(ctx, data);
         Arrays.sort(details, new Comparator<HistoryDetail>() {
             @Override
             public int compare(HistoryDetail h1, HistoryDetail h2) {
@@ -44,7 +41,9 @@ public class HistoryDetailsAdapter extends BaseAdapter {
                     return -1;
                 }
 
-                return (h1.timestamp < h2.timestamp) ? -1 : ((h1.timestamp == h2.timestamp) ? 0 : 1);
+                long t1 = h1.getTimestamp();
+                long t2 = h2.getTimestamp();
+                return (t1 < t2) ? -1 : ((t1 == t2) ? 0 : 1);
             }
         });
         this.ctx = ctx;
@@ -90,7 +89,7 @@ public class HistoryDetailsAdapter extends BaseAdapter {
                 holder.date.setText(detail.getDate());
             }
             if (holder.spent != null) {
-                holder.spent.setText(detail.getSpent());
+                holder.spent.setText(detail.spentTime());
             }
 
             return v;
