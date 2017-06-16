@@ -9,9 +9,11 @@ public class HistoryDetail {
     public String date;
     public long spent;
     public double speed;
+    public long timestamp;
 
-    public HistoryDetail(String date, long spent) {
+    public HistoryDetail(String date, long timestamp, long spent) {
         this.date = date;
+        this.timestamp = timestamp;
         this.spent = spent;
     }
 

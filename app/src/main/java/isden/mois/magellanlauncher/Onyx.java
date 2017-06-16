@@ -341,7 +341,7 @@ public class Onyx {
                         detail.spent += readTime;
                     }
                     else {
-                        HistoryDetail detail = new HistoryDetail(date, readTime);
+                        HistoryDetail detail = new HistoryDetail(date, startTime, readTime);
                         dates.put(date, detail);
                     }
                 } while (c.moveToNext());
