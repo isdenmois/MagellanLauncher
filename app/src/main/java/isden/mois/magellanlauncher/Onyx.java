@@ -3,11 +3,13 @@ package isden.mois.magellanlauncher;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import isden.mois.magellanlauncher.helpers.DBBooks;
 import isden.mois.magellanlauncher.holders.BookTime;
 import isden.mois.magellanlauncher.holders.HistoryDetail;
 
@@ -141,58 +143,40 @@ public class Onyx {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String history_clean_limit = prefs.getString("history_clean_limit", "20000");
 
-        // Cause ContentProvider is Facade it impossible use JOIN's
-        Cursor c = ctx.getContentResolver().query(
-                Uri.parse(CONTENT_URI + "library_metadata"),
-                new String[]{
-                        "MD5",
-                        "Authors",
-                        "Title",
-                        "Name",
-                        "NativeAbsolutePath",
-                        "Progress",
-                        "MAX(LastAccess) AS LastAccess"
-                },
-                "Title IS NOT NULL) GROUP BY (MD5",
-                null,
-                "LastAccess DESC " + (limit <= 0 ? "" : "LIMIT " + limit)
-        );
+        StringBuilder builder = new StringBuilder("SELECT ");
+        builder.append("m.MD5, Authors, Title, Name, NativeAbsolutePath, m.Progress, ");
+        builder.append("MAX(LastAccess) AS LastAccess, SUM(h.EndTime - h.StartTime) as TotalTime, t._data as Thumbnail ");
+        builder.append("FROM library_metadata m ");
+        builder.append("LEFT JOIN library_history h ON h.MD5 = m.MD5 ");
+        builder.append("LEFT JOIN library_thumbnail t ON Source_MD5 = m.MD5 AND Thumbnail_Kind = \"Middle\" ");
+        builder.append("WHERE Title IS NOT NULL AND Name LIKE \"%.fb2%\" ");
+        builder.append("GROUP BY m.MD5 ");
+        builder.append("ORDER BY LastAccess DESC");
+        if (limit > 0) {
+            builder.append("LIMIT ");
+            builder.append(limit);
+        }
 
-        if (c != null) {
-            if (c.moveToFirst()) {
+        String query = builder.toString();
+        DBBooks dbBooks = new DBBooks(ctx);
+        SQLiteDatabase db = dbBooks.getReadableDatabase();
+
+        try {
+            Cursor c = db.rawQuery(query, new String[]{});
+            if (c != null && c.moveToFirst()) {
                 do {
-                    String md5 = c.getString(c.getColumnIndex("MD5"));
-                    Cursor hc = ctx.getContentResolver().query(
-                            Uri.parse(CONTENT_URI + "library_history"),
-                            new String[]{"SUM(EndTime - StartTime) AS Time"},
-                            "MD5 = ? AND (EndTime - StartTime) > " + history_clean_limit,
-                            new String[]{md5},
-                            null
-                    );
-                    Cursor tc = ctx.getContentResolver().query(
-                            Uri.parse(CONTENT_URI + "library_thumbnail"),
-                            null,
-                            "Source_MD5 = ? AND Thumbnail_Kind = ?",
-                            new String[]{md5, "Middle"},
-                            null
-                    );
-                    result.add(createMetadata(c, hc, tc));
-
-                    if (hc != null) {
-                        hc.close();
-                    }
-                    if (tc != null) {
-                        tc.close();
-                    }
+                    result.add(createMetadata(c));
                 } while (c.moveToNext());
+                c.close();
             }
-            c.close();
+        } finally {
+            db.close();
         }
 
         return result;
     }
 
-    private static Metadata createMetadata(Cursor c, Cursor hc, Cursor tc) {
+    private static Metadata createMetadata(Cursor c) {
         Metadata metadata = new Metadata();
         metadata.md5 = c.getString(c.getColumnIndex("MD5"));
         metadata.filename = c.getString(c.getColumnIndex("Name"));
@@ -216,6 +200,8 @@ public class Onyx {
         }
 
         metadata.lastAccess = c.getLong(c.getColumnIndex("LastAccess"));
+        metadata.thumbnail = c.getString(c.getColumnIndex("Thumbnail"));
+        metadata.time.currentTime = c.getInt(c.getColumnIndex("TotalTime"));
 
         return metadata;
     }
