@@ -21,6 +21,32 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="2" platform="JVM 1.6" useProjectSettings="false">
+        <compilerSettings>
+          <option name="additionalArguments" value="-no-jdk" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/build/tmp/kotlin-classes/releaseUnitTest" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.zxing/core/3.3.0/73c49077166faa4c3c0059c5f583d1d7bd1475fe/core-3.3.0.jar:/home/isden/.gradle/caches/modules-2/files-2.1/org.nanohttpd/nanohttpd-nanolets/2.3.1/46c8202fc91c85ed3225a176c83cbf6d9a6d81d1/nanohttpd-nanolets-2.3.1.jar:/home/isden/.gradle/caches/modules-2/files-2.1/org.nanohttpd/nanohttpd/2.3.1/a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c/nanohttpd-2.3.1.jar:/home/isden/.android/build-cache/495b3c341f3523feff11578bee10f0fcad464d01/output/jars/classes.jar:/home/isden/.android/build-cache/d35e3f18e57bc7a59426c8eb40c72be9ca94f419/output/jars/classes.jar:/home/isden/.android/build-cache/38bdf8f45bed3deec5e2769d3533357c337dbf98/output/jars/classes.jar:/home/isden/.android/build-cache/76a545bed14843d7f33aff6ff4b3b2727c554b65/output/jars/classes.jar:/home/isden/.android/build-cache/1bc8b95461622d5a64fbac6a038920e3eb5a068b/output/jars/classes.jar:/home/isden/.android/build-cache/4307a2b50bea1a52232b65f0d85cebaed78efce5/output/jars/classes.jar:/home/isden/.android/build-cache/bf28ab4616b16b0a7f23c0d64b0ac56dca57b9df/output/jars/classes.jar:/home/isden/.android/build-cache/47e87ad580052dbb9e52488a64a97bc8563a0d63/output/jars/classes.jar:/home/isden/.android/build-cache/123057c0990c799f018d9aff0cdc86f1c9b28287/output/jars/classes.jar:/home/isden/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar:/home/isden/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre7/1.1.2-5/6617f5ad8c76e5141fff9da5b8975081cad24ccf/kotlin-stdlib-jre7-1.1.2-5.jar:/home/isden/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.2-5/508b8b59843653756aeed058a3a421afa0657bcb/kotlin-stdlib-1.1.2-5.jar:/home/isden/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar:/home/isden/StudioProjects/MagellanLauncher/app/libs/onyx-sdk.jar:/home/isden/Android/Sdk/platforms/android-25/android.jar" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="app_release" />
+          <option name="jvmTarget" value="1.6" />
+          <option name="addCompilerBuiltIns" value="true" />
+          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="languageVersion" value="1.1" />
+          <option name="apiVersion" value="1.1" />
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="coroutinesWarn" value="true" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
@@ -89,12 +115,16 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
+      <excludeFolder url="file://$MODULE_DIR$/build/kotlin" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="kotlin-stdlib-1.1.2-5" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-stdlib-jre7-1.1.2-5" level="project" />
+    <orderEntry type="library" exported="" name="annotations-13.0" level="project" />
     <orderEntry type="library" exported="" name="core-3.3.0" level="project" />
     <orderEntry type="library" exported="" name="onyx-sdk" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.3.1" level="project" />

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import isden.mois.magellanlauncher.adapters.HistoryDetailsAdapter;
+import isden.mois.magellanlauncher.utils.DateKt;
 
 /**
  * Created by isden on 16.08.15.
@@ -52,12 +53,12 @@ public class HistoryDetailsActivity extends Activity {
         TextView start = (TextView) findViewById(R.id.tw_startdate);
         if (data.md5 != null && start != null) {
             long start_time = Onyx.getFirstTime(this, data);
-            start.setText(IsdenTools.formatDate(start_time));
+            start.setText(DateKt.formatDate(start_time));
         }
 
         TextView end = (TextView) findViewById(R.id.tw_enddate);
         if (data.lastAccess > 0 && end != null) {
-            end.setText(IsdenTools.formatDate(data.lastAccess));
+            end.setText(DateKt.formatDate(data.lastAccess));
         }
 
         ImageView icon_view = (ImageView) findViewById(R.id.iw_icon);

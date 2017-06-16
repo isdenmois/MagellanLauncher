@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import java.io.Serializable;
 
 import isden.mois.magellanlauncher.holders.BookTime;
+import isden.mois.magellanlauncher.utils.DateKt;
 
 /**
  * Created by isden on 10.01.15.
@@ -49,11 +50,11 @@ public class Metadata implements Serializable {
     }
 
     public String getSpentTime() {
-        return IsdenTools.prettyTime(time.currentTime);
+        return DateKt.formatHumanTime(time.currentTime);
     }
 
     public String getTotalSpentTime() {
-        return IsdenTools.prettyTime(time.totalTime);
+        return DateKt.formatHumanTime(time.totalTime);
     }
 
     public int leftTime () {
@@ -62,7 +63,7 @@ public class Metadata implements Serializable {
 
     public String getTotalTime() {
         if (progress > 0) {
-            return IsdenTools.prettyTime(time.currentTime + leftTime());
+            return DateKt.formatHumanTime(time.currentTime + leftTime());
         }
         return "";
     }

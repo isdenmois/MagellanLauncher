@@ -27,26 +27,6 @@ public class IsdenTools {
         return "*/*";
     }
 
-    public static String prettyTime(long time) {
-        time /= 1000; // миллисекунды.
-
-        String result = "";
-        if (time < 60 * 60) { // секунды
-            result = " " + (time % 60) + "с";
-        }
-
-        time /= 60;
-        if (time > 0) // минуты
-        {
-            result = (time % 60) + "м" + result;
-        }
-        time /= 60;
-        if (time > 0) {
-            result = time + "ч " + result;
-        }
-        return result;
-    }
-
     /**
      * Creates sorted list with applications.
      */
@@ -79,17 +59,5 @@ public class IsdenTools {
         Collections.sort(packages, new AppComparator());
 
         return packages;
-    }
-
-    public static String formatDate(long ms) {
-        Calendar c = new GregorianCalendar();
-        c.setTimeInMillis(ms);
-
-        return String.format(
-            "%02d/%02d/%d",
-            c.get(Calendar.DAY_OF_MONTH),
-            c.get(Calendar.MONTH) + 1,
-            c.get(Calendar.YEAR)
-        );
     }
 }

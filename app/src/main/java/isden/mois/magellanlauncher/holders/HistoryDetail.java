@@ -1,6 +1,6 @@
 package isden.mois.magellanlauncher.holders;
 
-import isden.mois.magellanlauncher.IsdenTools;
+import isden.mois.magellanlauncher.utils.DateKt;
 
 /**
  * Created by isden on 16.08.15.
@@ -25,6 +25,6 @@ public class HistoryDetail {
     }
 
     public String getSpent() {
-        return IsdenTools.prettyTime(this.spent);
+        return DateKt.formatHumanTime(this.spent);
     }
 }
