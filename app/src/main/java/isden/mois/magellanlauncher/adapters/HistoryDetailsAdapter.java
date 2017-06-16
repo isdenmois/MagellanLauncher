@@ -43,7 +43,8 @@ public class HistoryDetailsAdapter extends BaseAdapter {
                 if (h2 == null) {
                     return -1;
                 }
-                return h1.getDate().compareToIgnoreCase(h2.getDate());
+
+                return (h1.timestamp < h2.timestamp) ? -1 : ((h1.timestamp == h2.timestamp) ? 0 : 1);
             }
         });
         this.ctx = ctx;
