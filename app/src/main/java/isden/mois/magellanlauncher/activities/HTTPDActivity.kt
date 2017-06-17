@@ -60,7 +60,7 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
 
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
-        toggleButton!!.setOnCheckedChangeListener { buttonView, isChecked -> wifiManager!!.setWifiEnabled(isChecked) }
+        toggleButton?.setOnClickListener { wifiManager?.setWifiEnabled(!isWifiEnabled) }
 
         try {
             this.server = HTTPD(this)
@@ -100,7 +100,7 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
 
     private // Set "enabled" for Emulator.
     val isWifiEnabled: Boolean
-        get() = wifiManager!!.isWifiEnabled
+        get() = wifiManager?.isWifiEnabled ?: false
 
     private // Set "connected" for Emulator.
     val isWifiConnected: Boolean
