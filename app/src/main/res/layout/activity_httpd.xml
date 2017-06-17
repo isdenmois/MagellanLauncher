@@ -13,13 +13,26 @@
 >
 
     <Button
-        android:text="Проверить обновления"
+        android:id="@+id/checkForUpdates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/checkForUpdates"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/shadow_button"
         android:onClick="onClick"
-        android:background="@drawable/shadow_button"/>
+        android:text="Проверить обновления" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkForUpdates"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:background="@drawable/shadow_button"
+        android:checked="true"
+        android:text="ToggleButton"
+        android:textOff="Включить WIFI"
+        android:textOn="Выключить WIFI" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -81,5 +94,7 @@
             app:srcCompat="@color/normal_transparent"
             android:id="@+id/imageView"
             android:layout_marginTop="20dp"/>
+
     </LinearLayout>
+
 </RelativeLayout>
