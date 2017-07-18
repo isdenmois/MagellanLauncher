@@ -27,12 +27,23 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/checkForUpdates"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/shadow_button"
         android:checked="true"
         android:text="ToggleButton"
         android:textOff="Включить WIFI"
         android:textOn="Выключить WIFI" />
+
+    <Button
+        android:id="@+id/bookSync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/toggleButton"
+        android:layout_alignParentBottom="false"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/shadow_button"
+        android:onClick="onSync"
+        android:text="Синхронизация" />
 
     <LinearLayout
         android:orientation="vertical"

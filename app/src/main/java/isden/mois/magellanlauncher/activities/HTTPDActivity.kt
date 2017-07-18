@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ToggleButton
 
 import com.google.zxing.BarcodeFormat
@@ -20,11 +21,14 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
+import com.inaka.killertask.KillerTask
+
 import java.io.IOException
 
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
 import isden.mois.magellanlauncher.tasks.CheckForUpdates
+import isden.mois.magellanlauncher.tasks.syncBooks
 
 class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -96,6 +100,22 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         CheckForUpdates(this).execute()
+    }
+
+    fun onSync(v: View) {
+        Toast.makeText(applicationContext, "Начата синхронизация", Toast.LENGTH_LONG).show()
+        KillerTask(
+            {
+                syncBooks(applicationContext)
+            },
+            {
+                Toast.makeText(applicationContext, "Успех!", Toast.LENGTH_LONG).show()
+            },
+            { e: Exception? ->
+                e?.printStackTrace()
+                Toast.makeText(applicationContext, "Ошибка!", Toast.LENGTH_LONG).show()
+            }
+        ).go()
     }
 
     private // Set "enabled" for Emulator.
