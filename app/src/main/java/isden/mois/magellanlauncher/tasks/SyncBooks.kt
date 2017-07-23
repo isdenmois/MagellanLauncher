@@ -40,7 +40,7 @@ fun syncBooks(ctx: Context): Int {
 
 fun md5List(db: SQLiteDatabase): JSONArray {
     val result = JSONArray()
-    val query = """SELECT MD5
+    val query = """SELECT DISTINCT MD5
     FROM library_metadata
     WHERE name LIKE '%.fb2' AND Title IS NOT NULL AND Authors IS NOT NULL"""
 
@@ -62,7 +62,7 @@ fun md5List(db: SQLiteDatabase): JSONArray {
 }
 
 fun insertBook(db: SQLiteDatabase, md5: String) {
-    val query = "SELECT Title, Authors, Status FROM library_metadata WHERE MD5 = ?"
+    val query = "SELECT Title, Authors, Status, Size, LastModified, Progress FROM library_metadata WHERE MD5 = ?"
 
     val c = db.rawQuery(query, arrayOf(md5))
     if (c != null) {
@@ -73,6 +73,9 @@ fun insertBook(db: SQLiteDatabase, md5: String) {
             body.put("title", c.getString(c.getColumnIndex("Title")))
             body.put("author", c.getString(c.getColumnIndex("Authors")))
             body.put("status", c.getInt(c.getColumnIndex("Status")))
+            body.put("size", c.getInt(c.getColumnIndex("Size")))
+            body.put("created", c.getLong(c.getColumnIndex("LastModified")))
+            body.put("progress", c.getString(c.getColumnIndex("Progress")))
 
             val (request, response, result) = Fuel
                     .post("http://10.0.0.50:5000/books/new")
