@@ -1,89 +1,82 @@
 package isden.mois.magellanlauncher.tasks
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import com.github.kittinunf.fuel.Fuel
-import isden.mois.magellanlauncher.helpers.DBBooks
-import com.alibaba.fastjson.JSONArray
-import com.alibaba.fastjson.JSONObject
-import com.github.kittinunf.fuel.android.extension.responseJson
+import android.os.AsyncTask
+import isden.mois.magellanlauncher.tasks.sync.createUploadBookMetadata
+import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
 /**
- * Created by isden on 18.07.17.
+ * Created by isden on 24.07.17.
  */
-fun syncBooks(ctx: Context): Int {
-    val dbBooks = DBBooks(ctx)
-    try {
-        val db = dbBooks.readableDatabase
 
-        try {
-            val response = Fuel
-                    .post("http://10.0.0.50:5000/books/diff")
-                    .header("Content-Type" to "application/json")
-                    .body(md5List(db).toJSONString())
-                    .responseJson()
-
-            val result = response.third.get().array()
-            repeat(result.length()) { i ->
-                insertBook(db, result.getString(i))
-            }
-
-            return result.length()
-        } finally {
-            db.close()
-        }
-    }
-    finally {
-        dbBooks.close()
-    }
+interface SyncProgress {
+    fun onStart(): Unit
+    fun onProgress(progress: Int): Unit
+    fun onNewStep(total: Int, title: String): Unit
+    fun onEnd(): Unit
 }
 
-fun md5List(db: SQLiteDatabase): JSONArray {
-    val result = JSONArray()
-    val query = """SELECT DISTINCT MD5
-    FROM library_metadata
-    WHERE name LIKE '%.fb2' AND Title IS NOT NULL AND Authors IS NOT NULL"""
+class Progress (val completed: Int, val total: Int, val title: String?)
 
-    val c = db.rawQuery(query, arrayOf<String>())
+interface SyncTask {
+    fun execute(ctx: Context): Unit
+}
 
-    if (c != null) {
-        try {
-            while (c.moveToNext()) {
-                result.add(c.getString(0))
-            }
+class SyncBooks (
+    private val ctx: Context,
+    private val progress: SyncProgress
+): AsyncTask<Unit, Progress, Unit>() {
 
-            return result
-        } finally {
-            c.close()
+    private val taskList: Queue<SyncTask> = LinkedBlockingQueue()
+
+    override fun onPreExecute() {
+        progress.onStart()
+    }
+
+    override fun doInBackground(vararg p0: Unit?): Unit {
+        taskList.addAll(createUploadBookMetadata(ctx))
+
+        if (!isCancelled) {
+            publishProgress(Progress(0, taskList.size, "Загрузка книг на сервер"))
+            executeAllTasks()
         }
     }
 
-    return result
-}
-
-fun insertBook(db: SQLiteDatabase, md5: String) {
-    val query = "SELECT Title, Authors, Status, Size, LastModified, Progress FROM library_metadata WHERE MD5 = ?"
-
-    val c = db.rawQuery(query, arrayOf(md5))
-    if (c != null) {
-        try {
-            c.moveToFirst()
-            val body = JSONObject()
-            body.put("md5", md5)
-            body.put("title", c.getString(c.getColumnIndex("Title")))
-            body.put("author", c.getString(c.getColumnIndex("Authors")))
-            body.put("status", c.getInt(c.getColumnIndex("Status")))
-            body.put("size", c.getInt(c.getColumnIndex("Size")))
-            body.put("created", c.getLong(c.getColumnIndex("LastModified")))
-            body.put("progress", c.getString(c.getColumnIndex("Progress")))
-
-            val (request, response, result) = Fuel
-                    .post("http://10.0.0.50:5000/books/new")
-                    .header("Content-Type" to "application/json")
-                    .body(body.toJSONString())
-                    .response()
-        } finally {
-            c.close()
+    private fun executeAllTasks() {
+        if (isCancelled) {
+            return
         }
+
+        val total = taskList.size
+
+        while (!taskList.isEmpty()) {
+            if (isCancelled) {
+                return
+            }
+
+            val task = taskList.remove()
+            try {
+                task.execute(ctx)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            publishProgress(Progress(total - taskList.size, total, null))
+        }
+    }
+
+    override fun onProgressUpdate(vararg values: Progress?) {
+        val p = values.first() ?: return
+
+        if (p.title != null) {
+            progress.onNewStep(p.total, p.title)
+        } else {
+            progress.onProgress(p.completed)
+        }
+    }
+
+    override fun onPostExecute(result: Unit?) {
+        progress.onEnd()
     }
 }

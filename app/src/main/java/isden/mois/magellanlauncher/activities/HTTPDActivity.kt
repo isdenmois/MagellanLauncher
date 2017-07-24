@@ -1,5 +1,7 @@
 package isden.mois.magellanlauncher.activities
 
+import kotlinx.android.synthetic.main.activity_httpd.*
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -11,36 +13,29 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import android.widget.ToggleButton
 
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
-import com.inaka.killertask.KillerTask
-
 import java.io.IOException
 
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
 import isden.mois.magellanlauncher.tasks.CheckForUpdates
-import isden.mois.magellanlauncher.tasks.syncBooks
+import isden.mois.magellanlauncher.tasks.SyncBooks
+import isden.mois.magellanlauncher.tasks.SyncProgress
 
 class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
 
     private var server: HTTPD? = null
-    private var textIP: TextView? = null
-    private var textSSID: TextView? = null
     private var wifiManager: WifiManager? = null
-    private var imageView: ImageView? = null
-    private var toggleButton: ToggleButton? = null
     private var url = emptyText
     private var QR: Bitmap? = null
     private var isEmulator = false
+    private var syncTask:SyncBooks? = null
 
     // Set static port for emulator.
     private  val port = HTTPD.PORT
@@ -56,12 +51,6 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_httpd)
 
         isEmulator = Build.PRODUCT.startsWith("vbox")
-
-        textIP = findViewById(R.id.textIP) as TextView
-        textSSID = findViewById(R.id.textSSID) as TextView
-        imageView = findViewById(R.id.imageView) as ImageView
-        toggleButton = findViewById(R.id.toggleButton) as ToggleButton
-
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         toggleButton?.setOnClickListener { wifiManager?.setWifiEnabled(!isWifiEnabled) }
@@ -103,19 +92,39 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun onSync(v: View) {
-        Toast.makeText(applicationContext, "Начата синхронизация", Toast.LENGTH_LONG).show()
-        KillerTask(
-            {
-                syncBooks(applicationContext)
-            },
-            {
-                Toast.makeText(applicationContext, "Успех!", Toast.LENGTH_LONG).show()
-            },
-            { e: Exception? ->
-                e?.printStackTrace()
-                Toast.makeText(applicationContext, "Ошибка!", Toast.LENGTH_LONG).show()
+        if (syncTask != null) {
+            syncTask?.cancel(false)
+            syncTask = null
+            return
+        }
+
+        syncTask = SyncBooks(this.applicationContext, object: SyncProgress {
+            override fun onStart() {
+                Toast.makeText(applicationContext, "Начата синхронизация", Toast.LENGTH_SHORT).show()
+                progressBar.progress = 0
+                progressBar.visibility = View.VISIBLE
+                bookSync.text = "Отменить синхронизацию"
             }
-        ).go()
+
+            override fun onProgress(progress: Int) {
+                progressBar.progress = progress
+            }
+
+            override fun onNewStep(total: Int, title: String) {
+                Toast.makeText(applicationContext, title, Toast.LENGTH_SHORT).show()
+                progressBar.progress = 0
+                progressBar.max = total
+            }
+
+            override fun onEnd() {
+                Toast.makeText(applicationContext, "Синхронизация завершена", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.INVISIBLE
+                bookSync.text = "Синхронизация"
+                syncTask = null
+            }
+        })
+
+        syncTask?.execute()
     }
 
     private // Set "enabled" for Emulator.
