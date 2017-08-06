@@ -3,6 +3,7 @@ package isden.mois.magellanlauncher.tasks
 import android.content.Context
 import android.os.AsyncTask
 import isden.mois.magellanlauncher.tasks.sync.createUploadBookMetadata
+import isden.mois.magellanlauncher.tasks.sync.createUploadHistory
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -39,6 +40,15 @@ class SyncBooks (
 
         if (!isCancelled) {
             publishProgress(Progress(0, taskList.size, "Загрузка книг на сервер"))
+            executeAllTasks()
+        }
+
+        if (!isCancelled) {
+            taskList.addAll(createUploadHistory(ctx))
+        }
+
+        if (!isCancelled) {
+            publishProgress(Progress(0, taskList.size, "Отправка истории чтения"))
             executeAllTasks()
         }
     }

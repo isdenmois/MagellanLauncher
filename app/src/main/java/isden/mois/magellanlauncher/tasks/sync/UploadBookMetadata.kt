@@ -47,7 +47,7 @@ class UploadBookMetadata(val MD5: String): SyncTask {
                 body.put("progress", c.getString(c.getColumnIndex("Progress")))
 
                 val (request, response, result) = Fuel
-                        .post("http://10.0.0.50:5000/books/new")
+                        .post("http://192.168.58.1:5000/api/books/new")
                         .header("Content-Type" to "application/json")
                         .body(body.toJSONString())
                         .response()
@@ -65,7 +65,7 @@ fun createUploadBookMetadata(ctx: Context): List<SyncTask> {
 
         try {
             val response = Fuel
-                    .post("http://10.0.0.50:5000/books/diff")
+                    .post("http://192.168.58.1:5000/api/books/diff")
                     .header("Content-Type" to "application/json")
                     .body(md5List(db).toJSONString())
                     .responseJson()
