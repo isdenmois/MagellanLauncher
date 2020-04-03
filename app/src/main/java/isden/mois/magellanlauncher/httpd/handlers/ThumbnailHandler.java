@@ -51,7 +51,11 @@ public class ThumbnailHandler extends RouterNanoHTTPD.DefaultHandler {
             return new Error404UriHandler().get(uriResource, urlParams, session);
         } else {
             try {
-                return newChunkedResponse(getStatus(), getMimeTypeForFile(file.getName()), fileToInputStream(file));
+                Response response =  newChunkedResponse(getStatus(), getMimeTypeForFile(file.getName()), fileToInputStream(file));
+
+                response.addHeader("Cache-Control", "max-age=2592000");
+
+                return response;
             } catch (IOException ioe) {
                 return newFixedLengthResponse(Status.REQUEST_TIMEOUT, "text/plain", (String) null);
             }
