@@ -40,11 +40,6 @@
             android:name=".HistoryDetailsActivity"
         />
 
-        <activity
-            android:name=".activities.HTTPDActivity"
-            android:label="@string/httpd"
-        />
-
         <provider
             android:name=".providers.BooksProvider"
             android:authorities="com.onyx.android.sdk.OnyxCmsProvider"

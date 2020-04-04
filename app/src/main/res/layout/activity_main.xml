@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/normal_bg"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <fragment
         android:id="@+id/launcher_buttons"
@@ -11,11 +12,22 @@
         android:layout_width="100dp"
         android:layout_height="fill_parent" />
 
+    <LinearLayout
+        android:id="@+id/activityIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:layout_marginTop="10dp" >
-    </FrameLayout>
+        android:layout_marginTop="10dp"
+        android:layout_weight="1" />
 </LinearLayout>

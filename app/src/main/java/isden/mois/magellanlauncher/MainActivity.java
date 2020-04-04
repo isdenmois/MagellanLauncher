@@ -21,7 +21,6 @@ import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import isden.mois.magellanlauncher.activities.HTTPDActivity;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
@@ -148,7 +147,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.current_book:
+            case R.id.nowRead:
                 try {
                     startActivity(getPackageManager().getLaunchIntentForPackage("com.neverland.alreader"));
                 } catch (Exception e) {
@@ -211,6 +210,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void changeFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        findViewById(R.id.activityIndicator).setVisibility(View.GONE);
+        findViewById(R.id.container).setVisibility(View.VISIBLE);
 
         transaction.replace(R.id.container, fragment);
 

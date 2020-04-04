@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textOn="Прочитанные"
-        android:textOff="Новые"/>
+        android:textOff="Новые"
+        android:background="@color/normal_bg"/>
 
     <ListView
         android:id="@+id/libraryList"
@@ -23,16 +24,19 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/libraryUp"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:src="@drawable/ci_arrowup" />
+            android:src="@drawable/ci_arrowup"
+            android:background="@color/normal_bg" />
 
         <ImageButton
             android:id="@+id/libraryDown"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:src="@drawable/ci_arrowdown" />
+            android:src="@drawable/ci_arrowdown"
+            android:background="@color/normal_bg" />
     </LinearLayout>
 </LinearLayout>

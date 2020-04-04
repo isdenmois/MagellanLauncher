@@ -10,32 +10,39 @@ import android.view.ViewGroup
 import android.widget.*
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.models.BookMetadata
-import isden.mois.magellanlauncher.utils.formatDate
 import isden.mois.magellanlauncher.utils.getBooks
-import kotlinx.android.synthetic.main.fragment_library.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.page_library.*
 
 class LibraryFragment : Fragment() {
     internal val adapter = LibraryAdapter(context)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater!!.inflate(R.layout.fragment_library, container, false)
+        val v = inflater!!.inflate(R.layout.page_library, container, false)
 
         val library = v.findViewById(R.id.libraryList) as ListView
         v.findViewById(R.id.libraryToggle).setOnClickListener {
             val status = if (libraryToggle.isChecked) "Status = 1" else "(Status = 0 OR Status IS NULL)"
             val sort = if (libraryToggle.isChecked) "LastModified" else "LastAccess"
 
-            adapter.setList(getBooks(context, status, sort))
+            BooksListLoaderTask(status, sort).execute()
+        }
+        v.findViewById(R.id.libraryUp).setOnClickListener {
+            val first = library.firstVisiblePosition
+            val last = library.lastVisiblePosition
+            val height = last - first
+            val target = if (first < height) 0 else first - height
+
+            library.setSelection(target)
         }
         v.findViewById(R.id.libraryDown).setOnClickListener {
             library.setSelection(library.lastVisiblePosition)
         }
 
         adapter.c = context
-        adapter.setList(getBooks(context, "(Status = 0 OR Status IS NULL)", "LastAccess"))
         library.adapter = adapter
 
-//        BooksListLoaderTask("(Status = 0 OR Status IS NULL)", "LastAccess").execute()
+        BooksListLoaderTask("(Status = 0 OR Status IS NULL)", "LastAccess").execute()
 
         return v
     }
@@ -43,14 +50,21 @@ class LibraryFragment : Fragment() {
     inner class BooksListLoaderTask(val status: String, val sort: String) : AsyncTask<Void, Void, Void>() {
         private var list: List<BookMetadata> = ArrayList()
 
+        override fun onPreExecute() {
+            activity.findViewById(R.id.activityIndicator).visibility = View.VISIBLE
+            activity.findViewById(R.id.container).visibility = View.GONE
+        }
+
         override fun doInBackground(vararg p0: Void?): Void? {
-            list = getBooks(context, sort, status)
+            list = getBooks(context, status, sort)
 
             return null
         }
 
         override fun onPostExecute(result: Void?) {
             adapter.setList(list)
+            activity.findViewById(R.id.activityIndicator).visibility = View.GONE
+            activity.findViewById(R.id.container).visibility = View.VISIBLE
         }
     }
 }

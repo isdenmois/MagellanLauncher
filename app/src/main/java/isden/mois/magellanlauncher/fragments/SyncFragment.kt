@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -20,7 +19,7 @@ import com.google.zxing.common.BitMatrix
 
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
-import kotlinx.android.synthetic.main.activity_httpd.*
+import kotlinx.android.synthetic.main.page_sync.*
 import java.io.IOException
 
 class SyncFragment : Fragment() {
@@ -40,7 +39,7 @@ class SyncFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater!!.inflate(R.layout.activity_httpd, container, false)
+        val v = inflater!!.inflate(R.layout.page_sync, container, false)
 
         wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         v.findViewById(R.id.toggleButton).setOnClickListener {
