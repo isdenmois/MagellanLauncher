@@ -1,9 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:id="@+id/launcher_buttons_layout" android:longClickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@+id/imgSync" android:tag="0" android:background="@drawable/shadow_3px_black" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/sync" android:scaleType="centerCrop" android:adjustViewBounds="false" android:baselineAlignBottom="false" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
-    <ImageView android:id="@+id/imgFM" android:tag="1" android:background="@drawable/shadow_3px_black" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/folder" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
-    <ImageView android:id="@+id/imgApp" android:tag="2" android:background="@drawable/shadow_3px_black" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/applications" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
-    <ImageView android:id="@+id/imgLib" android:tag="3" android:background="@drawable/shadow_3px_black" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/library" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
-    <ImageView android:id="@+id/launcher_history" android:tag="4" android:background="@drawable/shadow_3px_black" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:src="@drawable/history" android:scaleType="centerCrop" android:layout_weight="1.0" android:onClick="onClick" style="@style/icons_" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/launcher_buttons_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:longClickable="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/imgHome"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="0"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/home"
+            android:padding="0dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/imgLibrary"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/library"
+            android:padding="0dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Library"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/imgApps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="2"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/applications"
+            android:padding="0dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apps"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/imgSettings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="3"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/settings"
+            android:padding="0dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/imgSync"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="4"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            style="@style/icons_"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/sync"
+            android:padding="0dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sync"
+            android:textColor="@color/normal_text"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
 </LinearLayout>

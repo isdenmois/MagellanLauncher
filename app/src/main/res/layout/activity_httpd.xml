@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_httpd"
@@ -10,58 +10,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="isden.mois.magellanlauncher.activities.HTTPDActivity"
->
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bookSync"
-        android:layout_weight="1"
-        android:visibility="invisible" />
-
-    <Button
-        android:id="@+id/bookSync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toggleButton"
-        android:layout_alignParentBottom="false"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/shadow_button"
-        android:onClick="onSync"
-        android:text="Синхронизация" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkForUpdates"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/shadow_button"
-        android:checked="true"
-        android:text="ToggleButton"
-        android:textOff="Включить WIFI"
-        android:textOn="Выключить WIFI" />
-
-    <Button
-        android:id="@+id/checkForUpdates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/shadow_button"
-        android:onClick="onClick"
-        android:text="Проверить обновления" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/httpdInfo"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_above="@+id/checkForUpdates">
+        android:layout_alignParentLeft="true">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -118,4 +76,16 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/shadow_button"
+        android:checked="true"
+        android:text="ToggleButton"
+        android:textOff="Включить WIFI"
+        android:textOn="Выключить WIFI" />
+
+</LinearLayout>

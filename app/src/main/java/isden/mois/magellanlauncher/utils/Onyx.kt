@@ -8,6 +8,7 @@ import isden.mois.magellanlauncher.models.BookMetadata
 import isden.mois.magellanlauncher.models.BookTime
 import isden.mois.magellanlauncher.models.HistoryDetail
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by isden on 16.06.17.
@@ -32,6 +33,38 @@ fun getRecentReading(ctx: Context, limit: Int = 0): List<BookMetadata> {
     }
 
     val query = builder.toString()
+    val dbBooks = DBBooks(ctx)
+    val db = dbBooks.readableDatabase
+
+    try {
+        val c = db.rawQuery(query, emptyArray<String>())
+        if (c != null) {
+            if (c.moveToFirst()) {
+                do {
+                    result.add(createMetadata(c))
+                } while (c.moveToNext())
+            }
+            c.close()
+        }
+    } finally {
+        db.close()
+    }
+
+    return result
+}
+
+fun getBooks(ctx: Context, status: String, order: String): List<BookMetadata> {
+    val result = ArrayList<BookMetadata>()
+    val query = "SELECT m.MD5, Authors, Title, Name, NativeAbsolutePath, m.Progress, " +
+            "MAX(LastAccess) AS LastAccess, SUM(h.EndTime - h.StartTime) AS TotalTime, " +
+            "t._data as Thumbnail, MIN(h.StartTime) AS FirstTime " +
+            "FROM library_metadata m " +
+            "LEFT JOIN library_history h ON h.MD5 = m.MD5 " +
+            "LEFT JOIN library_thumbnail t ON Source_MD5 = m.MD5 AND Thumbnail_Kind = \"Middle\" " +
+            "WHERE Title IS NOT NULL AND (Name LIKE \"%.fb2\" OR Name LIKE \"%.epub\") " +
+            "AND ${status} " +
+            "GROUP BY m.MD5 " +
+            "ORDER BY ${order} DESC"
     val dbBooks = DBBooks(ctx)
     val db = dbBooks.readableDatabase
 

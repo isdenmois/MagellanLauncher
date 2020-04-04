@@ -2,10 +2,8 @@ package isden.mois.magellanlauncher.utils
 
 import java.text.SimpleDateFormat;
 
-/**
- * Created by isden on 16.06.17.
- */
 val c = SimpleDateFormat("dd.MM.yyyy")
+val time = SimpleDateFormat("HH:mm")
 
 /**
  * Format time in next format: 8ч 45м
@@ -22,13 +20,13 @@ fun formatHumanTime(ms: Long): String {
     // Минуты
     time /= 60
     if (time > 0) {
-        result = "${time % 60}м ${result}"
+        result = if (result.length > 0) "${time % 60}м ${result}" else "${time % 60}"
     }
 
     // Часы
     time /= 60
     if (time > 0) {
-        return "${time}ч ${result}"
+        return "${time}:${result}"
     }
 
     return result

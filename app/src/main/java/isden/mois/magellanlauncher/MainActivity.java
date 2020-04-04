@@ -12,15 +12,22 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import isden.mois.magellanlauncher.activities.HTTPDActivity;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
+import isden.mois.magellanlauncher.fragments.HomeFragment;
+import isden.mois.magellanlauncher.fragments.LibraryFragment;
+import isden.mois.magellanlauncher.fragments.SyncFragment;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -39,6 +46,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         startIntent = getIntent();
         this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Убираем заголовок
         setContentView(R.layout.activity_main);
+
+        openHome();
     }
 
     @Override
@@ -108,7 +117,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 message.append(versionName);
                 message.append('\n');
 
-                message.append("2017 ");
+                message.append("2020 ");
                 message.append('\u00A9');
                 message.append(" Denis Moiseev ");
                 message.append("<isdenmois@gmail.com>");
@@ -133,7 +142,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return keyCode == KeyEvent.KEYCODE_BACK || super.onKeyDown(keyCode, event);
-
     }
 
     @Override
@@ -147,9 +155,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     Toast.makeText(this, R.string.app_not_started, Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.imgFM:
-            case R.id.imgLib:
-            case R.id.launcher_history:
+
+            case R.id.imgSettings:
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 String tag = (String) v.getTag();
                 String app_name = prefs.getString("button_" + tag + "_app", "");
@@ -167,19 +174,47 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     Toast.makeText(this, R.string.app_not_started, Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.imgApp:
+
+            case R.id.imgHome:
+                this.openHome();
+                break;
+
+            case R.id.imgLibrary:
+                this.openLibrary();
+                break;
+
+            case R.id.imgApps:
                 intent = new Intent(this, ApplicationsActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.imgSync:
-                intent = new Intent(this, HTTPDActivity.class);
-                startActivity(intent);
+                this.openSync();
                 break;
 
             default:
                 Log.i(TAG, "Click by " + v.toString());
         }
+    }
+
+    private void openHome() {
+        this.changeFragment(new HomeFragment());
+    }
+
+    private void openLibrary() {
+        this.changeFragment(new LibraryFragment());
+    }
+
+    private void openSync() {
+        this.changeFragment(new SyncFragment());
+    }
+
+    private void changeFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.container, fragment);
+
+        transaction.commit();
     }
 
     public void reCreate() {

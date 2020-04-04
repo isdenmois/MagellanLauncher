@@ -1,6 +1,4 @@
-package isden.mois.magellanlauncher.activities
-
-import kotlinx.android.synthetic.main.activity_httpd.*
+package isden.mois.magellanlauncher.fragments
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,36 +7,31 @@ import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import android.os.Build
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
-import java.io.IOException
-
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
-import isden.mois.magellanlauncher.tasks.CheckForUpdates
-import isden.mois.magellanlauncher.tasks.SyncBooks
-import isden.mois.magellanlauncher.tasks.SyncProgress
+import kotlinx.android.synthetic.main.activity_httpd.*
+import java.io.IOException
 
-class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
-
+class SyncFragment : Fragment() {
     private var server: HTTPD? = null
     private var wifiManager: WifiManager? = null
-    private var url = emptyText
+    private var url: String = emptyText
     private var QR: Bitmap? = null
-    private var isEmulator = false
-    private var syncTask:SyncBooks? = null
+    private var isEmulator: Boolean = false
 
     // Set static port for emulator.
-    private  val port = HTTPD.PORT
+    private val port = HTTPD.PORT
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -46,22 +39,32 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_httpd)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val v = inflater!!.inflate(R.layout.activity_httpd, container, false)
 
-        isEmulator = Build.PRODUCT.startsWith("vbox")
-        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-        toggleButton?.setOnClickListener { wifiManager?.setWifiEnabled(!isWifiEnabled) }
+        wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        v.findViewById(R.id.toggleButton).setOnClickListener {
+            wifiManager?.setWifiEnabled(!isWifiEnabled)
+        }
 
         try {
-            this.server = HTTPD(this)
-            this.server?.start()
+            server?.stop()
+            server = HTTPD(context)
+            server?.start()
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
+        return v
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        server?.stop()
+        server = null
+        wifiManager = null
+        QR = null
     }
 
     override fun onResume() {
@@ -72,23 +75,12 @@ class HTTPDActivity : AppCompatActivity(), View.OnClickListener {
         val filter = IntentFilter()
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-        registerReceiver(receiver, filter)
+        activity.registerReceiver(receiver, filter)
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(receiver)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        this.server?.stop()
-        this.server = null
-    }
-
-    override fun onClick(v: View) {
-        CheckForUpdates(this).execute()
+        activity.unregisterReceiver(receiver)
     }
 
     private // Set "enabled" for Emulator.

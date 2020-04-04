@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ToggleButton
+        android:id="@+id/libraryToggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textOn="Прочитанные"
+        android:textOff="Новые"/>
+
+    <ListView
+        android:id="@+id/libraryList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ci_arrowup" />
+
+        <ImageButton
+            android:id="@+id/libraryDown"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ci_arrowdown" />
+    </LinearLayout>
+</LinearLayout>

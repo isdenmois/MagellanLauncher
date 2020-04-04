@@ -42,7 +42,7 @@ public class Metadata implements Serializable {
     }
 
     public String getProgress() {
-        return progress + "/" + size;
+        return progress + " / " + size;
     }
 
     public double getPercent() {
@@ -57,7 +57,7 @@ public class Metadata implements Serializable {
         return DateKt.formatHumanTime(time.totalTime);
     }
 
-    public int leftTime () {
+    public int leftTime() {
         return (int) Math.round(time.speed * (size - progress));
     }
 
@@ -70,16 +70,14 @@ public class Metadata implements Serializable {
 
     public Bitmap getThumbnail() {
         if (this.thumbnail == null) {
-            return  null;
+            return null;
         }
 
         return BitmapFactory.decodeFile(this.thumbnail);
     }
 
     public String formatTimeProgress() {
-        if (time.totalTime == 0) {
-            return null;
-        }
+        if (time.totalTime == 0) return null;
 
         if (time.currentTime == time.totalTime) {
             return getSpentTime() + " / " + getTotalTime();

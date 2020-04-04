@@ -8,19 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
 
 import isden.mois.magellanlauncher.Metadata;
 import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
 
-/**
- * Created by ray on 03.08.2014.
- */
 public class CurrentBook extends Fragment {
 
     private static String TAG = "BookFragment";
@@ -49,9 +43,7 @@ public class CurrentBook extends Fragment {
      */
     private void setLastReading() {
         Metadata metadata = Onyx.getCurrentBook(getActivity());
-        if (metadata == null) {
-            return;
-        }
+        if (metadata == null) return;
 
         TextView twTitle = (TextView) getActivity().findViewById(R.id.txtTitle);
         TextView twAuthor = (TextView) getActivity().findViewById(R.id.txtAuthor);
@@ -66,15 +58,12 @@ public class CurrentBook extends Fragment {
 
         ImageView imgBook = (ImageView) getActivity().findViewById(R.id.imgBook);
         Bitmap image = metadata.getThumbnail();
+
         if (image == null) {
             imgBook.setImageResource(R.drawable.book_img);
-        }
-        else {
+        } else {
             imgBook.setImageBitmap(image);
         }
-
-        ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.pbProgress);
-        progressBar.setProgress((int) Math.round(metadata.getPercent()));
 
         TextView progressText = (TextView) getActivity().findViewById(R.id.twProgress);
         progressText.setText(metadata.getProgress());
