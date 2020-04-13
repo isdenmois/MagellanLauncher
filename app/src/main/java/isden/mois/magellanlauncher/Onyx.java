@@ -100,7 +100,7 @@ public class Onyx {
                         }
 
                         // Если были пропущены главы.
-                        if (currentProgress > lastProgress && speed > 24000 && speed < 100000) {
+                        if (currentProgress > lastProgress && speed > 15000 && speed < 100000) {
                             speeds.add(new int[]{ speed,  currentProgress - lastProgress});
                         }
 
@@ -120,21 +120,7 @@ public class Onyx {
             bookPages += speedTime[1];
         }
 
-        // Для новых книг добавляем среднее значение.
-        if (progressData != null) {
-            int totalProgress = Integer.parseInt(progressData[1]);
-            if (lastProgress * 100 / totalProgress < 20) {
-                int additionalPageCount = totalProgress / 15;
-                bookPages += additionalPageCount;
-                bookWeight += additionalPageCount * 40000;
-            }
-        }
-
         bookTime.speed = bookWeight / bookPages;
-
-        if (bookTime.speed < 24000) {
-            bookTime.speed = 35000;
-        }
 
         return bookTime;
     }

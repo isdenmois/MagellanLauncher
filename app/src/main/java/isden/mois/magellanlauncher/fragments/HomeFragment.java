@@ -175,5 +175,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         TextView TimeReadText = (TextView) getActivity().findViewById(R.id.twReadTime);
         TimeReadText.setText(metadata.formatTimeProgress());
+
+        TextView speedTW = (TextView) getActivity().findViewById(R.id.twSpeed);
+        speedTW.setText(metadata.getSpeed());
     }
 }

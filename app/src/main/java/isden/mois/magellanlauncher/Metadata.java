@@ -86,4 +86,7 @@ public class Metadata implements Serializable {
         return getSpentTime() + " (" + getTotalSpentTime() + ") / " + getTotalTime();
     }
 
+    public String getSpeed() {
+        return Math.round(60 * 60 * 1000 / time.speed) + "";
+    }
 }
