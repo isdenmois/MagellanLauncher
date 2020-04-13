@@ -43,7 +43,11 @@ class SyncFragment : Fragment() {
 
         wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         v.findViewById(R.id.toggleButton).setOnClickListener {
-            wifiManager?.setWifiEnabled(!isWifiEnabled)
+            wifiManager?.isWifiEnabled = !isWifiEnabled
+        }
+
+        if (!(wifiManager as WifiManager).isWifiEnabled) {
+            wifiManager?.isWifiEnabled = true
         }
 
         try {
@@ -60,6 +64,7 @@ class SyncFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        wifiManager?.isWifiEnabled = false
         server?.stop()
         server = null
         wifiManager = null
