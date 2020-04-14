@@ -21,15 +21,15 @@
 
     <LinearLayout
         android:id="@+id/container"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -51,7 +51,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="Автор"
-                    android:textColor="#888"
+                    android:textColor="#444"
                     android:textSize="15sp" />
 
                 <TextView
@@ -80,7 +80,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Прогресс"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Время"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -126,7 +126,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Скорость чтения"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -149,7 +149,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Прочтено"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -180,7 +180,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="Дата"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -190,7 +190,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="Прогресс"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -200,7 +200,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="Страниц"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -210,7 +210,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="Время"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
 
                     <TextView
@@ -220,7 +220,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="Скорость"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -231,5 +231,13 @@
                     android:divider="#fff" />
             </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bookToRead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Читать"
+            android:padding="20dp"
+            android:background="#fff"/>
     </LinearLayout>
 </LinearLayout>

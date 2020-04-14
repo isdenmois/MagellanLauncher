@@ -221,7 +221,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void setActive(int id) {
-        LinearLayout layout = (LinearLayout)findViewById(R.id.launcher_buttons);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.launcher_buttons_layout);
         if (layout == null) return;
 
         int count = layout.getChildCount();

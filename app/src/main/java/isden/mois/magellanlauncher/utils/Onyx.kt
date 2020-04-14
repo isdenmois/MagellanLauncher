@@ -116,7 +116,7 @@ fun getDetailedHistory(ctx: Context, md5: String): Array<HistoryDetail> {
                     val date = formatDate(startTime);
                     val progress = Integer.parseInt(progressStr.substring(0, progressStr.indexOf('/')))
                     val pages = progress - lastProgress
-                    val speed = readTime / pages
+                    val speed = if (pages > 0) readTime / pages else 0
 
                     Log.d("HISTORY", "readTime: " + readTime + "; lastProgress: " + lastProgress + "; progress: " + progress + "; pages: " + pages + "; speed: " + speed)
 

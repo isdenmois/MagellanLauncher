@@ -3,11 +3,14 @@ package isden.mois.magellanlauncher;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.Arrays;
 
 import isden.mois.magellanlauncher.models.HistoryDetail;
@@ -16,7 +19,7 @@ import isden.mois.magellanlauncher.utils.ListAdapter;
 import isden.mois.magellanlauncher.utils.OnyxKt;
 import isden.mois.magellanlauncher.utils.ViewHolder;
 
-public class BookActivity extends Activity {
+public class BookActivity extends Activity implements View.OnClickListener {
     Metadata book;
     BookHistoryAdapter adapter;
 
@@ -33,6 +36,8 @@ public class BookActivity extends Activity {
         listView.setAdapter(adapter);
 
         new BookTask(this, intent.getStringExtra("MD5")).execute();
+
+        findViewById(R.id.bookToRead).setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +66,22 @@ public class BookActivity extends Activity {
     void setText(int id, String text) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(text);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (book == null) return;
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        File f = new File(book.filePath);
+        intent.setDataAndType(Uri.fromFile(f), IsdenTools.get_mime_by_filename(f.getName().toLowerCase()));
+
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, f.getName().toLowerCase(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class BookTask extends AppTask {

@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="345"
+            android:textColor="#444"
             android:textSize="15sp" />
 
         <ImageView
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="1:45"
+            android:textColor="#444"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -48,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Author"
-        android:textColor="#666"
+        android:textColor="#444"
         android:textSize="15sp" />
 
 </LinearLayout>
