@@ -13,23 +13,17 @@ fun formatHumanTime(ms: Long): String {
     var result = ""
 
     // Секунды
-    if (time < 3600) {
-        result = "${time % 60}с"
+    if (time < 60) {
+        return "${time % 60}с"
     }
 
     // Минуты
     time /= 60
-    if (time > 0) {
-        result = if (result.length > 0) "${time % 60}м ${result}" else "${time % 60}"
-    }
+    result = "${time % 60}".padStart(2, '0')
 
     // Часы
     time /= 60
-    if (time > 0) {
-        return "${time}:${result}"
-    }
-
-    return result
+    return "${time}:${result}"
 }
 
 /**
