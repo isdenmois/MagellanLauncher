@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -17,6 +18,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
@@ -195,18 +199,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void openHome() {
-        this.changeFragment(new HomeFragment());
+        this.changeFragment(new HomeFragment(), R.id.imgHome);
     }
 
     private void openLibrary() {
-        this.changeFragment(new LibraryFragment());
+        this.changeFragment(new LibraryFragment(), R.id.imgLibrary);
     }
 
     private void openSync() {
-        this.changeFragment(new SyncFragment());
+        this.changeFragment(new SyncFragment(), R.id.imgSync);
     }
 
-    private void changeFragment(Fragment fragment) {
+    private void changeFragment(Fragment fragment, int id) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         findViewById(R.id.activityIndicator).setVisibility(View.GONE);
@@ -215,6 +219,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         transaction.replace(R.id.container, fragment);
 
         transaction.commit();
+
+        this.setActive(id);
+    }
+
+    private void setActive(int id) {
+        LinearLayout layout = (LinearLayout)findViewById(R.id.launcher_buttons);
+        if (layout == null) return;
+
+        int count = layout.getChildCount();
+        for (int i = 0; i < count; i++) {
+            LinearLayout child = (LinearLayout)layout.getChildAt(i);
+            TextView text = (TextView)child.getChildAt(1);
+
+            if (child.getId() == id) {
+                text.setTypeface(null, Typeface.BOLD);
+            } else {
+                text.setTypeface(null, Typeface.NORMAL);
+            }
+        }
     }
 
     public void reCreate() {
