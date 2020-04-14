@@ -1,4 +1,4 @@
-package isden.mois.magellanlauncher.fragments
+package isden.mois.magellanlauncher.pages
 
 import android.content.BroadcastReceiver
 import android.content.Context

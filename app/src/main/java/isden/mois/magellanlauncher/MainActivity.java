@@ -14,19 +14,17 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
-import isden.mois.magellanlauncher.fragments.HomeFragment;
-import isden.mois.magellanlauncher.fragments.LibraryFragment;
-import isden.mois.magellanlauncher.fragments.SyncFragment;
+import isden.mois.magellanlauncher.pages.HomeFragment;
+import isden.mois.magellanlauncher.pages.LibraryFragment;
+import isden.mois.magellanlauncher.pages.SyncFragment;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 

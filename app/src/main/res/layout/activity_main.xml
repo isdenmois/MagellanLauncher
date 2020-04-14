@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/launcher_buttons"
-        android:name="isden.mois.magellanlauncher.fragments.LaunchButtons"
+        android:name="isden.mois.magellanlauncher.pages.LaunchButtons"
         android:layout_width="100dp"
         android:layout_height="fill_parent" />
 
