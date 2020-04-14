@@ -1,30 +1,48 @@
 package isden.mois.magellanlauncher.pages
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import isden.mois.magellanlauncher.BookActivity
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.models.BookMetadata
 import isden.mois.magellanlauncher.utils.*
 import isden.mois.magellanlauncher.utils.ListAdapter
-import kotlinx.android.synthetic.main.page_library.*
 
 class LibraryFragment : Fragment() {
     internal val adapter = LibraryAdapter(context)
+    var status = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater!!.inflate(R.layout.page_library, container, false)
 
         val library = v.findViewById(R.id.libraryList) as ListView
-        v.findViewById(R.id.libraryToggle).setOnClickListener {
-            val status = if (libraryToggle.isChecked) "Status = 1" else "(Status = 0 OR Status IS NULL)"
-            val sort = if (libraryToggle.isChecked) "LastModified" else "LastAccess"
+        v.findViewById(R.id.newBooks).setOnClickListener {
+            val status = "(Status = 0 OR Status IS NULL)"
+            val sort = "LastAccess"
 
             BooksListLoaderTask(status, sort).execute()
+            this.status = 0
+            v.findViewById(R.id.newBooks).isEnabled = false
+            v.findViewById(R.id.readBooks).isEnabled = true
+        }
+        v.findViewById(R.id.readBooks).setOnClickListener {
+            val status = "Status = 1"
+            val sort = "LastModified"
+
+            BooksListLoaderTask(status, sort).execute()
+            this.status = 1
+            v.findViewById(R.id.newBooks).isEnabled = true
+            v.findViewById(R.id.readBooks).isEnabled = false
         }
         v.findViewById(R.id.libraryUp).setOnClickListener {
             val first = library.firstVisiblePosition
@@ -40,6 +58,27 @@ class LibraryFragment : Fragment() {
 
         adapter.setContext(context)
         library.adapter = adapter
+        library.setOnItemClickListener { adapterView, view, i, l ->
+            val item = adapter.getItem(i)
+            val intent = Intent(context, BookActivity::class.java)
+
+            intent.putExtra("MD5", item.md5)
+
+            startActivity(intent)
+        }
+
+        library.setOnItemLongClickListener { adapterView, view, i, l ->
+            val item = adapter.getItem(i)
+            AlertDialog.Builder(context)
+                    .setTitle("Вы действительно изменить статус?")
+                    .setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, ii ->
+                        adapter.removeItem(item)
+                        changeStatus(context, item, 1 - status)
+                    })
+                    .setNegativeButton("No", DialogInterface.OnClickListener { dialogInterface, ii -> })
+                    .show()
+            true
+        }
 
         BooksListLoaderTask("(Status = 0 OR Status IS NULL)", "LastAccess").execute()
 
@@ -55,18 +94,13 @@ class LibraryFragment : Fragment() {
 
 class LibraryAdapter(c: Context?) : ListAdapter<BookMetadata, LibraryViewHolder>(c, R.layout.library_item) {
     override fun fillHolder(metadata: BookMetadata, holder: LibraryViewHolder) {
-        val bmp = metadata.getThumbnail()
-        if (bmp != null) {
-            holder.image.setImageBitmap(bmp)
-        }
-
         if (metadata.title != "") {
             holder.title.text = metadata.title
             holder.author.text = metadata.author
             holder.author.visibility = View.VISIBLE
         } else {
             holder.title.text = metadata.filename
-            holder.author.visibility = View.INVISIBLE
+            holder.author.visibility = View.GONE
         }
 
         if (metadata.time.currentTime > 0) {
@@ -74,11 +108,17 @@ class LibraryAdapter(c: Context?) : ListAdapter<BookMetadata, LibraryViewHolder>
             holder.time.text = metadata.currentSpentTime()
             holder.progressLine.visibility = View.VISIBLE
         } else {
-            holder.progressLine.visibility = View.INVISIBLE
+            holder.progressLine.visibility = View.GONE
         }
     }
 
     override fun getHolder(v: View): LibraryViewHolder = LibraryViewHolder(v)
+
+    fun removeItem(item: BookMetadata) {
+        list.remove(item)
+//        list = list.
+        notifyDataSetChanged()
+    }
 }
 
 class LibraryViewHolder(v: View) : ViewHolder() {
@@ -87,5 +127,4 @@ class LibraryViewHolder(v: View) : ViewHolder() {
     var progressLine = v.findViewById(R.id.libraryProgressLine) as LinearLayout
     var progress = v.findViewById(R.id.libraryProgress) as TextView
     var time = v.findViewById(R.id.libraryTime) as TextView
-    var image = v.findViewById(R.id.libraryImage) as ImageView
 }

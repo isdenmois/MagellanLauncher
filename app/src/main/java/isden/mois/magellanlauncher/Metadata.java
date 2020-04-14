@@ -23,6 +23,8 @@ public class Metadata implements Serializable {
     public int progress;
     public long lastAccess;
 
+    public int readPages;
+
     BookTime time = new BookTime();
 
     public String getTitle() {

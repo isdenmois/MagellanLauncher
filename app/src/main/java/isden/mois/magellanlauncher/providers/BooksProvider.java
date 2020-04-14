@@ -15,14 +15,17 @@ public class BooksProvider extends OnyxCmsProvider {
     static final String AUTHORITY = "com.onyx.android.sdk.OnyxCmsProvider";
     static final String DOWNLOADED_PATH = "last_downloaded";
     static final String CURRENT_BOOK_PATH = "current_book";
+    static final String BOOK_PATH = "book";
 
     static final int URI_DOWNLOADED = 1;
     static final int URI_CURRENT_BOOK = 2;
+    static final int URI_BOOK = 3;
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, DOWNLOADED_PATH, URI_DOWNLOADED);
         uriMatcher.addURI(AUTHORITY, CURRENT_BOOK_PATH, URI_CURRENT_BOOK);
+        uriMatcher.addURI(AUTHORITY, BOOK_PATH, URI_BOOK);
     }
 
     @Override
@@ -40,6 +43,9 @@ public class BooksProvider extends OnyxCmsProvider {
 
             case URI_CURRENT_BOOK:
                 return getCurrentBook();
+
+            case URI_BOOK:
+                return getBook(selectionArgs[0]);
 
         }
         return super.query(uri, projection, selection, selectionArgs, sortOrder);
@@ -66,6 +72,11 @@ public class BooksProvider extends OnyxCmsProvider {
         return db.rawQuery(CURRENT_BOOK_QUERY, new String[] {});
     }
 
+    private Cursor getBook(String MD5) {
+        SQLiteDatabase db = mDefaultDBHelper.getReadableDatabase();
+        return db.rawQuery(BOOK_QUERY, new String[]{MD5});
+    }
+
     private final static String DOWNLOADED_QUERY = "SELECT Title, Authors, Location, _data AS Thumbnail " +
             "FROM library_metadata m " +
             "LEFT JOIN library_thumbnail t ON MD5 = Source_MD5 AND Thumbnail_Kind = \"Middle\" " +
@@ -78,4 +89,9 @@ public class BooksProvider extends OnyxCmsProvider {
             "LEFT JOIN library_thumbnail t ON MD5 = Source_MD5 AND Thumbnail_Kind = \"Middle\" " +
             "ORDER BY LastAccess DESC " +
             "LIMIT 1";
+
+    private final static String BOOK_QUERY = "SELECT MD5, Title, Authors, Location, Progress, _data AS Thumbnail " +
+            "FROM library_metadata m " +
+            "LEFT JOIN library_thumbnail t ON MD5 = Source_MD5 AND Thumbnail_Kind = \"Middle\" " +
+            "WHERE MD5 = ?";
 }

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.util.Pair;
 
 import isden.mois.magellanlauncher.helpers.DBBooks;
 import isden.mois.magellanlauncher.holders.BookTime;
@@ -21,7 +22,6 @@ public class Onyx {
     private static final String CONTENT_URI = "content://com.onyx.android.sdk.OnyxCmsProvider/";
 
     public static Metadata getCurrentBook(Context ctx) {
-        Metadata metadata = null;
         Cursor c = ctx.getContentResolver().query(
                 Uri.parse(CONTENT_URI + "current_book"),
                 null,
@@ -29,6 +29,24 @@ public class Onyx {
                 null,
                 null
         );
+
+        return parseBook(ctx, c);
+    }
+
+    public static Metadata getBook(Context ctx, String MD5) {
+        Cursor c = ctx.getContentResolver().query(
+                Uri.parse(CONTENT_URI + "book"),
+                null,
+                null,
+                new String[]{MD5},
+                null
+        );
+
+        return parseBook(ctx, c);
+    }
+
+    private static Metadata parseBook(Context ctx, Cursor c) {
+        Metadata metadata = null;
 
         if (c != null) {
             if (c.moveToFirst()) {
@@ -50,13 +68,15 @@ public class Onyx {
         }
 
         if (metadata != null) {
-            metadata.time = getBookDetails(ctx, metadata.md5);
+            Pair<BookTime, Integer> details = getBookDetails(ctx, metadata.md5);
+            metadata.time = details.first;
+            metadata.readPages = details.second;
         }
 
         return metadata;
     }
 
-    public static BookTime getBookDetails (Context ctx, String MD5) {
+    public static Pair<BookTime, Integer> getBookDetails(Context ctx, String MD5) {
         ArrayList<int[]> speeds = new ArrayList<>();
         int lastProgress = 0;
         BookTime bookTime = new BookTime();
@@ -94,21 +114,19 @@ public class Onyx {
 
                         if (currentProgress != lastProgress) {
                             speed = (int) (time / (currentProgress - lastProgress));
-                        }
-                        else {
+                        } else {
                             speed = 0;
                         }
 
                         // Если были пропущены главы.
                         if (currentProgress > lastProgress && speed > 15000 && speed < 100000) {
-                            speeds.add(new int[]{ speed,  currentProgress - lastProgress});
+                            speeds.add(new int[]{speed, currentProgress - lastProgress});
                         }
 
                         lastProgress = currentProgress;
                     }
                 }
-            }
-            finally {
+            } finally {
                 c.close();
             }
         }
@@ -122,7 +140,7 @@ public class Onyx {
 
         bookTime.speed = bookWeight / bookPages;
 
-        return bookTime;
+        return new Pair<>(bookTime, (int) Math.round(bookPages));
     }
 
 
@@ -139,7 +157,7 @@ public class Onyx {
         );
 
         if (c != null) {
-            if(c.moveToFirst()) {
+            if (c.moveToFirst()) {
                 long totalTime = c.getLong(0);
                 return DateKt.formatHumanTime(totalTime);
             }
@@ -153,9 +171,9 @@ public class Onyx {
         String limit = prefs.getString("history_clean_limit", "20000");
 
         ctx.getContentResolver().delete(
-            Uri.parse(CONTENT_URI + "library_history"),
-            "(EndTime - StartTime) < " + limit,
-            null
+                Uri.parse(CONTENT_URI + "library_history"),
+                "(EndTime - StartTime) < " + limit,
+                null
         );
     }
 
@@ -181,8 +199,7 @@ public class Onyx {
 
                     metadataList.add(metadata);
                 }
-            }
-            finally {
+            } finally {
                 c.close();
             }
         }
@@ -192,7 +209,7 @@ public class Onyx {
 
     public static Cursor getHistoryCursor(Context ctx, String MD5) {
         if (MD5 == null) {
-            return  null;
+            return null;
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);

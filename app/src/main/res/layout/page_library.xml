@@ -4,19 +4,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ToggleButton
-        android:id="@+id/libraryToggle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textOn="Прочитанные"
-        android:textOff="Новые"
-        android:background="@color/normal_bg"/>
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/newBooks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:text="Новые"
+            android:gravity="center"
+            android:padding="10dp"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/readBooks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:gravity="center"
+            android:text="Прочитанные"
+            android:padding="10dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/libraryList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:divider="#000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,15 +46,15 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:src="@drawable/ci_arrowup"
-            android:background="@color/normal_bg" />
+            android:background="@color/normal_bg"
+            android:src="@drawable/ci_arrowup" />
 
         <ImageButton
             android:id="@+id/libraryDown"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:src="@drawable/ci_arrowdown"
-            android:background="@color/normal_bg" />
+            android:background="@color/normal_bg"
+            android:src="@drawable/ci_arrowdown" />
     </LinearLayout>
 </LinearLayout>

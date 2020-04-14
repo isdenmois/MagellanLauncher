@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content" style="@style/ReaderTheme"
-                android:paddingTop="5dp" android:paddingBottom="5dp" android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tw_date" android:layout_weight="1" android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" android:textSize="18dp" android:textColor="@color/normal_fg"/>
+        android:id="@+id/historyDate"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="21.01.2020"/>
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tw_time" android:layout_weight="1" android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:textSize="18dp"
-            android:textColor="@color/normal_fg"/>
-</RelativeLayout>
+        android:id="@+id/historyProgress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="210"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/historyPages"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="104"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/historyTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="0:45"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/historySpeed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="110"
+        android:layout_marginLeft="5dp"/>
+</LinearLayout>

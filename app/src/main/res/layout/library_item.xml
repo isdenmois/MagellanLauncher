@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="start">
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
-    <ImageView
-        android:id="@+id/libraryImage"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:scaleType="fitStart" />
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/libraryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp">
+        android:text="Title"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/libraryProgressLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/libraryAuthor"
-            android:layout_width="match_parent"
+            android:id="@+id/libraryProgress"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Author"
-            android:textColor="#666"
-            android:textSize="15dp"/>
+            android:text="345"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/clock" />
 
         <TextView
-            android:id="@+id/libraryTitle"
-            android:layout_width="match_parent"
+            android:id="@+id/libraryTime"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="#000"
-            android:textSize="17dp" />
-
-        <LinearLayout
-            android:id="@+id/libraryProgressLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/libraryProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="156 / 345" />
-
-            <TextView
-                android:id="@+id/libraryTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1:45"
-                android:layout_marginLeft="5dp"/>
-        </LinearLayout>
+            android:layout_marginLeft="5dp"
+            android:text="1:45"
+            android:textSize="15sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/libraryAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Author"
+        android:textColor="#666"
+        android:textSize="15sp" />
 
 </LinearLayout>

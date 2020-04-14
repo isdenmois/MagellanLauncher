@@ -76,4 +76,6 @@ class BookMetadata (
 
         return currentSpentTime() + " (" + totalSpentTime() + ") / " + totalTime()
     }
+
+    fun getSpeed(): String = Math.round(60 * 60 * 1000 / time.speed).toString()
 }

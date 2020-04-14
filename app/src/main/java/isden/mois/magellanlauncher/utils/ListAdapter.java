@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ListAdapter<T, K extends ViewHolder> extends BaseAdapter implements ListTaskAdapter<T> {
-    private List<T> list = new ArrayList<>();
+    protected List<T> list = new ArrayList<>();
     private int layoutId;
     protected Context context;
 

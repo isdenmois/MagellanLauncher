@@ -34,15 +34,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     public static final String TAG = "main";
 
-    public static TypedArray builtInImages;
-
     Intent startIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources r = getResources();
-        builtInImages = r.obtainTypedArray(R.array.images_list);
 
         startIntent = getIntent();
         this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Убираем заголовок

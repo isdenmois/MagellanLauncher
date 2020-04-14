@@ -27,7 +27,7 @@ public class HistoryDetailsAdapter extends BaseAdapter {
     }
 
     public HistoryDetailsAdapter(Context ctx, BookMetadata data) {
-        details = OnyxKt.getDetailedHistory(ctx, data);
+        details = OnyxKt.getDetailedHistory(ctx, data.getMd5());
         Arrays.sort(details, new Comparator<HistoryDetail>() {
             @Override
             public int compare(HistoryDetail h1, HistoryDetail h2) {
@@ -76,8 +76,8 @@ public class HistoryDetailsAdapter extends BaseAdapter {
                     return null;
                 }
                 holder = new ViewHolder();
-                holder.date = (TextView) v.findViewById(R.id.tw_date);
-                holder.spent = (TextView) v.findViewById(R.id.tw_time);
+                holder.date = (TextView) v.findViewById(R.id.historyDate);
+                holder.spent = (TextView) v.findViewById(R.id.historyTime);
 
                 v.setTag(holder);
             }

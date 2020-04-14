@@ -48,9 +48,9 @@ public class IconDialog implements IDialog, View.OnClickListener, AdapterView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(c);
 
         icons = new ArrayList<IIcon>();
-        for (int i = 0; i < MainActivity.builtInImages.length(); i++) {
-            icons.add(new BuiltInIcon(i));
-        }
+//        for (int i = 0; i < MainActivity.builtInImages.length(); i++) {
+//            icons.add(new BuiltInIcon(i));
+//        }
 
         String filename = prefs.getString("icons_path", null);
         if (filename != null) {

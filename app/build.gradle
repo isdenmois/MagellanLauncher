@@ -33,13 +33,14 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.zxing:core:3.3.0'
     compile 'org.nanohttpd:nanohttpd-project:2.3.1'
     compile 'org.nanohttpd:nanohttpd-nanolets:2.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.github.kittinunf.fuel:fuel-android:1.8.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 println "config code: ${calculateVersionCode()}, name: ${calculateVersionName()}"

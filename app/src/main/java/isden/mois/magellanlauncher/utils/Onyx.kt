@@ -1,8 +1,10 @@
 package isden.mois.magellanlauncher.utils
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.preference.PreferenceManager
+import android.util.Log
 import isden.mois.magellanlauncher.helpers.DBBooks
 import isden.mois.magellanlauncher.models.BookMetadata
 import isden.mois.magellanlauncher.models.BookTime
@@ -85,50 +87,81 @@ fun getBooks(ctx: Context, status: String, order: String): List<BookMetadata> {
     return result
 }
 
-fun getDetailedHistory(ctx: Context, book: BookMetadata): Array<HistoryDetail> {
-    var historyDetail = emptyArray<HistoryDetail>()
+fun getDetailedHistory(ctx: Context, md5: String): Array<HistoryDetail> {
+    var historyDetails = emptyArray<HistoryDetail>()
     val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
-    val limit = prefs.getString("history_clean_limit", "20000")
-
+    val limit = prefs.getString("history_clean_limit", "20000").toInt()
 
     val builder = StringBuilder("SELECT ")
-    builder.append("StartTime, (EndTime - StartTime) AS Time ")
+    builder.append("StartTime, (EndTime - StartTime) AS Time, Progress ")
     builder.append("FROM library_history ")
-    builder.append("WHERE Progress <> \"5/5\" AND MD5 = ? AND (EndTime - StartTime) > ")
-    builder.append(limit)
+    builder.append("WHERE Progress <> \"5/5\" AND MD5 = ? ")
+    builder.append("ORDER BY EndTime")
 
     val query = builder.toString()
     val dbBooks = DBBooks(ctx)
     val db = dbBooks.readableDatabase
 
     try {
-        val c = db.rawQuery(query, arrayOf(book.md5))
+        val c = db.rawQuery(query, arrayOf(md5))
         if (c != null) {
             if (c.moveToFirst()) {
                 val dates = Hashtable<String, HistoryDetail>();
+                var lastProgress = 0;
 
                 do {
                     val startTime = c.getLong(c.getColumnIndex("StartTime"));
                     val readTime = c.getLong(c.getColumnIndex("Time"));
+                    val progressStr = c.getString(c.getColumnIndex("Progress"))
                     val date = formatDate(startTime);
+                    val progress = Integer.parseInt(progressStr.substring(0, progressStr.indexOf('/')))
+                    val pages = progress - lastProgress
+                    val speed = readTime / pages
 
-                    if (dates.containsKey(date)) {
-                        val detail = dates[date];
-                        detail!!.spent += readTime;
+                    Log.d("HISTORY", "readTime: " + readTime + "; lastProgress: " + lastProgress + "; progress: " + progress + "; pages: " + pages + "; speed: " + speed)
+
+                    if (readTime > limit && progress > lastProgress && speed > 15000 && speed < 100000) {
+                        if (dates.containsKey(date)) {
+                            val detail = dates[date];
+                            detail!!.progress = progress;
+                            detail.spent += readTime;
+                            detail.pages += pages
+                        } else {
+                            val detail = HistoryDetail(date, startTime, readTime, progress, pages, 0);
+                            dates[date] = detail
+                        }
                     }
-                    else {
-                        val detail = HistoryDetail(date, startTime, readTime);
-                        dates[date] = detail
-                    }
+
+                    lastProgress = progress
                 } while (c.moveToNext())
-                historyDetail += dates.values
+                historyDetails += dates.values
             }
         }
     } finally {
         db.close()
     }
 
-    return historyDetail
+    for (detail in historyDetails) {
+        detail.speed = if (detail.pages > 0) Math.round((detail.spent / detail.pages).toDouble()).toInt() else 0
+    }
+
+    Arrays.sort(historyDetails, Comparator<HistoryDetail> { h1, h2 ->
+        if (h1 == null && h2 == null) {
+            return@Comparator 0
+        }
+        if (h1 == null) {
+            return@Comparator 1
+        }
+        if (h2 == null) {
+            return@Comparator -1
+        }
+
+        val t1 = h1.timestamp
+        val t2 = h2.timestamp
+        if (t1 < t2) -1 else if (t1 == t2) 0 else 1
+    })
+
+    return historyDetails
 }
 
 fun createMetadata(c: Cursor): BookMetadata {
@@ -148,4 +181,18 @@ fun createMetadata(c: Cursor): BookMetadata {
     time.totalTime = time.totalTime
 
     return BookMetadata(md5, author, title, filename, filePath, lastAccess, time, thumbnail, progress, firstTime)
+}
+
+fun changeStatus(ctx: Context, book: BookMetadata, status: Int) {
+    val dbBooks = DBBooks(ctx)
+    val db = dbBooks.readableDatabase
+
+    try {
+        val values = ContentValues()
+        values.put("Status", status)
+
+        db.update("library_metadata", values, "MD5 = ?", arrayOf(book.md5))
+    } finally {
+        db.close()
+    }
 }
