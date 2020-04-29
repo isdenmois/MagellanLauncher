@@ -1,5 +1,7 @@
 package isden.mois.magellanlauncher.httpd.handlers;
 
+import android.content.Context;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +13,8 @@ import fi.iki.elonen.router.RouterNanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD.Error404UriHandler;
 import fi.iki.elonen.NanoHTTPD.Response;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
+import isden.mois.magellanlauncher.providers.BooksProvider;
+
 import static fi.iki.elonen.NanoHTTPD.newChunkedResponse;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static fi.iki.elonen.router.RouterNanoHTTPD.normalizeUri;
@@ -38,20 +42,26 @@ public class ThumbnailHandler extends RouterNanoHTTPD.DefaultHandler {
     public Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
         String baseUri = uriResource.getUri();
         String realUri = normalizeUri(session.getUri());
+        Context context = uriResource.initParameter(Context.class);
         for (int index = 0; index < Math.min(baseUri.length(), realUri.length()); index++) {
             if (baseUri.charAt(index) != realUri.charAt(index)) {
                 realUri = normalizeUri(realUri.substring(index));
                 break;
             }
         }
-        File file = new File("/", realUri);
 
+        File file;
+        if (realUri.length() == 32) {
+            file = BooksProvider.getThumbnailFile(context, realUri);
+        } else {
+            file = new File("/", realUri);
+        }
 
         if (!file.exists() || !file.isFile()) {
             return new Error404UriHandler().get(uriResource, urlParams, session);
         } else {
             try {
-                Response response =  newChunkedResponse(getStatus(), getMimeTypeForFile(file.getName()), fileToInputStream(file));
+                Response response = newChunkedResponse(getStatus(), getMimeTypeForFile(file.getName()), fileToInputStream(file));
 
                 response.addHeader("Cache-Control", "max-age=2592000");
 

@@ -119,7 +119,7 @@ public class Onyx {
                         }
 
                         // Если были пропущены главы.
-                        if (currentProgress > lastProgress && speed > 15000 && speed < 100000) {
+                        if (currentProgress > lastProgress && speed > 10000 && speed < 100000) {
                             speeds.add(new int[]{speed, currentProgress - lastProgress});
                         }
 

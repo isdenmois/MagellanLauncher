@@ -7,6 +7,7 @@ package isden.mois.magellanlauncher.httpd.handlers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
 import com.onyx.android.sdk.data.cms.OnyxCmsCenter;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,7 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
         String author = params.get("author").get(0);
         String title = params.get("title").get(0);
         String fileName = params.get("file").get(0);
+        String imageKey = params.containsKey("image") ? "image" : "image1";
 
         File file = new File(files.get("file"));
 
@@ -117,15 +120,15 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
         }
 
         String image = null;
-        if (files.containsKey("image")) {
-            image = files.get("image");
-        } else if (params.containsKey("image1")) {
-            image = files.get("image1");
+        if (files.containsKey(imageKey)) {
+            image = files.get(imageKey);
         }
 
         if (image != null) {
             setThumbnail(metadata, image, ctx);
         }
+
+        removeTemp(files.values());
 
         new SetBookStatus(0, metadata.getMD5()).execute(ctx);
     }
@@ -152,5 +155,19 @@ public class BookHandler extends RouterNanoHTTPD.DefaultHandler {
         }
         in.close();
         out.close();
+    }
+
+    private void removeTemp(Collection<String> paths) {
+        for (String path : paths) {
+            File f = new File(path);
+
+            if (f.exists()) {
+                try {
+                    f.delete();
+                } catch (RuntimeException e) {
+                    Log.e("HTTPD", e.toString());
+                }
+            }
+        }
     }
 }

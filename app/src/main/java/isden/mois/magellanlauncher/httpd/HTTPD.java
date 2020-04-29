@@ -55,7 +55,7 @@ public class HTTPD extends RouterNanoHTTPD {
         addRoute("/api/book", BookHandler.class, this.ctx, destination);
         addRoute("/api/book/:MD5", BookHandler.class, this.ctx, destination);
 
-        addRoute("/thumbnail/(.)+", ThumbnailHandler.class);
+        addRoute("/thumbnail/(.)+", ThumbnailHandler.class, this.ctx);
         addRoute("/public/(.)+", StaticHandler.class, this.root);
         addRoute("/(.)+", StaticHandler.class, this.root);
     }

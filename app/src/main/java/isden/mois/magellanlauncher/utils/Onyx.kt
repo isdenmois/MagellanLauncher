@@ -120,7 +120,7 @@ fun getDetailedHistory(ctx: Context, md5: String): Array<HistoryDetail> {
 
                     Log.d("HISTORY", "readTime: " + readTime + "; lastProgress: " + lastProgress + "; progress: " + progress + "; pages: " + pages + "; speed: " + speed)
 
-                    if (readTime > limit && progress > lastProgress && speed > 15000 && speed < 100000) {
+                    if (readTime > limit && progress > lastProgress && speed > 10000 && speed < 100000) {
                         if (dates.containsKey(date)) {
                             val detail = dates[date];
                             detail!!.progress = progress;

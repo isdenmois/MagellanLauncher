@@ -8,3 +8,4 @@ gradle
 MagellanLauncher.ipr
 MagellanLauncher.iws
 *.iml
+/app/release

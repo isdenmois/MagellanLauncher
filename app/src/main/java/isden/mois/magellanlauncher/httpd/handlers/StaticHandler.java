@@ -1,5 +1,7 @@
 package isden.mois.magellanlauncher.httpd.handlers;
 
+import android.os.Environment;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +25,8 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
  */
 
 public class StaticHandler extends DefaultHandler {
+    static File root = new File(Environment.getExternalStorageDirectory(), "www");
+
     @Override
     public String getText() {
         throw new IllegalStateException("this method should not be called");
@@ -51,18 +55,17 @@ public class StaticHandler extends DefaultHandler {
     }
 
     public Response get(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-        File fileOrdirectory = uriResource.initParameter(File.class);
         String uri = normalizeUrl(session.getUri());
-        fileOrdirectory = new File(fileOrdirectory, uri);
+        File file = new File(root, uri);
 
-        if (!fileOrdirectory.exists() || !fileOrdirectory.isFile()) {
+        if (!file.exists() || !file.isFile()) {
             return new RouterNanoHTTPD.Error404UriHandler().get(uriResource, urlParams, session);
         } else {
             try {
-                Response response = newChunkedResponse(getStatus(), getMimeTypeForFile(uri), fileToInputStream(fileOrdirectory));
+                Response response = newChunkedResponse(getStatus(), getMimeTypeForFile(uri), fileToInputStream(file));
                 response.addHeader("Content-Encoding",  "gzip");
-                response.addHeader("Cache-Control", "max-age=2592000");
-                response.addHeader("Content-Length", "" + fileOrdirectory.length());
+//                response.addHeader("Cache-Control", "max-age=2592000");
+                response.addHeader("Content-Length", "" + file.length());
                 return response;
             } catch (IOException ioe) {
                 return newFixedLengthResponse(Status.REQUEST_TIMEOUT, "text/plain", (String) null);
