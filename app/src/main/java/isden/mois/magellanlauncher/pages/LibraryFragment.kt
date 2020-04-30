@@ -5,23 +5,23 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
-import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.TextView
 import isden.mois.magellanlauncher.BookActivity
 import isden.mois.magellanlauncher.R
+import isden.mois.magellanlauncher.helpers.Scroller
 import isden.mois.magellanlauncher.models.BookMetadata
 import isden.mois.magellanlauncher.models.KeyDownFragment
 import isden.mois.magellanlauncher.utils.*
-import isden.mois.magellanlauncher.utils.ListAdapter
 
 class LibraryFragment : KeyDownFragment() {
     internal val adapter = LibraryAdapter(context)
+    private val scroller = Scroller()
     private var library: ListView? = null;
     var status = 0
 
@@ -72,23 +72,25 @@ class LibraryFragment : KeyDownFragment() {
             true
         }
 
+        library!!.setOnScrollListener(Scroller())
+
         BooksListLoaderTask("(Status = 0 OR Status IS NULL)", "LastAccess").execute()
 
         return v
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        library = null
     }
 
     override fun onKeyDown(keyCode: Int) {
         if (library == null) return;
 
         if (keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
-            library!!.setSelection(library!!.lastVisiblePosition + 1);
+            library!!.setSelection(scroller.prevPageItem)
         } else {
-            val first = library!!.firstVisiblePosition
-            val last = library!!.lastVisiblePosition
-            val height = last - first
-            val target = if (first < height) 0 else first - height
-
-            library!!.setSelection(target)
+            library!!.setSelection(scroller.nextPageItem)
         }
 
         library!!.invalidate();
@@ -125,7 +127,6 @@ class LibraryAdapter(c: Context?) : ListAdapter<BookMetadata, LibraryViewHolder>
 
     fun removeItem(item: BookMetadata) {
         list.remove(item)
-//        list = list.
         notifyDataSetChanged()
     }
 }

@@ -24,6 +24,7 @@ import isden.mois.magellanlauncher.IsdenTools;
 import isden.mois.magellanlauncher.Metadata;
 import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.helpers.Scroller;
 import isden.mois.magellanlauncher.models.KeyDownFragment;
 import isden.mois.magellanlauncher.models.KeyDownListener;
 import isden.mois.magellanlauncher.utils.ListAdapter;
@@ -34,6 +35,7 @@ import isden.mois.magellanlauncher.utils.ViewHolder;
 public class HomeFragment extends KeyDownFragment implements AdapterView.OnItemClickListener {
     private GridView grid;
     private AddedBooksAdapter adapter = new AddedBooksAdapter(null);
+    private Scroller scroller = new Scroller();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class HomeFragment extends KeyDownFragment implements AdapterView.OnItemC
         adapter.setContext(getContext());
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(this);
+        grid.setOnScrollListener(scroller);
 
         new HomeBooksTask(getActivity(), adapter).execute();
     }
@@ -77,13 +80,10 @@ public class HomeFragment extends KeyDownFragment implements AdapterView.OnItemC
     public void onKeyDown(int keyCode) {
         if (grid == null) return;
 
-        int firstVisiblePosition = grid.getFirstVisiblePosition();
-        int lastVisiblePosition = grid.getLastVisiblePosition();
-
         if (keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
-            grid.setSelection(lastVisiblePosition);
+            grid.setSelection(scroller.getPrevPageItem());
         } else {
-            grid.setSelection(firstVisiblePosition - (lastVisiblePosition - firstVisiblePosition));
+            grid.setSelection(scroller.getNextPageItem());
         }
 
         grid.invalidate();
