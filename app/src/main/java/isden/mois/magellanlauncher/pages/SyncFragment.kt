@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +18,11 @@ import com.google.zxing.common.BitMatrix
 
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
+import isden.mois.magellanlauncher.models.KeyDownFragment
 import kotlinx.android.synthetic.main.page_sync.*
 import java.io.IOException
 
-class SyncFragment : Fragment() {
+class SyncFragment : KeyDownFragment() {
     private var server: HTTPD? = null
     private var wifiManager: WifiManager? = null
     private var url: String = emptyText
@@ -81,6 +81,8 @@ class SyncFragment : Fragment() {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         activity.registerReceiver(receiver, filter)
     }
+
+    override fun onKeyDown(keyCode: Int) {}
 
     override fun onPause() {
         super.onPause()

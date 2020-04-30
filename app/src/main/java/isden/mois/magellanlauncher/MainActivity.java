@@ -26,6 +26,8 @@ import android.widget.Toast;
 import isden.mois.magellanlauncher.dialogs.ActionDialog;
 import isden.mois.magellanlauncher.dialogs.IDialog;
 import isden.mois.magellanlauncher.dialogs.IconDialog;
+import isden.mois.magellanlauncher.models.KeyDownFragment;
+import isden.mois.magellanlauncher.models.KeyDownListener;
 import isden.mois.magellanlauncher.pages.HomeFragment;
 import isden.mois.magellanlauncher.pages.LibraryFragment;
 import isden.mois.magellanlauncher.pages.SyncFragment;
@@ -35,6 +37,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public static final String TAG = "main";
 
     Intent startIntent;
+    KeyDownListener keyListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,7 +142,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return keyCode == KeyEvent.KEYCODE_BACK || super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            openHome();
+            return false;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) keyCode = KeyEvent.KEYCODE_PAGE_DOWN;
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) keyCode = KeyEvent.KEYCODE_PAGE_UP;
+
+        if (keyCode == KeyEvent.KEYCODE_PAGE_UP || keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
+            if (keyListener != null) {
+                keyListener.onKeyDown(keyCode);
+                return false;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -207,7 +225,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         this.changeFragment(new SyncFragment(), R.id.imgSync);
     }
 
-    private void changeFragment(Fragment fragment, int id) {
+    private void changeFragment(KeyDownFragment fragment, int id) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         findViewById(R.id.activityIndicator).setVisibility(View.GONE);
@@ -217,7 +235,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         transaction.commit();
 
-        this.setActive(id);
+        keyListener = fragment;
+
+        setActive(id);
     }
 
     private void setActive(int id) {

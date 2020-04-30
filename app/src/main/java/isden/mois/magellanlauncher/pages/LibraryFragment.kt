@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +16,19 @@ import android.widget.*
 import isden.mois.magellanlauncher.BookActivity
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.models.BookMetadata
+import isden.mois.magellanlauncher.models.KeyDownFragment
 import isden.mois.magellanlauncher.utils.*
 import isden.mois.magellanlauncher.utils.ListAdapter
 
-class LibraryFragment : Fragment() {
+class LibraryFragment : KeyDownFragment() {
     internal val adapter = LibraryAdapter(context)
+    private var library: ListView? = null;
     var status = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater!!.inflate(R.layout.page_library, container, false)
 
-        val library = v.findViewById(R.id.libraryList) as ListView
+        library = v.findViewById(R.id.libraryList) as ListView
         v.findViewById(R.id.newBooks).setOnClickListener {
             val status = "(Status = 0 OR Status IS NULL)"
             val sort = "LastAccess"
@@ -44,21 +47,10 @@ class LibraryFragment : Fragment() {
             v.findViewById(R.id.newBooks).isEnabled = true
             v.findViewById(R.id.readBooks).isEnabled = false
         }
-        v.findViewById(R.id.libraryUp).setOnClickListener {
-            val first = library.firstVisiblePosition
-            val last = library.lastVisiblePosition
-            val height = last - first
-            val target = if (first < height) 0 else first - height
-
-            library.setSelection(target)
-        }
-        v.findViewById(R.id.libraryDown).setOnClickListener {
-            library.setSelection(library.lastVisiblePosition)
-        }
 
         adapter.setContext(context)
-        library.adapter = adapter
-        library.setOnItemClickListener { adapterView, view, i, l ->
+        library!!.adapter = adapter
+        library!!.setOnItemClickListener { adapterView, view, i, l ->
             val item = adapter.getItem(i)
             val intent = Intent(context, BookActivity::class.java)
 
@@ -67,7 +59,7 @@ class LibraryFragment : Fragment() {
             startActivity(intent)
         }
 
-        library.setOnItemLongClickListener { adapterView, view, i, l ->
+        library!!.setOnItemLongClickListener { adapterView, view, i, l ->
             val item = adapter.getItem(i)
             AlertDialog.Builder(context)
                     .setTitle("Вы действительно изменить статус?")
@@ -83,6 +75,23 @@ class LibraryFragment : Fragment() {
         BooksListLoaderTask("(Status = 0 OR Status IS NULL)", "LastAccess").execute()
 
         return v
+    }
+
+    override fun onKeyDown(keyCode: Int) {
+        if (library == null) return;
+
+        if (keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
+            library!!.setSelection(library!!.lastVisiblePosition + 1);
+        } else {
+            val first = library!!.firstVisiblePosition
+            val last = library!!.lastVisiblePosition
+            val height = last - first
+            val target = if (first < height) 0 else first - height
+
+            library!!.setSelection(target)
+        }
+
+        library!!.invalidate();
     }
 
     inner class BooksListLoaderTask(val status: String, val sort: String) : ListTask<BookMetadata>(activity, adapter) {

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,14 @@ import isden.mois.magellanlauncher.IsdenTools;
 import isden.mois.magellanlauncher.Metadata;
 import isden.mois.magellanlauncher.Onyx;
 import isden.mois.magellanlauncher.R;
+import isden.mois.magellanlauncher.models.KeyDownFragment;
+import isden.mois.magellanlauncher.models.KeyDownListener;
 import isden.mois.magellanlauncher.utils.ListAdapter;
 import isden.mois.magellanlauncher.utils.ListTask;
 import isden.mois.magellanlauncher.utils.ListTaskAdapter;
 import isden.mois.magellanlauncher.utils.ViewHolder;
 
-public class HomeFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class HomeFragment extends KeyDownFragment implements AdapterView.OnItemClickListener {
     private GridView grid;
     private AddedBooksAdapter adapter = new AddedBooksAdapter(null);
 
@@ -47,29 +50,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Adap
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(this);
 
-        ImageButton button = (ImageButton) getActivity().findViewById(R.id.addedPgDown);
-
-        button.setOnClickListener(this);
-
         new HomeBooksTask(getActivity(), adapter).execute();
-    }
-
-    @Override
-    public void onClick(View view) {
-        onPageDown();
-    }
-
-    public void onPageDown() {
-        if (grid == null) return;
-
-        grid.setSelection(grid.getLastVisiblePosition());
-        grid.invalidate();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         grid = null;
+        adapter = null;
     }
 
     @Override
@@ -83,6 +71,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Adap
         } catch (Exception e) {
             Toast.makeText(getActivity(), /*"Can't start application"*/f.getName().toLowerCase(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onKeyDown(int keyCode) {
+        if (grid == null) return;
+
+        int firstVisiblePosition = grid.getFirstVisiblePosition();
+        int lastVisiblePosition = grid.getLastVisiblePosition();
+
+        if (keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
+            grid.setSelection(lastVisiblePosition);
+        } else {
+            grid.setSelection(firstVisiblePosition - (lastVisiblePosition - firstVisiblePosition));
+        }
+
+        grid.invalidate();
     }
 }
 
@@ -103,13 +107,6 @@ class HomeBooksTask extends ListTask<Metadata> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         setLastReading();
-
-        View button = activity.findViewById(R.id.addedPgDown);
-        if (list.size() < 8) {
-            button.setVisibility(View.INVISIBLE);
-        } else {
-            button.setVisibility(View.VISIBLE);
-        }
     }
 
     private void setLastReading() {

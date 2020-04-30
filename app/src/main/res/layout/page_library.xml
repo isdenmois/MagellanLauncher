@@ -35,26 +35,4 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="#000"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/libraryUp"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@color/normal_bg"
-            android:src="@drawable/ci_arrowup" />
-
-        <ImageButton
-            android:id="@+id/libraryDown"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@color/normal_bg"
-            android:src="@drawable/ci_arrowdown" />
-    </LinearLayout>
 </LinearLayout>
