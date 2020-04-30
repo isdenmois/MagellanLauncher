@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="normal_bg">#ffffffff</color>
-    <color name="normal_bg_gray">#ffd0d0d0</color>
-    <color name="normal_fg">#ff000000</color>
-    <color name="normal_fg_gray">#ff808080</color>
     <color name="normal_text">#ff000000</color>
     <color name="normal_transparent">#00ffffff</color>
 </resources>

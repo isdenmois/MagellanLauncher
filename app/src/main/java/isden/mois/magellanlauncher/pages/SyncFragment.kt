@@ -19,6 +19,8 @@ import com.google.zxing.common.BitMatrix
 import isden.mois.magellanlauncher.R
 import isden.mois.magellanlauncher.httpd.HTTPD
 import isden.mois.magellanlauncher.models.KeyDownFragment
+import isden.mois.magellanlauncher.tasks.CheckForUpdates
+import kotlinx.android.synthetic.main.page_library.*
 import kotlinx.android.synthetic.main.page_sync.*
 import java.io.IOException
 
@@ -44,6 +46,10 @@ class SyncFragment : KeyDownFragment() {
         wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         v.findViewById(R.id.toggleButton).setOnClickListener {
             wifiManager?.isWifiEnabled = !isWifiEnabled
+        }
+
+        v.findViewById(R.id.checkForUpdates).setOnClickListener {
+            CheckForUpdates(context).execute()
         }
 
         if (!(wifiManager as WifiManager).isWifiEnabled) {

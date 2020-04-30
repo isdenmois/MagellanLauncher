@@ -25,7 +25,7 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
  */
 
 public class StaticHandler extends DefaultHandler {
-    static File root = new File(Environment.getExternalStorageDirectory(), "www");
+    public static File root = new File(Environment.getExternalStorageDirectory(), "www");
 
     @Override
     public String getText() {

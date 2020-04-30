@@ -7,19 +7,12 @@ import android.widget.Toast;
 import com.alibaba.fastjson.*;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import isden.mois.magellanlauncher.Constants;
-import isden.mois.magellanlauncher.MainActivity;
-
-/**
- * Created by isden on 05.01.17.
- */
 
 public class CheckForUpdates extends AsyncTask<Void, Void, String> implements ParentTask {
     private Context context;
@@ -89,6 +82,11 @@ public class CheckForUpdates extends AsyncTask<Void, Void, String> implements Pa
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        catch (VerifyError e) {
+            e.printStackTrace();
+
+            Toast.makeText(context, "Кривой JSON", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void downloadFiles(JSONArray assets) {
@@ -101,7 +99,7 @@ public class CheckForUpdates extends AsyncTask<Void, Void, String> implements Pa
         }
 
         Toast.makeText(context, "Началось скачивание файлов", Toast.LENGTH_LONG).show();
-        new GetFiles(context, this).execute(data);
+        new GetFiles(this).execute(data);
     }
 
     @Override

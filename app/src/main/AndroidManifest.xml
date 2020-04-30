@@ -24,15 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HistoryActivity"
-            android:label="@string/history" />
-        <activity
             android:name=".PreferencesActivity"
             android:label="@string/action_preferences" />
         <activity
             android:name=".ApplicationsActivity"
             android:label="@string/applications" />
-        <activity android:name=".HistoryDetailsActivity" />
 
         <provider
             android:name=".providers.BooksProvider"

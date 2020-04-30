@@ -9,7 +9,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="isden.mois.magellanlauncher.activities.HTTPDActivity"
     android:orientation="vertical">
 
     <LinearLayout
@@ -75,6 +74,12 @@
             android:layout_marginTop="20dp"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/checkForUpdates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check for updates"/>
 
     <ToggleButton
         android:id="@+id/toggleButton"

@@ -1,21 +1,17 @@
 package isden.mois.magellanlauncher.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import isden.mois.magellanlauncher.Constants;
-
-/**
- * Created by isden on 05.01.17.
- */
+import isden.mois.magellanlauncher.httpd.handlers.StaticHandler;
 
 public class GetFiles extends AsyncTask<String[], Void, Boolean> implements FilenameFilter {
     private static final String TAG = "GetFiles";
@@ -30,10 +26,8 @@ public class GetFiles extends AsyncTask<String[], Void, Boolean> implements File
     };
 
     private ParentTask parentTask;
-    private Context context;
 
-    GetFiles(Context context, ParentTask parent) {
-        this.context = context;
+    GetFiles(ParentTask parent) {
         this.parentTask = parent;
     }
 
@@ -69,14 +63,14 @@ public class GetFiles extends AsyncTask<String[], Void, Boolean> implements File
 
     private String getFileName(String url) {
         int index = url.lastIndexOf('/') + 1;
-        return url.substring(index, url.length());
+        return url.substring(index);
     }
 
     private boolean removePreviousFiles() {
-        File root = context.getFilesDir();
+        File root = StaticHandler.root;
 
-        for (String file: root.list(this)) {
-            if (!context.deleteFile(file)) {
+        for (File file: root.listFiles(this)) {
+            if (!file.delete()) {
                 Log.e(TAG, "Cannot delete file: " + file);
                 return false;
             }
@@ -95,7 +89,7 @@ public class GetFiles extends AsyncTask<String[], Void, Boolean> implements File
             urlConnection.connect();
 
             InputStream input = urlConnection.getInputStream();
-            OutputStream output = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            OutputStream output = new FileOutputStream(new File(StaticHandler.root, filename));
 
             try {
                 byte[] buffer = new byte[4 * 1024]; // or other buffer size
